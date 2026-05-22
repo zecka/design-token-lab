@@ -1,0 +1,521 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   LAYER 1 — PRIMITIVE TOKENS
+   Raw palette values. Never referenced inside component rules.
+   ============================================================ */
+:root {
+  /* Gold — warm amber-bronze */
+  --primitive-gold-100: #fdf7ed;
+  --primitive-gold-200: #f4e4c1;
+  --primitive-gold-300: #e8cc94;
+  --primitive-gold-400: #d4a96a;
+  --primitive-gold-500: #b8864a;
+  --primitive-gold-600: #956b38;
+  --primitive-gold-700: #6e4d26;
+  --primitive-gold-800: #4a3318;
+
+  /* Stone — warm neutral, greige */
+  --primitive-stone-100: #f8f6f2;
+  --primitive-stone-200: #edeae4;
+  --primitive-stone-300: #d4cec6;
+  --primitive-stone-400: #bab4ac;
+  --primitive-stone-500: #8a7e72;
+  --primitive-stone-600: #6a5e54;
+  --primitive-stone-700: #4e4840;
+  --primitive-stone-800: #332e2a;
+
+  /* Sage — deep forest green */
+  --primitive-sage-100: #f0f5f0;
+  --primitive-sage-200: #d4e8d4;
+  --primitive-sage-300: #a8c8a8;
+  --primitive-sage-400: #74a878;
+  --primitive-sage-500: #4a7a50;
+  --primitive-sage-600: #386040;
+  --primitive-sage-700: #264830;
+  --primitive-sage-800: #183020;
+
+  /* Terra — muted terracotta-rose */
+  --primitive-terra-100: #fdf3f1;
+  --primitive-terra-200: #f5dcd8;
+  --primitive-terra-300: #e8b8b0;
+  --primitive-terra-400: #d48c80;
+  --primitive-terra-500: #b85548;
+  --primitive-terra-600: #944038;
+  --primitive-terra-700: #6e2e28;
+  --primitive-terra-800: #481e1a;
+
+  /* Mist — mineral blue-grey (morning) */
+  --primitive-mist-100: #f3f5f7;
+  --primitive-mist-200: #dce4ea;
+  --primitive-mist-300: #b8c8d4;
+  --primitive-mist-400: #8ca8bc;
+  --primitive-mist-500: #4a6880;
+  --primitive-mist-600: #385468;
+  --primitive-mist-700: #2c4055;
+  --primitive-mist-800: #1c2c3c;
+
+  /* Amber — warm honey-mustard (afternoon) */
+  --primitive-amber-100: #fef9f0;
+  --primitive-amber-200: #faecd0;
+  --primitive-amber-300: #f4d898;
+  --primitive-amber-400: #e8be58;
+  --primitive-amber-500: #c49020;
+  --primitive-amber-600: #9c7018;
+  --primitive-amber-700: #7a5810;
+  --primitive-amber-800: #503a08;
+
+  /* Dusk — warm indigo-violet (evening) */
+  --primitive-dusk-100: #f2f1f6;
+  --primitive-dusk-200: #dddaf0;
+  --primitive-dusk-300: #c0b8d8;
+  --primitive-dusk-400: #9990c0;
+  --primitive-dusk-500: #584880;
+  --primitive-dusk-600: #443668;
+  --primitive-dusk-700: #30285a;
+  --primitive-dusk-800: #1e1a3c;
+}
+
+/* ============================================================
+   LAYER 2 — ROLE TOKENS
+   Semantic intent. Composed from primitives only.
+   Each role exposes: subtle, border, text, base, base-hover, on-base.
+   ============================================================ */
+:root {
+  /* Primary — warm gold */
+  --role-primary-subtle:     var(--primitive-gold-100);
+  --role-primary-border:     var(--primitive-gold-300);
+  --role-primary-text:       var(--primitive-gold-700);
+  --role-primary-base:       var(--primitive-gold-600);
+  --role-primary-base-hover: var(--primitive-gold-700);
+  --role-primary-on-base:    #ffffff;
+
+  /* Neutral — warm stone */
+  --role-neutral-subtle:     var(--primitive-stone-100);
+  --role-neutral-border:     var(--primitive-stone-300);
+  --role-neutral-text:       var(--primitive-stone-700);
+  --role-neutral-base:       var(--primitive-stone-600);
+  --role-neutral-base-hover: var(--primitive-stone-700);
+  --role-neutral-on-base:    #ffffff;
+
+  /* Success — forest sage */
+  --role-success-subtle:     var(--primitive-sage-100);
+  --role-success-border:     var(--primitive-sage-300);
+  --role-success-text:       var(--primitive-sage-700);
+  --role-success-base:       var(--primitive-sage-500);
+  --role-success-base-hover: var(--primitive-sage-600);
+  --role-success-on-base:    #ffffff;
+
+  /* Error — muted terracotta */
+  --role-error-subtle:       var(--primitive-terra-100);
+  --role-error-border:       var(--primitive-terra-300);
+  --role-error-text:         var(--primitive-terra-700);
+  --role-error-base:         var(--primitive-terra-500);
+  --role-error-base-hover:   var(--primitive-terra-600);
+  --role-error-on-base:      #ffffff;
+
+  /* Morning — mineral mist */
+  --role-morning-subtle:     var(--primitive-mist-100);
+  --role-morning-border:     var(--primitive-mist-300);
+  --role-morning-text:       var(--primitive-mist-700);
+  --role-morning-base:       var(--primitive-mist-500);
+  --role-morning-base-hover: var(--primitive-mist-600);
+  --role-morning-on-base:    #ffffff;
+
+  /* Afternoon — warm amber */
+  --role-afternoon-subtle:     var(--primitive-amber-100);
+  --role-afternoon-border:     var(--primitive-amber-300);
+  --role-afternoon-text:       var(--primitive-amber-700);
+  --role-afternoon-base:       var(--primitive-amber-600);
+  --role-afternoon-base-hover: var(--primitive-amber-700);
+  --role-afternoon-on-base:    #ffffff;
+
+  /* Evening — warm dusk */
+  --role-evening-subtle:     var(--primitive-dusk-100);
+  --role-evening-border:     var(--primitive-dusk-300);
+  --role-evening-text:       var(--primitive-dusk-700);
+  --role-evening-base:       var(--primitive-dusk-500);
+  --role-evening-base-hover: var(--primitive-dusk-600);
+  --role-evening-on-base:    #ffffff;
+}
+
+/* ============================================================
+   LAYER 3 — COMPONENT TOKENS
+   Set per data-role. Badge rules consume only these aliases.
+   ============================================================ */
+[data-role="primary"] {
+  --c-subtle:     var(--role-primary-subtle);
+  --c-border:     var(--role-primary-border);
+  --c-text:       var(--role-primary-text);
+  --c-base:       var(--role-primary-base);
+  --c-base-hover: var(--role-primary-base-hover);
+  --c-on-base:    var(--role-primary-on-base);
+}
+[data-role="neutral"] {
+  --c-subtle:     var(--role-neutral-subtle);
+  --c-border:     var(--role-neutral-border);
+  --c-text:       var(--role-neutral-text);
+  --c-base:       var(--role-neutral-base);
+  --c-base-hover: var(--role-neutral-base-hover);
+  --c-on-base:    var(--role-neutral-on-base);
+}
+[data-role="success"] {
+  --c-subtle:     var(--role-success-subtle);
+  --c-border:     var(--role-success-border);
+  --c-text:       var(--role-success-text);
+  --c-base:       var(--role-success-base);
+  --c-base-hover: var(--role-success-base-hover);
+  --c-on-base:    var(--role-success-on-base);
+}
+[data-role="error"] {
+  --c-subtle:     var(--role-error-subtle);
+  --c-border:     var(--role-error-border);
+  --c-text:       var(--role-error-text);
+  --c-base:       var(--role-error-base);
+  --c-base-hover: var(--role-error-base-hover);
+  --c-on-base:    var(--role-error-on-base);
+}
+[data-role="morning"] {
+  --c-subtle:     var(--role-morning-subtle);
+  --c-border:     var(--role-morning-border);
+  --c-text:       var(--role-morning-text);
+  --c-base:       var(--role-morning-base);
+  --c-base-hover: var(--role-morning-base-hover);
+  --c-on-base:    var(--role-morning-on-base);
+}
+[data-role="afternoon"] {
+  --c-subtle:     var(--role-afternoon-subtle);
+  --c-border:     var(--role-afternoon-border);
+  --c-text:       var(--role-afternoon-text);
+  --c-base:       var(--role-afternoon-base);
+  --c-base-hover: var(--role-afternoon-base-hover);
+  --c-on-base:    var(--role-afternoon-on-base);
+}
+[data-role="evening"] {
+  --c-subtle:     var(--role-evening-subtle);
+  --c-border:     var(--role-evening-border);
+  --c-text:       var(--role-evening-text);
+  --c-base:       var(--role-evening-base);
+  --c-base-hover: var(--role-evening-base-hover);
+  --c-on-base:    var(--role-evening-on-base);
+}
+
+/* ============================================================
+   BADGE COMPONENT
+   Uses --c-* aliases exclusively. No raw values here.
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.3em 0.75em;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--c-base);
+  outline-offset: 2px;
+}
+
+/* Highlight variant — solid fill */
+.badge[data-variant="highlight"] {
+  background-color: var(--c-base);
+  color:            var(--c-on-base);
+  border-color:     var(--c-base);
+}
+.badge[data-variant="highlight"]:hover:not(:disabled) {
+  background-color: var(--c-base-hover);
+  border-color:     var(--c-base-hover);
+}
+.badge[data-variant="highlight"]:active:not(:disabled) {
+  background-color: var(--c-base-hover);
+  border-color:     var(--c-base-hover);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Soft variant — tinted background */
+.badge[data-variant="soft"] {
+  background-color: var(--c-subtle);
+  color:            var(--c-text);
+  border-color:     var(--c-border);
+}
+.badge[data-variant="soft"]:hover:not(:disabled) {
+  background-color: var(--c-border);
+}
+.badge[data-variant="soft"]:active:not(:disabled) {
+  background-color: var(--c-border);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Outline variant — border only */
+.badge[data-variant="outline"] {
+  background-color: transparent;
+  color:            var(--c-text);
+  border-color:     var(--c-border);
+}
+.badge[data-variant="outline"]:hover:not(:disabled) {
+  background-color: var(--c-subtle);
+}
+.badge[data-variant="outline"]:active:not(:disabled) {
+  background-color: var(--c-subtle);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Disabled state */
+.badge:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   PAGE LAYOUT
+   ============================================================ */
+:root {
+  --page-bg:     #f9f7f4;
+  --page-text:   #2a2520;
+  --page-muted:  #8a7e72;
+  --page-line:   #e4ddd6;
+  --page-accent: #956b38;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--page-text);
+  font-family: "Georgia", "Times New Roman", serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.page-header {
+  padding: 3.5rem 2rem 2.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--page-line);
+}
+
+.page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.75rem;
+  transition: color 0.1s;
+}
+.page-header__back:hover { color: var(--page-accent); }
+
+.page-header__eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  margin-bottom: 0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+}
+
+.page-header__title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.page-header__desc {
+  font-size: 0.875rem;
+  color: var(--page-muted);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+.page-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ============================================================
+   TOKEN MAP — visual reference
+   ============================================================ */
+.token-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.token-map__title {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 0.5rem;
+}
+
+.token-map__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+}
+
+.token-map__layer {
+  padding: 0.25em 0.65em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.token-map__layer--primitive {
+  background: #f0ece8;
+  color: var(--page-text);
+  border: 1px solid #ddd8d0;
+}
+
+.token-map__layer--role {
+  background: #f5f0e8;
+  color: var(--page-accent);
+  border: 1px solid #e8d8c0;
+}
+
+.token-map__layer--component {
+  background: #f0f5f0;
+  color: #386040;
+  border: 1px solid #c8dcc8;
+}
+
+.token-map__arrow {
+  color: var(--page-line);
+}
+
+/* ============================================================
+   DEMO SECTION
+   ============================================================ */
+.demo-section__title {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 2rem;
+}
+
+/* Grid: rows = color roles, columns = variants */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 5.5rem repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--page-line);
+}
+
+.demo-grid__col-header {
+  padding: 0.875rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  background: #f2ede8;
+  border-bottom: 1px solid var(--page-line);
+}
+
+.demo-grid__col-header:not(:last-child) {
+  border-right: 1px solid var(--page-line);
+}
+
+.demo-grid__row-label {
+  padding: 1.25rem 0.75rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  background: #f8f5f0;
+  border-right: 1px solid var(--page-line);
+  display: flex;
+  align-items: center;
+}
+
+.demo-grid__cell {
+  padding: 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #ffffff;
+}
+
+.demo-grid__row-label,
+.demo-grid__cell {
+  border-bottom: 1px solid var(--page-line);
+}
+
+.demo-grid__row:last-child .demo-grid__row-label,
+.demo-grid__row:last-child .demo-grid__cell {
+  border-bottom: none;
+}
+
+.demo-grid__cell:not(:last-child) {
+  border-right: 1px solid var(--page-line);
+}
+
+/* Disabled showcase */
+.disabled-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.disabled-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.disabled-row__label {
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  min-width: 5.5rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 680px) {
+  .demo-grid {
+    grid-template-columns: 4.5rem repeat(3, 1fr);
+  }
+  .demo-grid__cell {
+    padding: 1rem 0.5rem;
+  }
+}

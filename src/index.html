@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Token Exploration</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <p class="site-header__eyebrow">CSS Design Token Exploration</p>
+    <h1 class="site-header__title">Semantic Color Token Approaches</h1>
+    <p class="site-header__desc">
+      A playground for comparing different strategies for naming, structuring,
+      and mapping CSS custom property color tokens. Each approach is fully
+      standalone and can be evaluated independently.
+    </p>
+  </header>
+
+  <main class="site-main">
+
+    <ul class="approach-list">
+      <li>
+        <a class="approach-item" href="approach-01/index.html">
+          <span class="approach-item__number">01</span>
+          <span class="approach-item__body">
+            <span class="approach-item__title">Role-Based Semantic Tokens</span>
+            <span class="approach-item__desc">primitive → role → component · Badge / Tag component</span>
+          </span>
+          <span class="approach-item__arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <span class="approach-item approach-item--placeholder">
+          <span class="approach-item__number">02</span>
+          <span class="approach-item__body">
+            <span class="approach-item__title">Approach 02</span>
+            <span class="approach-item__desc">Placeholder — not yet defined</span>
+          </span>
+        </span>
+      </li>
+      <li>
+        <span class="approach-item approach-item--placeholder">
+          <span class="approach-item__number">03</span>
+          <span class="approach-item__body">
+            <span class="approach-item__title">Approach 03</span>
+            <span class="approach-item__desc">Placeholder — not yet defined</span>
+          </span>
+        </span>
+      </li>
+    </ul>
+
+    <section class="principles">
+      <p class="principles__title">Token Principles</p>
+      <ul class="principles__list">
+        <li>Components reference semantic tokens only — never raw palette values.</li>
+        <li>Primitive tokens hold raw values and exist solely to feed semantic layers.</li>
+        <li>Token names are theme-agnostic — no "light" or "dark" in any name.</li>
+        <li>Color roles describe intent (primary, success, error) not appearance.</li>
+        <li>Each approach folder is self-contained: one HTML file, one CSS file.</li>
+      </ul>
+    </section>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "design-token-lab",
+  "version": "0.1.0",
+  "description": "CSS design token playground — experimenting with semantic color token approaches",
+  "scripts": {
+    "dev": "npx serve src",
+    "build": "node scripts/build.js",
+    "preview": "npx serve dist"
+  }
+}
