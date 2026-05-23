@@ -14,8 +14,9 @@
     <p class="page-header__eyebrow">Approach 03</p>
     <h1 class="page-header__title">Chromatic Dimension Tokens</h1>
     <p class="page-header__desc">
-      Tokens are named after perceptual chromatic qualities — chroma, echo, trace, mark, script — rather than component surfaces or semantic intent.
-      Each role binds its five dimensions once; variant expressions compose freely from those slots without knowing the underlying hues.
+      Most design systems name token dimensions after <em>surface roles</em>: background, text, border.
+      This approach inverts that logic — dimensions are named after <em>perceptual qualities of the color itself</em>,
+      borrowed from color science and typographic vocabulary.
     </p>
   </header>
 
@@ -29,15 +30,36 @@
         <thead>
           <tr>
             <th>Token</th>
-            <th>Role</th>
+            <th>Surface role</th>
+            <th>Origin &amp; intent</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td><code>--chroma-*</code></td><td>vivid, saturated fill</td></tr>
-          <tr><td><code>--echo-*</code></td><td>faint tinted background</td></tr>
-          <tr><td><code>--trace-*</code></td><td>border / edge line</td></tr>
-          <tr><td><code>--mark-*</code></td><td>ink on a vivid surface</td></tr>
-          <tr><td><code>--script-*</code></td><td>ink on a soft/transparent surface</td></tr>
+          <tr>
+            <td><code>--chroma-*</code></td>
+            <td>vivid, saturated fill</td>
+            <td>From OKLCH color space (lightness, <em>chroma</em>, hue). The full-strength expression of a role.</td>
+          </tr>
+          <tr>
+            <td><code>--echo-*</code></td>
+            <td>faint tinted background</td>
+            <td>The faint reverberation of that hue on a near-neutral field.</td>
+          </tr>
+          <tr>
+            <td><code>--trace-*</code></td>
+            <td>border / edge line</td>
+            <td>A thin line that marks a boundary without filling the space.</td>
+          </tr>
+          <tr>
+            <td><code>--mark-*</code></td>
+            <td>ink on a vivid surface</td>
+            <td>Typographic: ink stamped onto a chroma surface. Must contrast against <code>--chroma-*</code>.</td>
+          </tr>
+          <tr>
+            <td><code>--script-*</code></td>
+            <td>ink on a soft/transparent surface</td>
+            <td>Typographic: ink written on a pale or transparent surface. Readable against <code>--echo-*</code>.</td>
+          </tr>
         </tbody>
       </table>
 
@@ -84,6 +106,20 @@
         </div>
 
       </div>
+    </section>
+
+    <!-- Interaction states note -->
+    <section class="approach-note">
+      <p class="token-map__title">Interaction States</p>
+      <p class="approach-note__body">
+        Hover, active, and disabled states are handled entirely with
+        <code>filter: brightness()</code> and <code>opacity</code> on the component —
+        no per-state color tokens are defined.
+        This keeps the token layer focused on identity (what a role <em>is</em>)
+        rather than behaviour (what it <em>does</em> when pressed).
+        The trade-off: interaction states cannot be individually themed or overridden
+        via tokens, but the token surface stays minimal — 5 dimensions per role, nothing more.
+      </p>
     </section>
 
     <include src="../components/badge.html"></include>

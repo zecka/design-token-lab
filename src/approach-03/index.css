@@ -57,8 +57,35 @@
   font-family: inherit;
 }
 
+.token-legend td:last-child {
+  color: var(--page-muted);
+  opacity: 0.8;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+
 .token-legend tbody tr:hover td {
   background: #f8f6f3;
+}
+
+
+/* ── Approach note ── */
+
+.approach-note__body {
+  font-size: 0.875rem;
+  color: var(--page-muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-top: 0.5rem;
+}
+
+.approach-note__body code {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 0.8em;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  background: #f0ece8;
+  border: 1px solid #ddd8d0;
 }
 
 
