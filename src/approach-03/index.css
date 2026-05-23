@@ -1,1 +1,196 @@
-/* Approach 03 — token CSS goes here */
+/* ============================================================
+   APPROACH 03 — Chromatic Dimension Tokens
+
+   Tokens are named after perceptual chromatic qualities,
+   not component surfaces or semantic role names.
+
+   The five dimensions per role:
+     --chroma-*   vivid, saturated fill — the role's full-strength expression
+     --echo-*     faint, tinted version — a whisper of the hue on a near-neutral field
+     --trace-*    border / edge definition — a discernible but restrained line
+     --mark-*     ink on a vivid (chroma) surface — must pass contrast against --chroma
+     --script-*   ink on a soft (echo) or transparent surface — readable against pale bg
+
+   Token layers:
+     1. Chromatic dimension tokens (:root)
+     2. Role-to-dimension binding (scoped to each data-role via .badge)
+     3. Variant expressions (.badge[data-variant="..."])
+   ============================================================ */
+
+
+/* ── Layer 1: Chromatic Dimension Tokens ── */
+
+:root {
+
+  /* primary — warm gold / bronze */
+  --chroma-primary:    #9B7B2E;
+  --echo-primary:      #F8F0DC;
+  --trace-primary:     #C9A44A;
+  --mark-primary:      #FDFAF2;
+  --script-primary:    #6B5520;
+
+  /* neutral — warm stone / greige */
+  --chroma-neutral:    #8A7B6C;
+  --echo-neutral:      #F4F0EB;
+  --trace-neutral:     #B5A898;
+  --mark-neutral:      #FDFCFB;
+  --script-neutral:    #4A3F35;
+
+  /* success — deep forest / sage green */
+  --chroma-success:    #4A7055;
+  --echo-success:      #EAF2EC;
+  --trace-success:     #6B9478;
+  --mark-success:      #F5FAF6;
+  --script-success:    #2A4A33;
+
+  /* error — muted terracotta / dusty rose */
+  --chroma-error:      #9B5A44;
+  --echo-error:        #F7EDE9;
+  --trace-error:       #C07B64;
+  --mark-error:        #FDF8F6;
+  --script-error:      #6A3324;
+
+  /* morning — cool mineral / mist */
+  --chroma-morning:    #6A8A9B;
+  --echo-morning:      #EDF2F5;
+  --trace-morning:     #8DAAB8;
+  --mark-morning:      #F5F9FB;
+  --script-morning:    #3A5A6A;
+
+  /* afternoon — warm amber / honey */
+  --chroma-afternoon:  #B07C2A;
+  --echo-afternoon:    #FBF3E0;
+  --trace-afternoon:   #D4A44E;
+  --mark-afternoon:    #FDFAF2;
+  --script-afternoon:  #6A4A16;
+
+  /* evening — deep indigo / warm violet */
+  --chroma-evening:    #5A4A7B;
+  --echo-evening:      #EEEAF6;
+  --trace-evening:     #7B6A9B;
+  --mark-evening:      #FAF9FD;
+  --script-evening:    #362A55;
+
+}
+
+
+/* ── Layer 2: Role-to-Dimension Binding ── */
+
+.badge[data-role="primary"] {
+  --b-chroma: var(--chroma-primary);
+  --b-echo:   var(--echo-primary);
+  --b-trace:  var(--trace-primary);
+  --b-mark:   var(--mark-primary);
+  --b-script: var(--script-primary);
+}
+
+.badge[data-role="neutral"] {
+  --b-chroma: var(--chroma-neutral);
+  --b-echo:   var(--echo-neutral);
+  --b-trace:  var(--trace-neutral);
+  --b-mark:   var(--mark-neutral);
+  --b-script: var(--script-neutral);
+}
+
+.badge[data-role="success"] {
+  --b-chroma: var(--chroma-success);
+  --b-echo:   var(--echo-success);
+  --b-trace:  var(--trace-success);
+  --b-mark:   var(--mark-success);
+  --b-script: var(--script-success);
+}
+
+.badge[data-role="error"] {
+  --b-chroma: var(--chroma-error);
+  --b-echo:   var(--echo-error);
+  --b-trace:  var(--trace-error);
+  --b-mark:   var(--mark-error);
+  --b-script: var(--script-error);
+}
+
+.badge[data-role="morning"] {
+  --b-chroma: var(--chroma-morning);
+  --b-echo:   var(--echo-morning);
+  --b-trace:  var(--trace-morning);
+  --b-mark:   var(--mark-morning);
+  --b-script: var(--script-morning);
+}
+
+.badge[data-role="afternoon"] {
+  --b-chroma: var(--chroma-afternoon);
+  --b-echo:   var(--echo-afternoon);
+  --b-trace:  var(--trace-afternoon);
+  --b-mark:   var(--mark-afternoon);
+  --b-script: var(--script-afternoon);
+}
+
+.badge[data-role="evening"] {
+  --b-chroma: var(--chroma-evening);
+  --b-echo:   var(--echo-evening);
+  --b-trace:  var(--trace-evening);
+  --b-mark:   var(--mark-evening);
+  --b-script: var(--script-evening);
+}
+
+
+/* ── Base badge styles ── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+
+/* ── Layer 3: Variant Expressions ── */
+
+/* highlight — solid fill, full chroma */
+.badge[data-variant="highlight"] {
+  background-color: var(--b-chroma);
+  color:            var(--b-mark);
+  border-color:     var(--b-chroma);
+}
+
+/* soft — tinted field, readable script ink */
+.badge[data-variant="soft"] {
+  background-color: var(--b-echo);
+  color:            var(--b-script);
+  border-color:     var(--b-echo);
+}
+
+/* outline — transparent field, trace border, script ink */
+.badge[data-variant="outline"] {
+  background-color: transparent;
+  color:            var(--b-script);
+  border-color:     var(--b-trace);
+}
+
+
+/* ── Interaction States ── */
+
+.badge:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.badge:active:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.badge:focus-visible {
+  outline:        2px solid var(--b-trace);
+  outline-offset: 2px;
+}
+
+.badge:disabled {
+  opacity:        0.4;
+  cursor:         not-allowed;
+}
+

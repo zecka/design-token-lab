@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Approach 03 — Placeholder</title>
+  <title>Approach 03 — Chromatic Dimension Tokens</title>
   <link rel="stylesheet" href="../shared/demo.css" />
   <link rel="stylesheet" href="index.css" />
 </head>
@@ -12,9 +12,66 @@
   <header class="page-header">
     <a class="page-header__back" href="../index.html">← Back to overview</a>
     <p class="page-header__eyebrow">Approach 03</p>
-    <h1 class="page-header__title">Not yet defined</h1>
-    <p class="page-header__desc">This approach is a placeholder.</p>
+    <h1 class="page-header__title">Chromatic Dimension Tokens</h1>
+    <p class="page-header__desc">
+      Tokens are named after perceptual chromatic qualities — chroma, echo, trace, mark, script — rather than component surfaces or semantic intent.
+      Each role binds its five dimensions once; variant expressions compose freely from those slots without knowing the underlying hues.
+    </p>
   </header>
+
+  <main class="page-main">
+
+    <!-- Token Architecture Reference -->
+    <section>
+      <p class="token-map__title">Token Architecture</p>
+      <div class="token-map">
+
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">--chroma-primary: #9B7B2E</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">--b-chroma: var(--chroma-primary)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">background-color: var(--b-chroma)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">--echo-success: #EAF2EC</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">--b-echo: var(--echo-success)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">background-color: var(--b-echo)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">--trace-evening: #7B6A9B</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">--b-trace: var(--trace-evening)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">border-color: var(--b-trace)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">--mark-primary: #FDFAF2</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">--b-mark: var(--mark-primary)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">color: var(--b-mark)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">--script-error: #6A3324</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">--b-script: var(--script-error)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">color: var(--b-script)</span>
+        </div>
+
+      </div>
+    </section>
+
+    <include src="../components/badge.html"></include>
+
+  </main>
 
 </body>
 </html>
