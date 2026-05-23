@@ -54,10 +54,10 @@
     <section class="principles">
       <p class="principles__title">Token Principles</p>
       <ul class="principles__list">
-        <li>Components reference semantic tokens only — never raw palette values.</li>
-        <li>Primitive tokens hold raw values and exist solely to feed semantic layers.</li>
+        <li>Components never reference raw color values directly inside component selectors.</li>
         <li>Token names are theme-agnostic — no "light" or "dark" in any name.</li>
         <li>Color roles describe intent (primary, success, error) not appearance.</li>
+        <li>The number of layers between raw values and components varies per approach.</li>
         <li>Each approach folder is self-contained: one HTML file, one CSS file.</li>
       </ul>
     </section>

@@ -11,8 +11,8 @@ This is not a component library. It is a scratchpad for design token research �
 Compare different strategies for:
 
 - Naming and structuring CSS custom property color tokens
-- Mapping primitive palettes to semantic roles
-- Expressing component intent without referencing raw values
+- Choosing how many layers sit between raw values and components
+- Expressing component intent without referencing raw values directly in component selectors
 - Keeping tokens theme-agnostic (no "light" or "dark" in names)
 
 ---
@@ -72,30 +72,50 @@ Each approach must be standalone. Do not import files from other approaches or f
 
 ## Token principles
 
-- Components reference semantic tokens only — never raw palette values.
-- Primitive tokens hold raw values and exist solely to feed semantic layers.
+- Components reference semantic tokens only — never raw palette values inside component selectors.
 - Token names are theme-agnostic — no "light" or "dark" in any name.
 - Color roles describe intent (`primary`, `success`, `error`) not appearance.
+- The number of layers between raw values and components is itself a variable — each approach may test a different depth.
 
 ---
 
-## Approach 01 — Role-Based Semantic Tokens
+## Token layering — what each approach can explore
 
-Demonstrates a three-layer token architecture:
+The primitive layer is not a universal requirement. It is one strategy among others.
 
 ```
-Primitive  →  Role  →  Component alias
---primitive-gold-600     --role-primary-base      --c-base
---primitive-gold-300     --role-primary-border    --c-border
---primitive-gold-100     --role-primary-subtle    --c-subtle
+Option A — three layers (approach-01)
+  raw value → primitive token → semantic role → component alias
+
+Option B — two layers
+  raw value → semantic role → component alias
+  (no separate primitive layer; raw values live directly in semantic tokens)
+
+Option C — one layer
+  raw value → component token
+  (flat, no indirection)
 ```
+
+Each option trades off differently on reusability, maintainability, and explicitness. This lab exists to surface those trade-offs through real examples.
+
+---
+
+## Approaches
+
+### Approach 01 — Three-layer: Primitive → Role → Component alias
+
+```
+--primitive-gold-600     →  --role-primary-base   →  --c-base
+--primitive-gold-300     →  --role-primary-border  →  --c-border
+--primitive-gold-100     →  --role-primary-subtle  →  --c-subtle
+```
+
+Raw values live in primitives. Semantic roles reference primitives. Component aliases (`--c-*`) are set per `data-role` and consumed by component rules. No raw values appear inside component selectors.
 
 **Component:** Badge / Tag  
 **Variants:** highlight (solid), soft (tinted), outline (border only)  
 **Color roles:** primary, neutral, success, error, morning, afternoon, evening  
 **States:** normal, hover, focus, active, disabled
-
-Components use only `--c-*` aliases. The role is resolved by `data-role` on the element, which maps to the right `--role-*` tokens. No raw values appear inside component selectors.
 
 ---
 
