@@ -99,6 +99,7 @@ This file must contain:
 Rules for the CSS:
 - Component selectors (`.badge`, `.badge[data-variant="..."]`, etc.) must not contain any raw color values (no hex, no rgb, no hsl). They reference CSS custom properties only.
 - Token names must be theme-agnostic. No "light", "dark", "white", "black" in token names.
+- Token names must not mirror the HTML attribute names. `data-role` is an implementation detail — do not let it dictate your token prefix or naming convention.
 - The `.badge` component reads color via `data-role` attribute on the element.
 - `data-role` values: `primary`, `neutral`, `success`, `error`, `morning`, `afternoon`, `evening`
 - `data-variant` values: `highlight` (solid fill), `soft` (tinted background), `outline` (border only)
@@ -124,7 +125,7 @@ Swiss luxury wellness. Warm, premium, calm, refined.
 Avoid generic SaaS colors. Avoid oversaturated palettes.
 Prefer warm neutrals, subtle gold/bronze, deep greens, soft mineral tones.
 
-Color roles and their character:
+Color meanings and their character:
 - **primary** — warm gold or bronze, the brand's main accent
 - **neutral** — warm stone or greige, background-safe
 - **success** — deep forest or sage green
