@@ -45,17 +45,19 @@ scripts/
 ## Running locally
 
 ```bash
-# Dev server — serves src/ with live reload via npx
+# Dev — watch + serve in one terminal
 npm run dev
 
-# Build — copies src/ into dist/
+# Build once (no server)
 npm run build
 
-# Preview — serves dist/ locally
+# Serve dist/ without watch
 npm run preview
 ```
 
-No install step required. `npm run dev` and `npm run preview` use `npx serve` directly.
+No install step required. All scripts use `npx serve` and Node.js built-ins.
+
+`npm run dev` starts the file watcher and local server together. Ctrl+C stops both. The build processes `<include>` tags and copies `src/` → `dist/`.
 
 ---
 

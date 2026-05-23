@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "CSS design token playground — experimenting with semantic color token approaches",
   "scripts": {
-    "dev": "npx serve src",
+    "dev": "node scripts/dev.js",
+    "watch": "node scripts/build.js --watch",
     "build": "node scripts/build.js",
     "preview": "npx serve dist"
   }

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Approach 01 — Role-Based Semantic Tokens</title>
+  <link rel="stylesheet" href="../shared/demo.css" />
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
@@ -28,189 +29,33 @@
       <div class="token-map">
 
         <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--primitive">--primitive-gold-600: #956b38</span>
+          <span class="token-map__layer">--primitive-gold-600: #956b38</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--role">--role-primary-base: var(--primitive-gold-600)</span>
+          <span class="token-map__layer">--role-primary-base: var(--primitive-gold-600)</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--component">--c-base: var(--role-primary-base)</span>
+          <span class="token-map__layer">--c-base: var(--role-primary-base)</span>
         </div>
 
         <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--primitive">--primitive-gold-300: #e8cc94</span>
+          <span class="token-map__layer">--primitive-gold-300: #e8cc94</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--role">--role-primary-border: var(--primitive-gold-300)</span>
+          <span class="token-map__layer">--role-primary-border: var(--primitive-gold-300)</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--component">--c-border: var(--role-primary-border)</span>
+          <span class="token-map__layer">--c-border: var(--role-primary-border)</span>
         </div>
 
         <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--primitive">--primitive-gold-100: #fdf7ed</span>
+          <span class="token-map__layer">--primitive-gold-100: #fdf7ed</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--role">--role-primary-subtle: var(--primitive-gold-100)</span>
+          <span class="token-map__layer">--role-primary-subtle: var(--primitive-gold-100)</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--component">--c-subtle: var(--role-primary-subtle)</span>
+          <span class="token-map__layer">--c-subtle: var(--role-primary-subtle)</span>
         </div>
 
       </div>
     </section>
 
-    <!-- Main comparison grid -->
-    <section>
-      <p class="demo-section__title">All Roles × All Variants</p>
-
-      <div class="demo-grid">
-
-        <!-- Column headers -->
-        <div class="demo-grid__col-header">Role</div>
-        <div class="demo-grid__col-header">Highlight</div>
-        <div class="demo-grid__col-header">Soft</div>
-        <div class="demo-grid__col-header">Outline</div>
-
-        <!-- Primary -->
-        <div class="demo-grid__row-label" data-role="primary">primary</div>
-        <div class="demo-grid__cell" data-role="primary">
-          <button class="badge" data-variant="highlight" data-role="primary">Primary</button>
-        </div>
-        <div class="demo-grid__cell" data-role="primary">
-          <button class="badge" data-variant="soft" data-role="primary">Primary</button>
-        </div>
-        <div class="demo-grid__cell" data-role="primary">
-          <button class="badge" data-variant="outline" data-role="primary">Primary</button>
-        </div>
-
-        <!-- Neutral -->
-        <div class="demo-grid__row-label" data-role="neutral">neutral</div>
-        <div class="demo-grid__cell" data-role="neutral">
-          <button class="badge" data-variant="highlight" data-role="neutral">Neutral</button>
-        </div>
-        <div class="demo-grid__cell" data-role="neutral">
-          <button class="badge" data-variant="soft" data-role="neutral">Neutral</button>
-        </div>
-        <div class="demo-grid__cell" data-role="neutral">
-          <button class="badge" data-variant="outline" data-role="neutral">Neutral</button>
-        </div>
-
-        <!-- Success -->
-        <div class="demo-grid__row-label" data-role="success">success</div>
-        <div class="demo-grid__cell" data-role="success">
-          <button class="badge" data-variant="highlight" data-role="success">Success</button>
-        </div>
-        <div class="demo-grid__cell" data-role="success">
-          <button class="badge" data-variant="soft" data-role="success">Success</button>
-        </div>
-        <div class="demo-grid__cell" data-role="success">
-          <button class="badge" data-variant="outline" data-role="success">Success</button>
-        </div>
-
-        <!-- Error -->
-        <div class="demo-grid__row-label" data-role="error">error</div>
-        <div class="demo-grid__cell" data-role="error">
-          <button class="badge" data-variant="highlight" data-role="error">Error</button>
-        </div>
-        <div class="demo-grid__cell" data-role="error">
-          <button class="badge" data-variant="soft" data-role="error">Error</button>
-        </div>
-        <div class="demo-grid__cell" data-role="error">
-          <button class="badge" data-variant="outline" data-role="error">Error</button>
-        </div>
-
-        <!-- Morning -->
-        <div class="demo-grid__row-label" data-role="morning">morning</div>
-        <div class="demo-grid__cell" data-role="morning">
-          <button class="badge" data-variant="highlight" data-role="morning">Morning</button>
-        </div>
-        <div class="demo-grid__cell" data-role="morning">
-          <button class="badge" data-variant="soft" data-role="morning">Morning</button>
-        </div>
-        <div class="demo-grid__cell" data-role="morning">
-          <button class="badge" data-variant="outline" data-role="morning">Morning</button>
-        </div>
-
-        <!-- Afternoon -->
-        <div class="demo-grid__row-label" data-role="afternoon">afternoon</div>
-        <div class="demo-grid__cell" data-role="afternoon">
-          <button class="badge" data-variant="highlight" data-role="afternoon">Afternoon</button>
-        </div>
-        <div class="demo-grid__cell" data-role="afternoon">
-          <button class="badge" data-variant="soft" data-role="afternoon">Afternoon</button>
-        </div>
-        <div class="demo-grid__cell" data-role="afternoon">
-          <button class="badge" data-variant="outline" data-role="afternoon">Afternoon</button>
-        </div>
-
-        <!-- Evening -->
-        <div class="demo-grid__row-label" data-role="evening">evening</div>
-        <div class="demo-grid__cell" data-role="evening">
-          <button class="badge" data-variant="highlight" data-role="evening">Evening</button>
-        </div>
-        <div class="demo-grid__cell" data-role="evening">
-          <button class="badge" data-variant="soft" data-role="evening">Evening</button>
-        </div>
-        <div class="demo-grid__cell" data-role="evening">
-          <button class="badge" data-variant="outline" data-role="evening">Evening</button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Disabled state showcase -->
-    <section>
-      <p class="demo-section__title">Disabled State — All Roles</p>
-      <div class="disabled-grid">
-
-        <div class="disabled-row">
-          <span class="disabled-row__label">highlight</span>
-          <button class="badge" data-variant="highlight" data-role="primary"   disabled>Primary</button>
-          <button class="badge" data-variant="highlight" data-role="neutral"   disabled>Neutral</button>
-          <button class="badge" data-variant="highlight" data-role="success"   disabled>Success</button>
-          <button class="badge" data-variant="highlight" data-role="error"     disabled>Error</button>
-          <button class="badge" data-variant="highlight" data-role="morning"   disabled>Morning</button>
-          <button class="badge" data-variant="highlight" data-role="afternoon" disabled>Afternoon</button>
-          <button class="badge" data-variant="highlight" data-role="evening"   disabled>Evening</button>
-        </div>
-
-        <div class="disabled-row">
-          <span class="disabled-row__label">soft</span>
-          <button class="badge" data-variant="soft" data-role="primary"   disabled>Primary</button>
-          <button class="badge" data-variant="soft" data-role="neutral"   disabled>Neutral</button>
-          <button class="badge" data-variant="soft" data-role="success"   disabled>Success</button>
-          <button class="badge" data-variant="soft" data-role="error"     disabled>Error</button>
-          <button class="badge" data-variant="soft" data-role="morning"   disabled>Morning</button>
-          <button class="badge" data-variant="soft" data-role="afternoon" disabled>Afternoon</button>
-          <button class="badge" data-variant="soft" data-role="evening"   disabled>Evening</button>
-        </div>
-
-        <div class="disabled-row">
-          <span class="disabled-row__label">outline</span>
-          <button class="badge" data-variant="outline" data-role="primary"   disabled>Primary</button>
-          <button class="badge" data-variant="outline" data-role="neutral"   disabled>Neutral</button>
-          <button class="badge" data-variant="outline" data-role="success"   disabled>Success</button>
-          <button class="badge" data-variant="outline" data-role="error"     disabled>Error</button>
-          <button class="badge" data-variant="outline" data-role="morning"   disabled>Morning</button>
-          <button class="badge" data-variant="outline" data-role="afternoon" disabled>Afternoon</button>
-          <button class="badge" data-variant="outline" data-role="evening"   disabled>Evening</button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Realistic usage examples -->
-    <section>
-      <p class="demo-section__title">In Context</p>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 1.5rem; background: #ffffff; border: 1px solid var(--page-line);">
-        <button class="badge" data-variant="soft"      data-role="success">Confirmed</button>
-        <button class="badge" data-variant="soft"      data-role="error">Cancelled</button>
-        <button class="badge" data-variant="soft"      data-role="primary">Premium</button>
-        <button class="badge" data-variant="soft"      data-role="neutral">Draft</button>
-        <button class="badge" data-variant="highlight" data-role="primary">New</button>
-        <button class="badge" data-variant="soft"      data-role="morning">Morning Ritual</button>
-        <button class="badge" data-variant="soft"      data-role="afternoon">Afternoon Reset</button>
-        <button class="badge" data-variant="soft"      data-role="evening">Evening Wind-down</button>
-        <button class="badge" data-variant="outline"   data-role="neutral">Archived</button>
-        <button class="badge" data-variant="outline"   data-role="success">Verified</button>
-        <button class="badge" data-variant="highlight" data-role="evening">Members Only</button>
-      </div>
-    </section>
+    <include src="../components/badge.html"></include>
 
   </main>
 

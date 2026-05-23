@@ -1,0 +1,262 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --page-bg:     #f9f7f4;
+  --page-text:   #2a2520;
+  --page-muted:  #8a7e72;
+  --page-line:   #e4ddd6;
+  --page-accent: #956b38;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--page-text);
+  font-family: "Georgia", "Times New Roman", serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-header {
+  padding: 3.5rem 2rem 2.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--page-line);
+}
+
+.page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.75rem;
+  transition: color 0.1s;
+}
+.page-header__back:hover { color: var(--page-accent); }
+
+.page-header__eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  margin-bottom: 0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+}
+
+.page-header__title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.page-header__desc {
+  font-size: 0.875rem;
+  color: var(--page-muted);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   PAGE MAIN
+   ============================================================ */
+.page-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ============================================================
+   TOKEN MAP — visual reference
+   ============================================================ */
+.token-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.token-map__title {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 0.5rem;
+}
+
+.token-map__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  flex-wrap: nowrap;
+}
+
+.token-map__layer {
+  padding: 0.25em 0.65em;
+  border-radius: 3px;
+  white-space: nowrap;
+  background: var(--layer-bg);
+  color: var(--layer-color);
+  border: 1px solid var(--layer-border);
+}
+
+.token-map__row > .token-map__layer{
+  --layer-bg:     #f0ece8;
+  --layer-color:  var(--page-text);
+  --layer-border: #ddd8d0;
+  &:nth-child(1) {
+    --layer-bg:     #f0ece8;
+    --layer-color:  var(--page-text);
+    --layer-border: #ddd8d0;
+  }
+  &:nth-child(3) {
+    --layer-bg:     #f5f0e8;
+    --layer-color:  var(--page-accent);
+    --layer-border: #e8d8c0;
+  }
+  &:nth-child(5) {
+    --layer-bg:     #f0f5f0;
+    --layer-color:  #386040;
+    --layer-border: #c8dcc8;
+  }
+}
+
+.token-map__arrow {
+  color: var(--page-line);
+}
+
+/* ============================================================
+   DEMO SECTION
+   ============================================================ */
+.demo-section__title {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 2rem;
+}
+
+/* Grid: rows = color roles, columns = variants */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 5.5rem repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--page-line);
+}
+
+.demo-grid__col-header {
+  padding: 0.875rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  font-family: "SF Mono", "Fira Code", monospace;
+  background: #f2ede8;
+  border-bottom: 1px solid var(--page-line);
+}
+
+.demo-grid__col-header:not(:last-child) {
+  border-right: 1px solid var(--page-line);
+}
+
+.demo-grid__row-label {
+  padding: 1.25rem 0.75rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  background: #f8f5f0;
+  border-right: 1px solid var(--page-line);
+  display: flex;
+  align-items: center;
+}
+
+.demo-grid__cell {
+  padding: 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #ffffff;
+}
+
+.demo-grid__row-label,
+.demo-grid__cell {
+  border-bottom: 1px solid var(--page-line);
+}
+
+.demo-grid__row:last-child .demo-grid__row-label,
+.demo-grid__row:last-child .demo-grid__cell {
+  border-bottom: none;
+}
+
+.demo-grid__cell:not(:last-child) {
+  border-right: 1px solid var(--page-line);
+}
+
+/* Disabled showcase */
+.disabled-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.disabled-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.disabled-row__label {
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--page-muted);
+  min-width: 5.5rem;
+}
+
+/* In-context strip */
+.in-context-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid var(--page-line);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 680px) {
+  .demo-grid {
+    grid-template-columns: 4.5rem repeat(3, 1fr);
+  }
+  .demo-grid__cell {
+    padding: 1rem 0.5rem;
+  }
+}
