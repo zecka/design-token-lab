@@ -1,1 +1,281 @@
-/* Approach 02 — token CSS goes here */
+:root {
+  --surface-clear: transparent;
+  --surface-rest: #fdfbf8;
+  --ink-rest: #2d2720;
+  --ink-muted: #7b7065;
+  --ink-contrast: #fffaf1;
+  --disabled-bg: #eee8e1;
+  --disabled-fg: #a1968b;
+  --disabled-border: #ddd5cc;
+  --focus-gap: #fdfbf8;
+
+  --role-primary-fill: #9a6a2e;
+  --role-primary-fill-hover: #835724;
+  --role-primary-fill-active: #6f481d;
+  --role-primary-tint: #f2e7d6;
+  --role-primary-tint-hover: #ead8bc;
+  --role-primary-line: #caa46a;
+  --role-primary-line-hover: #9a6a2e;
+  --role-primary-text: #68451e;
+  --role-primary-on-fill: #fff8eb;
+  --role-primary-focus: #b98a45;
+
+  --role-neutral-fill: #756a5f;
+  --role-neutral-fill-hover: #61574e;
+  --role-neutral-fill-active: #514941;
+  --role-neutral-tint: #ede8e1;
+  --role-neutral-tint-hover: #e1d8ce;
+  --role-neutral-line: #b9afa4;
+  --role-neutral-line-hover: #756a5f;
+  --role-neutral-text: #4d463f;
+  --role-neutral-on-fill: #fffaf4;
+  --role-neutral-focus: #918579;
+
+  --role-success-fill: #3f5f48;
+  --role-success-fill-hover: #344f3b;
+  --role-success-fill-active: #2b4231;
+  --role-success-tint: #e7eee5;
+  --role-success-tint-hover: #d8e4d5;
+  --role-success-line: #90a98e;
+  --role-success-line-hover: #4f7157;
+  --role-success-text: #314d39;
+  --role-success-on-fill: #f6fbf3;
+  --role-success-focus: #6f8e72;
+
+  --role-error-fill: #9c6255;
+  --role-error-fill-hover: #865247;
+  --role-error-fill-active: #70453c;
+  --role-error-tint: #f2e4df;
+  --role-error-tint-hover: #ead4cd;
+  --role-error-line: #c99a8f;
+  --role-error-line-hover: #9c6255;
+  --role-error-text: #6f443b;
+  --role-error-on-fill: #fff7f2;
+  --role-error-focus: #b8796c;
+
+  --role-morning-fill: #667985;
+  --role-morning-fill-hover: #536773;
+  --role-morning-fill-active: #465761;
+  --role-morning-tint: #e6ecec;
+  --role-morning-tint-hover: #d7e0e1;
+  --role-morning-line: #9dafb5;
+  --role-morning-line-hover: #667985;
+  --role-morning-text: #455962;
+  --role-morning-on-fill: #f8fbfa;
+  --role-morning-focus: #7f949b;
+
+  --role-afternoon-fill: #b8863a;
+  --role-afternoon-fill-hover: #9e7130;
+  --role-afternoon-fill-active: #855f29;
+  --role-afternoon-tint: #f4ead6;
+  --role-afternoon-tint-hover: #ecd9b5;
+  --role-afternoon-line: #d5b36e;
+  --role-afternoon-line-hover: #b8863a;
+  --role-afternoon-text: #70501f;
+  --role-afternoon-on-fill: #fff8ea;
+  --role-afternoon-focus: #c99d51;
+
+  --role-evening-fill: #514967;
+  --role-evening-fill-hover: #433c58;
+  --role-evening-fill-active: #383249;
+  --role-evening-tint: #e9e5ef;
+  --role-evening-tint-hover: #dbd5e5;
+  --role-evening-line: #9e94b4;
+  --role-evening-line-hover: #5e527d;
+  --role-evening-text: #453c5d;
+  --role-evening-on-fill: #fbf7ff;
+  --role-evening-focus: #766a91;
+}
+
+.badge {
+  --badge-bg: var(--surface-rest);
+  --badge-fg: var(--ink-rest);
+  --badge-border: var(--surface-clear);
+  --badge-focus: var(--role-primary-focus);
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.42rem 0.78rem;
+  border: 1px solid var(--badge-border);
+  border-radius: 999px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  font: 600 0.78rem/1.1 "SF Mono", "Fira Code", monospace;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 120ms ease,
+    box-shadow 140ms ease;
+}
+
+.badge[data-role="primary"] {
+  --badge-fill: var(--role-primary-fill);
+  --badge-fill-hover: var(--role-primary-fill-hover);
+  --badge-fill-active: var(--role-primary-fill-active);
+  --badge-tint: var(--role-primary-tint);
+  --badge-tint-hover: var(--role-primary-tint-hover);
+  --badge-line: var(--role-primary-line);
+  --badge-line-hover: var(--role-primary-line-hover);
+  --badge-text: var(--role-primary-text);
+  --badge-on-fill: var(--role-primary-on-fill);
+  --badge-focus: var(--role-primary-focus);
+}
+
+.badge[data-role="neutral"] {
+  --badge-fill: var(--role-neutral-fill);
+  --badge-fill-hover: var(--role-neutral-fill-hover);
+  --badge-fill-active: var(--role-neutral-fill-active);
+  --badge-tint: var(--role-neutral-tint);
+  --badge-tint-hover: var(--role-neutral-tint-hover);
+  --badge-line: var(--role-neutral-line);
+  --badge-line-hover: var(--role-neutral-line-hover);
+  --badge-text: var(--role-neutral-text);
+  --badge-on-fill: var(--role-neutral-on-fill);
+  --badge-focus: var(--role-neutral-focus);
+}
+
+.badge[data-role="success"] {
+  --badge-fill: var(--role-success-fill);
+  --badge-fill-hover: var(--role-success-fill-hover);
+  --badge-fill-active: var(--role-success-fill-active);
+  --badge-tint: var(--role-success-tint);
+  --badge-tint-hover: var(--role-success-tint-hover);
+  --badge-line: var(--role-success-line);
+  --badge-line-hover: var(--role-success-line-hover);
+  --badge-text: var(--role-success-text);
+  --badge-on-fill: var(--role-success-on-fill);
+  --badge-focus: var(--role-success-focus);
+}
+
+.badge[data-role="error"] {
+  --badge-fill: var(--role-error-fill);
+  --badge-fill-hover: var(--role-error-fill-hover);
+  --badge-fill-active: var(--role-error-fill-active);
+  --badge-tint: var(--role-error-tint);
+  --badge-tint-hover: var(--role-error-tint-hover);
+  --badge-line: var(--role-error-line);
+  --badge-line-hover: var(--role-error-line-hover);
+  --badge-text: var(--role-error-text);
+  --badge-on-fill: var(--role-error-on-fill);
+  --badge-focus: var(--role-error-focus);
+}
+
+.badge[data-role="morning"] {
+  --badge-fill: var(--role-morning-fill);
+  --badge-fill-hover: var(--role-morning-fill-hover);
+  --badge-fill-active: var(--role-morning-fill-active);
+  --badge-tint: var(--role-morning-tint);
+  --badge-tint-hover: var(--role-morning-tint-hover);
+  --badge-line: var(--role-morning-line);
+  --badge-line-hover: var(--role-morning-line-hover);
+  --badge-text: var(--role-morning-text);
+  --badge-on-fill: var(--role-morning-on-fill);
+  --badge-focus: var(--role-morning-focus);
+}
+
+.badge[data-role="afternoon"] {
+  --badge-fill: var(--role-afternoon-fill);
+  --badge-fill-hover: var(--role-afternoon-fill-hover);
+  --badge-fill-active: var(--role-afternoon-fill-active);
+  --badge-tint: var(--role-afternoon-tint);
+  --badge-tint-hover: var(--role-afternoon-tint-hover);
+  --badge-line: var(--role-afternoon-line);
+  --badge-line-hover: var(--role-afternoon-line-hover);
+  --badge-text: var(--role-afternoon-text);
+  --badge-on-fill: var(--role-afternoon-on-fill);
+  --badge-focus: var(--role-afternoon-focus);
+}
+
+.badge[data-role="evening"] {
+  --badge-fill: var(--role-evening-fill);
+  --badge-fill-hover: var(--role-evening-fill-hover);
+  --badge-fill-active: var(--role-evening-fill-active);
+  --badge-tint: var(--role-evening-tint);
+  --badge-tint-hover: var(--role-evening-tint-hover);
+  --badge-line: var(--role-evening-line);
+  --badge-line-hover: var(--role-evening-line-hover);
+  --badge-text: var(--role-evening-text);
+  --badge-on-fill: var(--role-evening-on-fill);
+  --badge-focus: var(--role-evening-focus);
+}
+
+.badge[data-variant="highlight"] {
+  --badge-bg: var(--badge-fill);
+  --badge-fg: var(--badge-on-fill);
+  --badge-border: var(--badge-fill);
+}
+
+.badge[data-variant="highlight"]:hover {
+  --badge-bg: var(--badge-fill-hover);
+  --badge-border: var(--badge-fill-hover);
+}
+
+.badge[data-variant="highlight"]:active {
+  --badge-bg: var(--badge-fill-active);
+  --badge-border: var(--badge-fill-active);
+}
+
+.badge[data-variant="soft"] {
+  --badge-bg: var(--badge-tint);
+  --badge-fg: var(--badge-text);
+  --badge-border: var(--surface-clear);
+}
+
+.badge[data-variant="soft"]:hover {
+  --badge-bg: var(--badge-tint-hover);
+  --badge-border: var(--badge-line);
+}
+
+.badge[data-variant="soft"]:active {
+  --badge-bg: var(--badge-tint-hover);
+  --badge-border: var(--badge-line-hover);
+}
+
+.badge[data-variant="outline"] {
+  --badge-bg: var(--surface-clear);
+  --badge-fg: var(--badge-text);
+  --badge-border: var(--badge-line);
+}
+
+.badge[data-variant="outline"]:hover {
+  --badge-bg: var(--badge-tint);
+  --badge-border: var(--badge-line-hover);
+}
+
+.badge[data-variant="outline"]:active {
+  --badge-bg: var(--badge-tint-hover);
+  --badge-border: var(--badge-fill);
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--badge-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--focus-gap);
+}
+
+.badge:active {
+  transform: translateY(1px);
+}
+
+.badge:disabled {
+  --badge-bg: var(--disabled-bg);
+  --badge-fg: var(--disabled-fg);
+  --badge-border: var(--disabled-border);
+
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.badge:disabled:hover,
+.badge:disabled:active {
+  --badge-bg: var(--disabled-bg);
+  --badge-fg: var(--disabled-fg);
+  --badge-border: var(--disabled-border);
+}

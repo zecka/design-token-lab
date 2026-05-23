@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Approach 02 — Placeholder</title>
+  <title>Approach 02 - Facet Contract Tokens</title>
   <link rel="stylesheet" href="../shared/demo.css" />
   <link rel="stylesheet" href="index.css" />
 </head>
@@ -12,9 +12,46 @@
   <header class="page-header">
     <a class="page-header__back" href="../index.html">← Back to overview</a>
     <p class="page-header__eyebrow">Approach 02</p>
-    <h1 class="page-header__title">Not yet defined</h1>
-    <p class="page-header__desc">This approach is a placeholder.</p>
+    <h1 class="page-header__title">Facet Contract Tokens</h1>
+    <p class="page-header__desc">
+      Roles publish a shared set of color facets, then badge variants map those
+      facets into component slots. This keeps naming compact while making every
+      role behave predictably across solid, soft, and outline treatments.
+    </p>
   </header>
+
+  <main class="page-main">
+
+    <section>
+      <p class="token-map__title">Token Architecture</p>
+      <div class="token-map">
+        <div class="token-map__row">
+          <span class="token-map__layer">--role-primary-fill: #9a6a2e</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">--badge-fill: var(--role-primary-fill)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">background: var(--badge-fill)</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer">--role-success-tint: #e7eee5</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">--badge-tint: var(--role-success-tint)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">background: var(--badge-tint)</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer">--role-evening-line-hover: #5e527d</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">--badge-line-hover: var(--role-evening-line-hover)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">border-color: var(--badge-line-hover)</span>
+        </div>
+      </div>
+    </section>
+
+    <include src="../components/badge.html"></include>
+
+  </main>
 
 </body>
 </html>
