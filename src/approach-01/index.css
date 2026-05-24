@@ -72,6 +72,22 @@
   --primitive-dusk-600: #443668;
   --primitive-dusk-700: #30285a;
   --primitive-dusk-800: #1e1a3c;
+
+  /* Brand — exact identity colors. Intentionally outside the wellness palette;
+     the challenge is surfacing them verbatim while keeping AA contrast. */
+  --primitive-brand1-tint:  #fdf8dc; /* brand1 light yellow */
+  --primitive-brand1-edge:  #e3c63a;
+  --primitive-brand1-exact: #f6d425;
+  --primitive-brand1-ink:   #4a3f08;
+
+  --primitive-brand2-tint:  #ece9f3; /* brand2 dark violet */
+  --primitive-brand2-edge:  #c2b8d8;
+  --primitive-brand2-exact: #3b2a5a;
+
+  --primitive-brand3-tint:  #e9f0f8; /* brand3 medium blue */
+  --primitive-brand3-edge:  #aec4e0;
+  --primitive-brand3-exact: #3b6fb5;
+  --primitive-brand3-ink:   #2c5489;
 }
 
 /* ============================================================
@@ -135,6 +151,30 @@
   --role-evening-base:       var(--primitive-dusk-500);
   --role-evening-base-hover: var(--primitive-dusk-600);
   --role-evening-on-base:    #ffffff;
+
+  /* Brand 1 — light yellow. base is the EXACT brand color; on-base must be dark ink. */
+  --role-brand1-subtle:     var(--primitive-brand1-tint);
+  --role-brand1-border:     var(--primitive-brand1-edge);
+  --role-brand1-text:       var(--primitive-brand1-ink);
+  --role-brand1-base:       var(--primitive-brand1-exact);
+  --role-brand1-base-hover: var(--primitive-brand1-edge);
+  --role-brand1-on-base:    var(--primitive-brand1-ink);
+
+  /* Brand 2 — dark violet. Dark enough to serve as its own soft/outline text. */
+  --role-brand2-subtle:     var(--primitive-brand2-tint);
+  --role-brand2-border:     var(--primitive-brand2-edge);
+  --role-brand2-text:       var(--primitive-brand2-exact);
+  --role-brand2-base:       var(--primitive-brand2-exact);
+  --role-brand2-base-hover: #2e2147;
+  --role-brand2-on-base:    #ffffff;
+
+  /* Brand 3 — medium blue. on-base white = 5.1:1 (AA), black would fail at 4.1:1. */
+  --role-brand3-subtle:     var(--primitive-brand3-tint);
+  --role-brand3-border:     var(--primitive-brand3-edge);
+  --role-brand3-text:       var(--primitive-brand3-ink);
+  --role-brand3-base:       var(--primitive-brand3-exact);
+  --role-brand3-base-hover: var(--primitive-brand3-ink);
+  --role-brand3-on-base:    #ffffff;
 }
 
 /* ============================================================
@@ -196,6 +236,30 @@
   --c-base:       var(--role-evening-base);
   --c-base-hover: var(--role-evening-base-hover);
   --c-on-base:    var(--role-evening-on-base);
+}
+[data-role="brand1"] {
+  --c-subtle:     var(--role-brand1-subtle);
+  --c-border:     var(--role-brand1-border);
+  --c-text:       var(--role-brand1-text);
+  --c-base:       var(--role-brand1-base);
+  --c-base-hover: var(--role-brand1-base-hover);
+  --c-on-base:    var(--role-brand1-on-base);
+}
+[data-role="brand2"] {
+  --c-subtle:     var(--role-brand2-subtle);
+  --c-border:     var(--role-brand2-border);
+  --c-text:       var(--role-brand2-text);
+  --c-base:       var(--role-brand2-base);
+  --c-base-hover: var(--role-brand2-base-hover);
+  --c-on-base:    var(--role-brand2-on-base);
+}
+[data-role="brand3"] {
+  --c-subtle:     var(--role-brand3-subtle);
+  --c-border:     var(--role-brand3-border);
+  --c-text:       var(--role-brand3-text);
+  --c-base:       var(--role-brand3-base);
+  --c-base-hover: var(--role-brand3-base-hover);
+  --c-on-base:    var(--role-brand3-on-base);
 }
 
 /* ============================================================

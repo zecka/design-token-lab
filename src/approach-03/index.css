@@ -142,6 +142,27 @@
   --mark-evening:      #FAF9FD;
   --script-evening:    #362A55;
 
+  /* brand1 — exact light yellow. chroma is verbatim; mark is dark ink for AA. */
+  --chroma-brand1:     #F6D425;
+  --echo-brand1:       #FDF8DC;
+  --trace-brand1:      #DDC23A;
+  --mark-brand1:       #4A3F08;
+  --script-brand1:     #5C4E0C;
+
+  /* brand2 — exact dark violet. mark is light; violet itself reads as script. */
+  --chroma-brand2:     #3B2A5A;
+  --echo-brand2:       #ECE9F3;
+  --trace-brand2:      #C2B8D8;
+  --mark-brand2:       #FFFFFF;
+  --script-brand2:     #3B2A5A;
+
+  /* brand3 — exact medium blue. mark white = 5.1:1 (AA); black would fail. */
+  --chroma-brand3:     #3B6FB5;
+  --echo-brand3:       #E9F0F8;
+  --trace-brand3:      #AEC4E0;
+  --mark-brand3:       #FFFFFF;
+  --script-brand3:     #2C5489;
+
 }
 
 
@@ -201,6 +222,30 @@
   --b-trace:  var(--trace-evening);
   --b-mark:   var(--mark-evening);
   --b-script: var(--script-evening);
+}
+
+.badge[data-role="brand1"] {
+  --b-chroma: var(--chroma-brand1);
+  --b-echo:   var(--echo-brand1);
+  --b-trace:  var(--trace-brand1);
+  --b-mark:   var(--mark-brand1);
+  --b-script: var(--script-brand1);
+}
+
+.badge[data-role="brand2"] {
+  --b-chroma: var(--chroma-brand2);
+  --b-echo:   var(--echo-brand2);
+  --b-trace:  var(--trace-brand2);
+  --b-mark:   var(--mark-brand2);
+  --b-script: var(--script-brand2);
+}
+
+.badge[data-role="brand3"] {
+  --b-chroma: var(--chroma-brand3);
+  --b-echo:   var(--echo-brand3);
+  --b-trace:  var(--trace-brand3);
+  --b-mark:   var(--mark-brand3);
+  --b-script: var(--script-brand3);
 }
 
 

@@ -4,7 +4,7 @@ Use this prompt to create a new approach without being influenced by existing on
 
 ---
 
-XX = 02
+XX = 04
 
 ## Task
 
@@ -101,7 +101,7 @@ Rules for the CSS:
 - Token names must be theme-agnostic. No "light", "dark", "white", "black" in token names.
 - Token names must not mirror the HTML attribute names. `data-role` is an implementation detail — do not let it dictate your token prefix or naming convention.
 - The `.badge` component reads color via `data-role` attribute on the element.
-- `data-role` values: `primary`, `neutral`, `success`, `error`, `morning`, `afternoon`, `evening`
+- `data-role` values: `primary`, `neutral`, `success`, `error`, `morning`, `afternoon`, `evening`, `brand1`, `brand2`, `brand3`
 - `data-variant` values: `highlight` (solid fill), `soft` (tinted background), `outline` (border only)
 
 ---
@@ -116,6 +116,35 @@ The demo grid in `badge.html` shows all 7 roles × 3 variants.
 The disabled section shows all roles in all variants with the `disabled` HTML attribute.
 
 Required interactive states: normal, hover, focus-visible, active, disabled.
+
+---
+
+## Brand colors — mandatory rule
+
+Three roles (`brand1`, `brand2`, `brand3`) carry exact brand identity colors. Every approach
+**must** surface these colors. They are deliberately outside the "Swiss wellness" palette —
+the whole point is to test colors that clash with a pre-existing design system, where the
+brand color does not naturally fit the token scale.
+
+Exact hex values (identical across all approaches — do not alter them):
+
+- `brand1` — light yellow `#F6D425`
+- `brand2` — dark violet `#3B2A5A`
+- `brand3` — medium blue `#3B6FB5`
+
+Rules:
+
+- **highlight** and **outline** must respect the EXACT brand color (highlight background =
+  exact hex; outline border + text derived from the brand color).
+- **soft** may deviate: if the brand color is legible as text (e.g. dark violet), use it as the
+  text color over a derived soft background. If it is too light to read (yellow), soft may
+  diverge from the exact value.
+- The text color on the **highlight** brand badge MUST reach **WCAG AA contrast (4.5:1)**
+  against the exact background. This is the core challenge: `brand1` (light) forces dark text,
+  `brand2` (dark) forces light text, `brand3` (mid) is borderline — pick the side that passes.
+
+The grid in `badge.html` shows the three brand roles in a separate group labeled "Brand colors"
+below the seven semantic roles.
 
 ---
 
