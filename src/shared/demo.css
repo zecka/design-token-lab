@@ -103,6 +103,57 @@ body {
 }
 
 /* ============================================================
+   TOKEN LEGEND TABLE — facet / dimension reference
+   ============================================================ */
+.token-legend {
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 1.5rem;
+}
+
+.token-legend th {
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  padding: 0 0.65em 0.5em;
+  border-bottom: 1px solid var(--demo-chip-a-border);
+}
+
+.token-legend td {
+  padding: 0.3em 0.65em;
+  color: var(--page-muted);
+  vertical-align: middle;
+}
+
+.token-legend td:first-child {
+  white-space: nowrap;
+}
+
+.token-legend td code {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  border-radius: 3px;
+  background: var(--demo-chip-a-bg);
+  color: var(--page-text);
+  border: 1px solid var(--demo-chip-a-border);
+  font-family: inherit;
+}
+
+.token-legend td:last-child {
+  color: var(--page-muted);
+  opacity: 0.8;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+
+.token-legend tbody tr:hover td {
+  background: var(--demo-rowlabel-bg);
+}
+
+/* ============================================================
    TOKEN MAP — visual reference
    ============================================================ */
 .token-map {

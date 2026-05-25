@@ -261,10 +261,17 @@ body {
 /* ============================================================
    LAYER 2 — ROLE TOKENS  (re-mapped per theme x mode)
    Semantic intent. Composed from primitives.
-   Each role exposes: subtle, border, text, base, base-hover, on-base.
    This is the ONLY layer that changes between themes — the component
    layer below stays identical. Brand bases are the EXACT hex in every
    variant; only on-base shifts to keep WCAG AA.
+
+   Six facets per role:
+     subtle      Very light tinted fill. Soft badge bg; outline badge hover bg.
+     border      Mid-tone edge line. Soft/outline badge border; soft badge hover bg.
+     text        Dark readable ink for soft and outline label text. AA vs subtle.
+     base        Full-strength solid fill. Highlight badge background.
+     base-hover  Slightly darker/lighter base for hover + active states.
+     on-base     Ink placed on top of base. Must pass WCAG AA (≥ 4.5:1) vs base.
    ============================================================ */
 
 /* ---- Theme: LUXURY · LIGHT  (also the no-attribute fallback) ---- */

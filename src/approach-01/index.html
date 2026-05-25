@@ -30,6 +30,49 @@
     <!-- Token Architecture Reference -->
     <section>
       <p class="token-map__title">Token Architecture</p>
+
+      <table class="token-legend">
+        <thead>
+          <tr>
+            <th>Facet</th>
+            <th>Surface role</th>
+            <th>Intent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--role-*-subtle</code></td>
+            <td>tinted background</td>
+            <td>Very light wash of the role's hue. Used as the fill for soft badges and as the hover background for outline badges. Never strong enough to carry text alone.</td>
+          </tr>
+          <tr>
+            <td><code>--role-*-border</code></td>
+            <td>edge / boundary line</td>
+            <td>Mid-tone that defines the boundary of a surface without dominating it. Also serves as the hover fill for soft badges, stepping up from subtle.</td>
+          </tr>
+          <tr>
+            <td><code>--role-*-text</code></td>
+            <td>ink on a light surface</td>
+            <td>Darker shade readable against subtle or transparent backgrounds. Used for the label in soft and outline variants. Must pass WCAG AA against <code>--role-*-subtle</code>.</td>
+          </tr>
+          <tr>
+            <td><code>--role-*-base</code></td>
+            <td>solid fill</td>
+            <td>The role's full-strength color. Fills the highlight variant entirely — the most assertive expression of the role.</td>
+          </tr>
+          <tr>
+            <td><code>--role-*-base-hover</code></td>
+            <td>solid fill on interaction</td>
+            <td>Slightly darker (or lighter in dark mode) variant of base. Applied on hover and active states for the highlight badge.</td>
+          </tr>
+          <tr>
+            <td><code>--role-*-on-base</code></td>
+            <td>ink on a solid fill</td>
+            <td>Text color placed directly on top of base. Must achieve WCAG AA contrast (≥ 4.5 : 1) against <code>--role-*-base</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="token-map">
 
         <div class="token-map__row">
