@@ -8,16 +8,12 @@
    ============================================================ */
 
 /* luxury + light reuses shared/demo.css :root defaults — no override needed */
-/* Surface and text hierarchy tokens default (luxury light) */
-:root {
-  --surface-raised:  #ffffff;
-  --surface-inset:   #f4f1ee;
-  --surface-border:  var(--page-line);
-  --text-primary:    var(--page-text);
-  --text-secondary:  var(--page-muted);
-}
+/* Component surface tokens are NOT generic here: they flow through this
+   approach's own three-layer model — primitive-neutral ramp → --role-surface-*
+   → --card-* alias (see LAYER 2 SURFACE ROLES + CARD below). Only the demo
+   chrome (--page-*/--demo-*) is remapped per theme in this section. */
 
-/* Generic dark surfaces (luxury dark; cozy dark overrides below) */
+/* Generic dark demo chrome (luxury dark; cozy dark overrides below) */
 [data-mode="dark"] {
   --page-bg:     #1b1714;
   --page-text:   #ece6df;
@@ -38,9 +34,6 @@
   --demo-chip-c-bg:     #1e2a1f;
   --demo-chip-c-fg:     #8fce97;
   --demo-chip-c-border: #324a34;
-
-  --surface-raised:  #27211c;
-  --surface-inset:   #1f1a16;
 }
 
 [data-theme="cozy"][data-mode="light"] {
@@ -63,9 +56,6 @@
   --demo-chip-c-bg:     #eef6ee;
   --demo-chip-c-fg:     #3a7340;
   --demo-chip-c-border: #cfe4cf;
-
-  --surface-raised:  #ffffff;
-  --surface-inset:   #f5ede8;
 }
 
 [data-theme="cozy"][data-mode="dark"] {
@@ -88,9 +78,6 @@
   --demo-chip-c-bg:     #202a21;
   --demo-chip-c-fg:     #8fce97;
   --demo-chip-c-border: #35492f;
-
-  --surface-raised:  #2d2520;
-  --surface-inset:   #251e1a;
 }
 
 /* ============================================================
@@ -255,6 +242,27 @@
   --primitive-plum-600: #6c3f66;
   --primitive-plum-700: #502f4c;
   --primitive-plum-800: #341e31;
+
+  /* Neutral — structural surface ramp (achromatic warm).
+     Feeds the surface roles below; never referenced by components directly. */
+  --primitive-neutral-0:    #ffffff;
+  --primitive-neutral-100:  #f4f1ee;
+  --primitive-neutral-120:  #f5ede8;
+  --primitive-neutral-150:  #ece2da;
+  --primitive-neutral-200:  #e4ddd6;
+  --primitive-neutral-300:  #d4cec6;
+  --primitive-neutral-700:  #4e4840;
+  --primitive-neutral-750:  #43362e;
+  --primitive-neutral-800:  #332c27;
+  --primitive-neutral-820:  #382e29;
+  --primitive-neutral-850:  #2d2520;
+  --primitive-neutral-880:  #27211c;
+  --primitive-neutral-900:  #251e1a;
+  --primitive-neutral-920:  #1f1a16;
+  --primitive-neutral-ink:       #2a2520;
+  --primitive-neutral-ink-inv:   #ece6df;
+  --primitive-neutral-muted:     #8a7e72;
+  --primitive-neutral-muted-inv: #9a8d80;
 }
 
 /* ============================================================
@@ -589,6 +597,53 @@ body {
 }
 
 /* ============================================================
+   LAYER 2 (cont.) — SURFACE ROLES
+   Neutral structural surfaces, re-mapped per theme × mode from the
+   primitive-neutral ramp. Same three-layer model as the color roles:
+   primitive → role-surface → --card-* component alias. The card never
+   touches a primitive or a raw value, exactly like the badge.
+     raised   card sheet that lifts off the page
+     sunken   recessed field (media area, nested wells)
+     edge     hairline boundary
+     fill     small solid neutral block (nested thumb)
+     ink      primary reading ink
+     ink-muted secondary ink
+   ============================================================ */
+:root,
+[data-theme="luxury"][data-mode="light"] {
+  --role-surface-raised: var(--primitive-neutral-0);
+  --role-surface-sunken: var(--primitive-neutral-100);
+  --role-surface-edge:   var(--primitive-neutral-200);
+  --role-surface-fill:   var(--primitive-neutral-300);
+  --role-ink-strong:     var(--primitive-neutral-ink);
+  --role-ink-muted:      var(--primitive-neutral-muted);
+}
+[data-theme="luxury"][data-mode="dark"] {
+  --role-surface-raised: var(--primitive-neutral-880);
+  --role-surface-sunken: var(--primitive-neutral-920);
+  --role-surface-edge:   var(--primitive-neutral-800);
+  --role-surface-fill:   var(--primitive-neutral-700);
+  --role-ink-strong:     var(--primitive-neutral-ink-inv);
+  --role-ink-muted:      var(--primitive-neutral-muted-inv);
+}
+[data-theme="cozy"][data-mode="light"] {
+  --role-surface-raised: var(--primitive-neutral-0);
+  --role-surface-sunken: var(--primitive-neutral-120);
+  --role-surface-edge:   var(--primitive-neutral-150);
+  --role-surface-fill:   var(--primitive-neutral-300);
+  --role-ink-strong:     var(--primitive-neutral-ink);
+  --role-ink-muted:      var(--primitive-neutral-muted);
+}
+[data-theme="cozy"][data-mode="dark"] {
+  --role-surface-raised: var(--primitive-neutral-850);
+  --role-surface-sunken: var(--primitive-neutral-900);
+  --role-surface-edge:   var(--primitive-neutral-820);
+  --role-surface-fill:   var(--primitive-neutral-750);
+  --role-ink-strong:     var(--primitive-neutral-ink-inv);
+  --role-ink-muted:      var(--primitive-neutral-muted-inv);
+}
+
+/* ============================================================
    LAYER 3 — COMPONENT TOKENS
    Set per data-role. Badge rules consume only these aliases.
    ============================================================ */
@@ -756,10 +811,19 @@ body {
 
 /* ============================================================
    CARD COMPONENT
-   Uses --surface-* and --text-* structural tokens exclusively.
-   No raw values. No --role-* tokens — cards are theme-neutral.
-   The badge inside a card still uses --c-* via data-role as usual.
+   Layer-3 aliases (--card-*) set from --role-surface-* / --role-ink-*,
+   exactly as the badge consumes --c-* from the color roles. Card rules
+   below reference only --card-* — no raw values, no primitives, no roles.
    ============================================================ */
+.card {
+  --card-surface:       var(--role-surface-raised);
+  --card-surface-inset: var(--role-surface-sunken);
+  --card-edge:          var(--role-surface-edge);
+  --card-fill:          var(--role-surface-fill);
+  --card-ink:           var(--role-ink-strong);
+  --card-ink-muted:     var(--role-ink-muted);
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -769,13 +833,13 @@ body {
 .card {
   display: flex;
   flex-direction: column;
-  background: var(--surface-raised);
-  border: 1px solid var(--surface-border);
+  background: var(--card-surface);
+  border: 1px solid var(--card-edge);
   border-radius: var(--shape-radius);
   overflow: hidden;
   cursor: pointer;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--card-ink);
   transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -784,9 +848,8 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Image / media placeholder — uses surface-inset to contrast with card bg */
 .card__media {
-  background: var(--surface-inset);
+  background: var(--card-surface-inset);
   height: 7rem;
   display: flex;
   align-items: center;
@@ -797,7 +860,7 @@ body {
 .card__media-label {
   font-size: 0.7rem;
   font-family: "SF Mono", "Fira Code", monospace;
-  color: var(--text-secondary);
+  color: var(--card-ink-muted);
   letter-spacing: 0.08em;
 }
 
@@ -819,14 +882,14 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.35;
-  color: var(--text-primary);
+  color: var(--card-ink);
   margin: 0;
 }
 
 .card__desc {
   font-size: 0.8rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: var(--card-ink-muted);
   margin: 0;
 }
 
@@ -836,7 +899,7 @@ body {
   gap: 0.4rem;
   font-size: 0.72rem;
   font-family: "SF Mono", "Fira Code", monospace;
-  color: var(--text-secondary);
+  color: var(--card-ink-muted);
   margin-top: auto;
   padding-top: 0.5rem;
 }
@@ -858,8 +921,8 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 0.75rem;
-  background: var(--surface-inset);
-  border: 1px solid var(--surface-border);
+  background: var(--card-surface-inset);
+  border: 1px solid var(--card-edge);
   border-radius: var(--shape-radius);
   cursor: pointer;
   transition: border-color 0.12s ease;
@@ -873,7 +936,7 @@ body {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: calc(var(--shape-radius) / 2);
-  background: var(--surface-border);
+  background: var(--card-fill);
   flex-shrink: 0;
 }
 
@@ -887,7 +950,7 @@ body {
 .card__nested-title {
   font-size: 0.78rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--card-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -896,7 +959,7 @@ body {
 .card__nested-date {
   font-size: 0.68rem;
   font-family: "SF Mono", "Fira Code", monospace;
-  color: var(--text-secondary);
+  color: var(--card-ink-muted);
 }
 
 @media (max-width: 680px) {

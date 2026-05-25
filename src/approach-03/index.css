@@ -39,9 +39,107 @@
 }
 
 
-/* ── Layer 1: Chromatic Dimension Tokens ── */
+/* ============================================================
+   MULTI-THEMING — demo chrome + structural surfaces
+   Re-maps shared/demo.css --page-*/--demo-* and the card's
+   --surface-*/--text-* per data-theme × data-mode.
+   Default (no attribute) = luxury / light. Theme axes live in
+   attributes, never in dimension names. Only the dimension layer
+   below is re-mapped per theme; the badge rules never change.
+   ============================================================ */
+/* Component surface tokens are NOT generic here: neutral surfaces get their
+   own perceptual dimensions (leaf / well / rule / shard / glyph / murmur),
+   bound onto the card via --c-* exactly as color dimensions bind onto the
+   badge via --b-*. Only the demo chrome (--page-*/--demo-*) is remapped here. */
 
-:root {
+/* Generic dark demo chrome (luxury dark; cozy dark overrides below) */
+[data-mode="dark"] {
+  --page-bg:     #1b1714;
+  --page-text:   #ece6df;
+  --page-muted:  #9a8d80;
+  --page-line:   #322c27;
+  --page-accent: #d4a96a;
+
+  --demo-cell-bg:     #221d19;
+  --demo-rowlabel-bg: #1f1a16;
+  --demo-header-bg:   #272019;
+  --demo-strip-bg:    #221d19;
+
+  --demo-chip-a-bg:     #2a241f;
+  --demo-chip-a-border: #3a322b;
+  --demo-chip-b-bg:     #2e2618;
+  --demo-chip-b-fg:     #d4a96a;
+  --demo-chip-b-border: #463a22;
+  --demo-chip-c-bg:     #1e2a1f;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #324a34;
+}
+
+[data-theme="cozy"][data-mode="light"] {
+  --page-bg:     #fbf7f4;
+  --page-text:   #2b2521;
+  --page-muted:  #8c7f74;
+  --page-line:   #ece2da;
+  --page-accent: #c4453a;
+
+  --demo-cell-bg:     #ffffff;
+  --demo-rowlabel-bg: #faf5f2;
+  --demo-header-bg:   #f6ede8;
+  --demo-strip-bg:    #fffaf8;
+
+  --demo-chip-a-bg:     #f5efe9;
+  --demo-chip-a-border: #e6d8cf;
+  --demo-chip-b-bg:     #fbe9e4;
+  --demo-chip-b-fg:     #c4453a;
+  --demo-chip-b-border: #f2ccc2;
+  --demo-chip-c-bg:     #eef6ee;
+  --demo-chip-c-fg:     #3a7340;
+  --demo-chip-c-border: #cfe4cf;
+}
+
+[data-theme="cozy"][data-mode="dark"] {
+  --page-bg:     #211b18;
+  --page-text:   #efe7e1;
+  --page-muted:  #a2938a;
+  --page-line:   #382e29;
+  --page-accent: #ee8678;
+
+  --demo-cell-bg:     #2a221e;
+  --demo-rowlabel-bg: #251e1a;
+  --demo-header-bg:   #2e241f;
+  --demo-strip-bg:    #2a221e;
+
+  --demo-chip-a-bg:     #312822;
+  --demo-chip-a-border: #43362e;
+  --demo-chip-b-bg:     #36271f;
+  --demo-chip-b-fg:     #ee8678;
+  --demo-chip-b-border: #54392c;
+  --demo-chip-c-bg:     #202a21;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #35492f;
+}
+
+/* Shape / typography per theme family (cozy differs in shape + type) */
+:root,
+[data-theme="luxury"] {
+  --shape-radius: 4px;
+  --theme-font: "Georgia", "Times New Roman", serif;
+}
+[data-theme="cozy"] {
+  --shape-radius: 12px;
+  --theme-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--theme-font, "Georgia", serif);
+}
+
+
+/* ── Layer 1: Chromatic Dimension Tokens — LUXURY · LIGHT ── */
+/* (also the no-attribute fallback) */
+
+:root,
+[data-theme="luxury"][data-mode="light"] {
 
   /* primary — warm gold / bronze */
   --chroma-primary:    #9B7B2E;
@@ -113,6 +211,247 @@
   --mark-brand3:       #FFFFFF;
   --script-brand3:     #2C5489;
 
+}
+
+
+/* ── Layer 1: Chromatic Dimension Tokens — LUXURY · DARK ── */
+
+[data-theme="luxury"][data-mode="dark"] {
+  --chroma-primary:    #d4a96a;
+  --echo-primary:      #4a3318;
+  --trace-primary:     #956b38;
+  --mark-primary:      #2a2410;
+  --script-primary:    #e8cc94;
+
+  --chroma-neutral:    #bab4ac;
+  --echo-neutral:      #332e2a;
+  --trace-neutral:     #6a5e54;
+  --mark-neutral:      #2a2520;
+  --script-neutral:    #d4cec6;
+
+  --chroma-success:    #74a878;
+  --echo-success:      #183020;
+  --trace-success:     #386040;
+  --mark-success:      #14241a;
+  --script-success:    #a8c8a8;
+
+  --chroma-error:      #d48c80;
+  --echo-error:        #481e1a;
+  --trace-error:       #944038;
+  --mark-error:        #3a1714;
+  --script-error:      #e8b8b0;
+
+  --chroma-morning:    #8ca8bc;
+  --echo-morning:      #1c2c3c;
+  --trace-morning:     #385468;
+  --mark-morning:      #14202c;
+  --script-morning:    #b8c8d4;
+
+  --chroma-afternoon:  #e8be58;
+  --echo-afternoon:    #503a08;
+  --trace-afternoon:   #9c7018;
+  --mark-afternoon:    #2a2008;
+  --script-afternoon:  #f4d898;
+
+  --chroma-evening:    #9990c0;
+  --echo-evening:      #1e1a3c;
+  --trace-evening:     #443668;
+  --mark-evening:      #16142a;
+  --script-evening:    #c0b8d8;
+
+  --chroma-brand1:     #F6D425;
+  --echo-brand1:       #3a3208;
+  --trace-brand1:      #6b5a0c;
+  --mark-brand1:       #4a3f08;
+  --script-brand1:     #ecd24a;
+
+  --chroma-brand2:     #3B2A5A;
+  --echo-brand2:       #241a36;
+  --trace-brand2:      #4a3a6e;
+  --mark-brand2:       #FFFFFF;
+  --script-brand2:     #b9a8d8;
+
+  --chroma-brand3:     #3B6FB5;
+  --echo-brand3:       #1c2c44;
+  --trace-brand3:      #2c5489;
+  --mark-brand3:       #FFFFFF;
+  --script-brand3:     #9fc0e6;
+}
+
+
+/* ── Layer 1: Chromatic Dimension Tokens — COZY · LIGHT ── */
+
+[data-theme="cozy"][data-mode="light"] {
+  --chroma-primary:    #c4453a;
+  --echo-primary:      #fff0ee;
+  --trace-primary:     #f7b3a8;
+  --mark-primary:      #ffffff;
+  --script-primary:    #9c352c;
+
+  --chroma-neutral:    #6b615a;
+  --echo-neutral:      #f7f5f3;
+  --trace-neutral:     #d6cfc9;
+  --mark-neutral:      #ffffff;
+  --script-neutral:    #4d4641;
+
+  --chroma-success:    #3a7340;
+  --echo-success:      #eef6ee;
+  --trace-success:     #a6d0a8;
+  --mark-success:      #ffffff;
+  --script-success:    #2c5731;
+
+  --chroma-error:      #c4533a;
+  --echo-error:        #fdeee9;
+  --trace-error:       #eba994;
+  --mark-error:        #ffffff;
+  --script-error:      #782e20;
+
+  --chroma-morning:    #456575;
+  --echo-morning:      #eef3f6;
+  --trace-morning:     #aec6d3;
+  --mark-morning:      #ffffff;
+  --script-morning:    #344c58;
+
+  --chroma-afternoon:  #ab5f18;
+  --echo-afternoon:    #fff3e8;
+  --trace-afternoon:   #f7c089;
+  --mark-afternoon:    #ffffff;
+  --script-afternoon:  #804711;
+
+  --chroma-evening:    #885080;
+  --echo-evening:      #f6eff4;
+  --trace-evening:     #cfa6c8;
+  --mark-evening:      #ffffff;
+  --script-evening:    #502f4c;
+
+  --chroma-brand1:     #F6D425;
+  --echo-brand1:       #FDF8DC;
+  --trace-brand1:      #DDC23A;
+  --mark-brand1:       #4A3F08;
+  --script-brand1:     #5C4E0C;
+
+  --chroma-brand2:     #3B2A5A;
+  --echo-brand2:       #ECE9F3;
+  --trace-brand2:      #C2B8D8;
+  --mark-brand2:       #FFFFFF;
+  --script-brand2:     #3B2A5A;
+
+  --chroma-brand3:     #3B6FB5;
+  --echo-brand3:       #E9F0F8;
+  --trace-brand3:      #AEC4E0;
+  --mark-brand3:       #FFFFFF;
+  --script-brand3:     #2C5489;
+}
+
+
+/* ── Layer 1: Chromatic Dimension Tokens — COZY · DARK ── */
+
+[data-theme="cozy"][data-mode="dark"] {
+  --chroma-primary:    #ee8678;
+  --echo-primary:      #6e2620;
+  --trace-primary:     #c4453a;
+  --mark-primary:      #3a1410;
+  --script-primary:    #f7b3a8;
+
+  --chroma-neutral:    #b3a99f;
+  --echo-neutral:      #2f2b27;
+  --trace-neutral:     #6b615a;
+  --mark-neutral:      #2f2b27;
+  --script-neutral:    #d6cfc9;
+
+  --chroma-success:    #72b076;
+  --echo-success:      #1c3a20;
+  --trace-success:     #3a7340;
+  --mark-success:      #14241a;
+  --script-success:    #a6d0a8;
+
+  --chroma-error:      #db7d62;
+  --echo-error:        #4e1d14;
+  --trace-error:       #a03f2b;
+  --mark-error:        #2a1610;
+  --script-error:      #eba994;
+
+  --chroma-morning:    #80a3b6;
+  --echo-morning:      #22323b;
+  --trace-morning:     #456575;
+  --mark-morning:      #1a262c;
+  --script-morning:    #aec6d3;
+
+  --chroma-afternoon:  #ec9b4e;
+  --echo-afternoon:    #54300b;
+  --trace-afternoon:   #ab5f18;
+  --mark-afternoon:    #2a1c08;
+  --script-afternoon:  #f7c089;
+
+  --chroma-evening:    #ad77a3;
+  --echo-evening:      #341e31;
+  --trace-evening:     #6c3f66;
+  --mark-evening:      #241626;
+  --script-evening:    #cfa6c8;
+
+  --chroma-brand1:     #F6D425;
+  --echo-brand1:       #3a3208;
+  --trace-brand1:      #6b5a0c;
+  --mark-brand1:       #4a3f08;
+  --script-brand1:     #ecd24a;
+
+  --chroma-brand2:     #3B2A5A;
+  --echo-brand2:       #241a36;
+  --trace-brand2:      #4a3a6e;
+  --mark-brand2:       #FFFFFF;
+  --script-brand2:     #b9a8d8;
+
+  --chroma-brand3:     #3B6FB5;
+  --echo-brand3:       #1c2c44;
+  --trace-brand3:      #2c5489;
+  --mark-brand3:       #FFFFFF;
+  --script-brand3:     #9fc0e6;
+}
+
+
+/* ── Layer 1: Surface Dimensions ──
+   Neutral structural surfaces named in the same perceptual register as the
+   color dimensions above. Re-mapped per theme × mode, then bound onto .card
+   via --c-* exactly as the color dimensions bind onto .badge via --b-*.
+     --leaf    raised sheet — the surface a card lifts to
+     --well    recessed hollow — media area, nested wells
+     --rule    a ruled hairline — edge / boundary
+     --shard   small solid neutral block — nested thumb
+     --glyph   struck ink — primary reading text
+     --murmur  a faint utterance — secondary text                              */
+
+:root,
+[data-theme="luxury"][data-mode="light"] {
+  --leaf:   #ffffff;
+  --well:   #f4f1ee;
+  --rule:   #e4ddd6;
+  --shard:  #d4cec6;
+  --glyph:  #2a2520;
+  --murmur: #8a7e72;
+}
+[data-theme="luxury"][data-mode="dark"] {
+  --leaf:   #27211c;
+  --well:   #1f1a16;
+  --rule:   #332c27;
+  --shard:  #4e4840;
+  --glyph:  #ece6df;
+  --murmur: #9a8d80;
+}
+[data-theme="cozy"][data-mode="light"] {
+  --leaf:   #ffffff;
+  --well:   #f5ede8;
+  --rule:   #ece2da;
+  --shard:  #d6cfc9;
+  --glyph:  #2b2521;
+  --murmur: #8c7f74;
+}
+[data-theme="cozy"][data-mode="dark"] {
+  --leaf:   #2d2520;
+  --well:   #251e1a;
+  --rule:   #382e29;
+  --shard:  #43362e;
+  --glyph:  #efe7e1;
+  --murmur: #a2938a;
 }
 
 
@@ -258,5 +597,164 @@
 .badge:disabled {
   opacity:        0.4;
   cursor:         not-allowed;
+}
+
+
+/* ============================================================
+   CARD COMPONENT
+   Binds the surface dimensions onto --c-* (the card's binding layer),
+   mirroring how .badge binds color dimensions onto --b-*. Card rules
+   below reference only --c-* — never a raw value or a dimension directly.
+   ============================================================ */
+.card {
+  --c-leaf:   var(--leaf);
+  --c-well:   var(--well);
+  --c-rule:   var(--rule);
+  --c-shard:  var(--shard);
+  --c-glyph:  var(--glyph);
+  --c-murmur: var(--murmur);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-leaf);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--shape-radius);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--c-glyph);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--page-accent);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card__media {
+  background: var(--c-well);
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card__media-label {
+  font-size: 0.7rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--c-murmur);
+  letter-spacing: 0.08em;
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--c-glyph);
+  margin: 0;
+}
+
+.card__desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--c-murmur);
+  margin: 0;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--c-murmur);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card__meta-sep {
+  opacity: 0.4;
+}
+
+.card__nested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.card__nested-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--c-well);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--shape-radius);
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+
+.card__nested-item:hover {
+  border-color: var(--page-accent);
+}
+
+.card__nested-thumb {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: calc(var(--shape-radius) / 2);
+  background: var(--c-shard);
+  flex-shrink: 0;
+}
+
+.card__nested-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.card__nested-title {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--c-glyph);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__nested-date {
+  font-size: 0.68rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--c-murmur);
+}
+
+@media (max-width: 680px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 

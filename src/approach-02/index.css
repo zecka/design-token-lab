@@ -1,4 +1,104 @@
-:root {
+/* ============================================================
+   MULTI-THEMING — demo chrome + structural surfaces
+   Re-maps shared/demo.css --page-*/--demo-* and the card's
+   --surface-*/--text-* per data-theme × data-mode.
+   Default (no attribute) = luxury / light. Theme axes live in
+   attributes, never in token names. The role layer below is the
+   ONLY color layer re-mapped per theme; the badge rules never change.
+   ============================================================ */
+/* Component surface tokens are NOT generic here: this approach publishes a
+   SURFACE role with facets (below), which the card maps into component slots —
+   the same facet-contract pattern the badge uses for color roles. Only the
+   demo chrome (--page-*/--demo-*) is remapped per theme in this section. */
+
+/* Generic dark demo chrome (luxury dark; cozy dark overrides below) */
+[data-mode="dark"] {
+  --page-bg:     #1b1714;
+  --page-text:   #ece6df;
+  --page-muted:  #9a8d80;
+  --page-line:   #322c27;
+  --page-accent: #d4a96a;
+
+  --demo-cell-bg:     #221d19;
+  --demo-rowlabel-bg: #1f1a16;
+  --demo-header-bg:   #272019;
+  --demo-strip-bg:    #221d19;
+
+  --demo-chip-a-bg:     #2a241f;
+  --demo-chip-a-border: #3a322b;
+  --demo-chip-b-bg:     #2e2618;
+  --demo-chip-b-fg:     #d4a96a;
+  --demo-chip-b-border: #463a22;
+  --demo-chip-c-bg:     #1e2a1f;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #324a34;
+}
+
+[data-theme="cozy"][data-mode="light"] {
+  --page-bg:     #fbf7f4;
+  --page-text:   #2b2521;
+  --page-muted:  #8c7f74;
+  --page-line:   #ece2da;
+  --page-accent: #c4453a;
+
+  --demo-cell-bg:     #ffffff;
+  --demo-rowlabel-bg: #faf5f2;
+  --demo-header-bg:   #f6ede8;
+  --demo-strip-bg:    #fffaf8;
+
+  --demo-chip-a-bg:     #f5efe9;
+  --demo-chip-a-border: #e6d8cf;
+  --demo-chip-b-bg:     #fbe9e4;
+  --demo-chip-b-fg:     #c4453a;
+  --demo-chip-b-border: #f2ccc2;
+  --demo-chip-c-bg:     #eef6ee;
+  --demo-chip-c-fg:     #3a7340;
+  --demo-chip-c-border: #cfe4cf;
+}
+
+[data-theme="cozy"][data-mode="dark"] {
+  --page-bg:     #211b18;
+  --page-text:   #efe7e1;
+  --page-muted:  #a2938a;
+  --page-line:   #382e29;
+  --page-accent: #ee8678;
+
+  --demo-cell-bg:     #2a221e;
+  --demo-rowlabel-bg: #251e1a;
+  --demo-header-bg:   #2e241f;
+  --demo-strip-bg:    #2a221e;
+
+  --demo-chip-a-bg:     #312822;
+  --demo-chip-a-border: #43362e;
+  --demo-chip-b-bg:     #36271f;
+  --demo-chip-b-fg:     #ee8678;
+  --demo-chip-b-border: #54392c;
+  --demo-chip-c-bg:     #202a21;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #35492f;
+}
+
+/* Shape / typography per theme family (cozy differs in shape + type) */
+:root,
+[data-theme="luxury"] {
+  --shape-radius: 4px;
+  --theme-font: "Georgia", "Times New Roman", serif;
+}
+[data-theme="cozy"] {
+  --shape-radius: 12px;
+  --theme-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--theme-font, "Georgia", serif);
+}
+
+/* ============================================================
+   ROLE TOKENS + structural badge surfaces — LUXURY · LIGHT
+   (also the no-attribute fallback)
+   ============================================================ */
+:root,
+[data-theme="luxury"][data-mode="light"] {
   --surface-clear: transparent;
   --surface-rest: #fdfbf8;
   --ink-rest: #2d2720;
@@ -121,6 +221,428 @@
   --role-brand3-text: #2c5489;
   --role-brand3-on-fill: #ffffff;
   --role-brand3-focus: #5b8ac9;
+}
+
+/* ============================================================
+   ROLE TOKENS — LUXURY · DARK
+   ============================================================ */
+[data-theme="luxury"][data-mode="dark"] {
+  --surface-clear: transparent;
+  --surface-rest: #27211c;
+  --ink-rest: #ece6df;
+  --ink-muted: #9a8d80;
+  --ink-contrast: #1b1714;
+  --disabled-bg: #2a241f;
+  --disabled-fg: #6a5e54;
+  --disabled-border: #3a322b;
+  --focus-gap: #1b1714;
+
+  --role-primary-fill: #d4a96a;
+  --role-primary-fill-hover: #e8cc94;
+  --role-primary-fill-active: #f4e4c1;
+  --role-primary-tint: #4a3318;
+  --role-primary-tint-hover: #6e4d26;
+  --role-primary-line: #956b38;
+  --role-primary-line-hover: #d4a96a;
+  --role-primary-text: #e8cc94;
+  --role-primary-on-fill: #2a2410;
+  --role-primary-focus: #b8864a;
+
+  --role-neutral-fill: #bab4ac;
+  --role-neutral-fill-hover: #d4cec6;
+  --role-neutral-fill-active: #edeae4;
+  --role-neutral-tint: #332e2a;
+  --role-neutral-tint-hover: #4e4840;
+  --role-neutral-line: #6a5e54;
+  --role-neutral-line-hover: #bab4ac;
+  --role-neutral-text: #d4cec6;
+  --role-neutral-on-fill: #2a2520;
+  --role-neutral-focus: #8a7e72;
+
+  --role-success-fill: #74a878;
+  --role-success-fill-hover: #a8c8a8;
+  --role-success-fill-active: #d4e8d4;
+  --role-success-tint: #183020;
+  --role-success-tint-hover: #264830;
+  --role-success-line: #386040;
+  --role-success-line-hover: #74a878;
+  --role-success-text: #a8c8a8;
+  --role-success-on-fill: #14241a;
+  --role-success-focus: #4a7a50;
+
+  --role-error-fill: #d48c80;
+  --role-error-fill-hover: #e8b8b0;
+  --role-error-fill-active: #f5dcd8;
+  --role-error-tint: #481e1a;
+  --role-error-tint-hover: #6e2e28;
+  --role-error-line: #944038;
+  --role-error-line-hover: #d48c80;
+  --role-error-text: #e8b8b0;
+  --role-error-on-fill: #3a1714;
+  --role-error-focus: #b85548;
+
+  --role-morning-fill: #8ca8bc;
+  --role-morning-fill-hover: #b8c8d4;
+  --role-morning-fill-active: #dce4ea;
+  --role-morning-tint: #1c2c3c;
+  --role-morning-tint-hover: #2c4055;
+  --role-morning-line: #385468;
+  --role-morning-line-hover: #8ca8bc;
+  --role-morning-text: #b8c8d4;
+  --role-morning-on-fill: #14202c;
+  --role-morning-focus: #4a6880;
+
+  --role-afternoon-fill: #e8be58;
+  --role-afternoon-fill-hover: #f4d898;
+  --role-afternoon-fill-active: #faecd0;
+  --role-afternoon-tint: #503a08;
+  --role-afternoon-tint-hover: #7a5810;
+  --role-afternoon-line: #9c7018;
+  --role-afternoon-line-hover: #e8be58;
+  --role-afternoon-text: #f4d898;
+  --role-afternoon-on-fill: #2a2008;
+  --role-afternoon-focus: #c49020;
+
+  --role-evening-fill: #9990c0;
+  --role-evening-fill-hover: #c0b8d8;
+  --role-evening-fill-active: #dddaf0;
+  --role-evening-tint: #1e1a3c;
+  --role-evening-tint-hover: #30285a;
+  --role-evening-line: #443668;
+  --role-evening-line-hover: #9990c0;
+  --role-evening-text: #c0b8d8;
+  --role-evening-on-fill: #16142a;
+  --role-evening-focus: #584880;
+
+  --role-brand1-fill: #f6d425;
+  --role-brand1-fill-hover: #e3c63a;
+  --role-brand1-fill-active: #cdb01f;
+  --role-brand1-tint: #3a3208;
+  --role-brand1-tint-hover: #5c4e0c;
+  --role-brand1-line: #6b5a0c;
+  --role-brand1-line-hover: #c0a720;
+  --role-brand1-text: #ecd24a;
+  --role-brand1-on-fill: #4a3f08;
+  --role-brand1-focus: #d4b91f;
+
+  --role-brand2-fill: #3b2a5a;
+  --role-brand2-fill-hover: #4a3a6e;
+  --role-brand2-fill-active: #2e2147;
+  --role-brand2-tint: #241a36;
+  --role-brand2-tint-hover: #2e2147;
+  --role-brand2-line: #4a3a6e;
+  --role-brand2-line-hover: #6a5a8f;
+  --role-brand2-text: #b9a8d8;
+  --role-brand2-on-fill: #ffffff;
+  --role-brand2-focus: #6a5a8f;
+
+  --role-brand3-fill: #3b6fb5;
+  --role-brand3-fill-hover: #5b8ac9;
+  --role-brand3-fill-active: #305c99;
+  --role-brand3-tint: #1c2c44;
+  --role-brand3-tint-hover: #284e82;
+  --role-brand3-line: #2c5489;
+  --role-brand3-line-hover: #5b8ac9;
+  --role-brand3-text: #9fc0e6;
+  --role-brand3-on-fill: #ffffff;
+  --role-brand3-focus: #5b8ac9;
+}
+
+/* ============================================================
+   ROLE TOKENS — COZY · LIGHT
+   ============================================================ */
+[data-theme="cozy"][data-mode="light"] {
+  --surface-clear: transparent;
+  --surface-rest: #ffffff;
+  --ink-rest: #2b2521;
+  --ink-muted: #8c7f74;
+  --ink-contrast: #ffffff;
+  --disabled-bg: #f0e9e3;
+  --disabled-fg: #b3a99f;
+  --disabled-border: #e1d8ce;
+  --focus-gap: #fbf7f4;
+
+  --role-primary-fill: #c4453a;
+  --role-primary-fill-hover: #9c352c;
+  --role-primary-fill-active: #6e2620;
+  --role-primary-tint: #fff0ee;
+  --role-primary-tint-hover: #ffd9d3;
+  --role-primary-line: #f7b3a8;
+  --role-primary-line-hover: #c4453a;
+  --role-primary-text: #9c352c;
+  --role-primary-on-fill: #ffffff;
+  --role-primary-focus: #ee8678;
+
+  --role-neutral-fill: #6b615a;
+  --role-neutral-fill-hover: #4d4641;
+  --role-neutral-fill-active: #2f2b27;
+  --role-neutral-tint: #f7f5f3;
+  --role-neutral-tint-hover: #ebe7e3;
+  --role-neutral-line: #d6cfc9;
+  --role-neutral-line-hover: #6b615a;
+  --role-neutral-text: #4d4641;
+  --role-neutral-on-fill: #ffffff;
+  --role-neutral-focus: #b3a99f;
+
+  --role-success-fill: #3a7340;
+  --role-success-fill-hover: #2c5731;
+  --role-success-fill-active: #1c3a20;
+  --role-success-tint: #eef6ee;
+  --role-success-tint-hover: #d2e9d3;
+  --role-success-line: #a6d0a8;
+  --role-success-line-hover: #3a7340;
+  --role-success-text: #2c5731;
+  --role-success-on-fill: #ffffff;
+  --role-success-focus: #72b076;
+
+  --role-error-fill: #c4533a;
+  --role-error-fill-hover: #a03f2b;
+  --role-error-fill-active: #782e20;
+  --role-error-tint: #fdeee9;
+  --role-error-tint-hover: #f7d3c6;
+  --role-error-line: #eba994;
+  --role-error-line-hover: #c4533a;
+  --role-error-text: #782e20;
+  --role-error-on-fill: #ffffff;
+  --role-error-focus: #db7d62;
+
+  --role-morning-fill: #456575;
+  --role-morning-fill-hover: #344c58;
+  --role-morning-fill-active: #22323b;
+  --role-morning-tint: #eef3f6;
+  --role-morning-tint-hover: #d6e3ea;
+  --role-morning-line: #aec6d3;
+  --role-morning-line-hover: #456575;
+  --role-morning-text: #344c58;
+  --role-morning-on-fill: #ffffff;
+  --role-morning-focus: #80a3b6;
+
+  --role-afternoon-fill: #ab5f18;
+  --role-afternoon-fill-hover: #804711;
+  --role-afternoon-fill-active: #54300b;
+  --role-afternoon-tint: #fff3e8;
+  --role-afternoon-tint-hover: #ffe0c4;
+  --role-afternoon-line: #f7c089;
+  --role-afternoon-line-hover: #ab5f18;
+  --role-afternoon-text: #804711;
+  --role-afternoon-on-fill: #ffffff;
+  --role-afternoon-focus: #ec9b4e;
+
+  --role-evening-fill: #885080;
+  --role-evening-fill-hover: #6c3f66;
+  --role-evening-fill-active: #502f4c;
+  --role-evening-tint: #f6eff4;
+  --role-evening-tint-hover: #e8d2e4;
+  --role-evening-line: #cfa6c8;
+  --role-evening-line-hover: #885080;
+  --role-evening-text: #502f4c;
+  --role-evening-on-fill: #ffffff;
+  --role-evening-focus: #ad77a3;
+
+  --role-brand1-fill: #f6d425;
+  --role-brand1-fill-hover: #e3c63a;
+  --role-brand1-fill-active: #cdb01f;
+  --role-brand1-tint: #fdf8dc;
+  --role-brand1-tint-hover: #f7eeb8;
+  --role-brand1-line: #ddc23a;
+  --role-brand1-line-hover: #c0a720;
+  --role-brand1-text: #4a3f08;
+  --role-brand1-on-fill: #4a3f08;
+  --role-brand1-focus: #d4b91f;
+
+  --role-brand2-fill: #3b2a5a;
+  --role-brand2-fill-hover: #2e2147;
+  --role-brand2-fill-active: #251a3a;
+  --role-brand2-tint: #ece9f3;
+  --role-brand2-tint-hover: #ddd7ec;
+  --role-brand2-line: #c2b8d8;
+  --role-brand2-line-hover: #3b2a5a;
+  --role-brand2-text: #3b2a5a;
+  --role-brand2-on-fill: #ffffff;
+  --role-brand2-focus: #6a5a8f;
+
+  --role-brand3-fill: #3b6fb5;
+  --role-brand3-fill-hover: #305c99;
+  --role-brand3-fill-active: #284e82;
+  --role-brand3-tint: #e9f0f8;
+  --role-brand3-tint-hover: #d6e4f2;
+  --role-brand3-line: #aec4e0;
+  --role-brand3-line-hover: #3b6fb5;
+  --role-brand3-text: #2c5489;
+  --role-brand3-on-fill: #ffffff;
+  --role-brand3-focus: #5b8ac9;
+}
+
+/* ============================================================
+   ROLE TOKENS — COZY · DARK
+   ============================================================ */
+[data-theme="cozy"][data-mode="dark"] {
+  --surface-clear: transparent;
+  --surface-rest: #2d2520;
+  --ink-rest: #efe7e1;
+  --ink-muted: #a2938a;
+  --ink-contrast: #211b18;
+  --disabled-bg: #312822;
+  --disabled-fg: #6b615a;
+  --disabled-border: #43362e;
+  --focus-gap: #211b18;
+
+  --role-primary-fill: #ee8678;
+  --role-primary-fill-hover: #f7b3a8;
+  --role-primary-fill-active: #ffd9d3;
+  --role-primary-tint: #6e2620;
+  --role-primary-tint-hover: #9c352c;
+  --role-primary-line: #c4453a;
+  --role-primary-line-hover: #ee8678;
+  --role-primary-text: #f7b3a8;
+  --role-primary-on-fill: #3a1410;
+  --role-primary-focus: #e25d4d;
+
+  --role-neutral-fill: #b3a99f;
+  --role-neutral-fill-hover: #d6cfc9;
+  --role-neutral-fill-active: #ebe7e3;
+  --role-neutral-tint: #2f2b27;
+  --role-neutral-tint-hover: #4d4641;
+  --role-neutral-line: #6b615a;
+  --role-neutral-line-hover: #b3a99f;
+  --role-neutral-text: #d6cfc9;
+  --role-neutral-on-fill: #2f2b27;
+  --role-neutral-focus: #8c8077;
+
+  --role-success-fill: #72b076;
+  --role-success-fill-hover: #a6d0a8;
+  --role-success-fill-active: #d2e9d3;
+  --role-success-tint: #1c3a20;
+  --role-success-tint-hover: #2c5731;
+  --role-success-line: #3a7340;
+  --role-success-line-hover: #72b076;
+  --role-success-text: #a6d0a8;
+  --role-success-on-fill: #14241a;
+  --role-success-focus: #4a9150;
+
+  --role-error-fill: #db7d62;
+  --role-error-fill-hover: #eba994;
+  --role-error-fill-active: #f7d3c6;
+  --role-error-tint: #4e1d14;
+  --role-error-tint-hover: #782e20;
+  --role-error-line: #a03f2b;
+  --role-error-line-hover: #db7d62;
+  --role-error-text: #eba994;
+  --role-error-on-fill: #2a1610;
+  --role-error-focus: #c4533a;
+
+  --role-morning-fill: #80a3b6;
+  --role-morning-fill-hover: #aec6d3;
+  --role-morning-fill-active: #d6e3ea;
+  --role-morning-tint: #22323b;
+  --role-morning-tint-hover: #344c58;
+  --role-morning-line: #456575;
+  --role-morning-line-hover: #80a3b6;
+  --role-morning-text: #aec6d3;
+  --role-morning-on-fill: #1a262c;
+  --role-morning-focus: #587e93;
+
+  --role-afternoon-fill: #ec9b4e;
+  --role-afternoon-fill-hover: #f7c089;
+  --role-afternoon-fill-active: #ffe0c4;
+  --role-afternoon-tint: #54300b;
+  --role-afternoon-tint-hover: #804711;
+  --role-afternoon-line: #ab5f18;
+  --role-afternoon-line-hover: #ec9b4e;
+  --role-afternoon-text: #f7c089;
+  --role-afternoon-on-fill: #2a1c08;
+  --role-afternoon-focus: #d4781f;
+
+  --role-evening-fill: #ad77a3;
+  --role-evening-fill-hover: #cfa6c8;
+  --role-evening-fill-active: #e8d2e4;
+  --role-evening-tint: #341e31;
+  --role-evening-tint-hover: #502f4c;
+  --role-evening-line: #6c3f66;
+  --role-evening-line-hover: #ad77a3;
+  --role-evening-text: #cfa6c8;
+  --role-evening-on-fill: #241626;
+  --role-evening-focus: #885080;
+
+  --role-brand1-fill: #f6d425;
+  --role-brand1-fill-hover: #e3c63a;
+  --role-brand1-fill-active: #cdb01f;
+  --role-brand1-tint: #3a3208;
+  --role-brand1-tint-hover: #5c4e0c;
+  --role-brand1-line: #6b5a0c;
+  --role-brand1-line-hover: #c0a720;
+  --role-brand1-text: #ecd24a;
+  --role-brand1-on-fill: #4a3f08;
+  --role-brand1-focus: #d4b91f;
+
+  --role-brand2-fill: #3b2a5a;
+  --role-brand2-fill-hover: #4a3a6e;
+  --role-brand2-fill-active: #2e2147;
+  --role-brand2-tint: #241a36;
+  --role-brand2-tint-hover: #2e2147;
+  --role-brand2-line: #4a3a6e;
+  --role-brand2-line-hover: #6a5a8f;
+  --role-brand2-text: #b9a8d8;
+  --role-brand2-on-fill: #ffffff;
+  --role-brand2-focus: #6a5a8f;
+
+  --role-brand3-fill: #3b6fb5;
+  --role-brand3-fill-hover: #5b8ac9;
+  --role-brand3-fill-active: #305c99;
+  --role-brand3-tint: #1c2c44;
+  --role-brand3-tint-hover: #284e82;
+  --role-brand3-line: #2c5489;
+  --role-brand3-line-hover: #5b8ac9;
+  --role-brand3-text: #9fc0e6;
+  --role-brand3-on-fill: #ffffff;
+  --role-brand3-focus: #5b8ac9;
+}
+
+/* ============================================================
+   SURFACE ROLE — facet contract for neutral structural surfaces
+   Published as facets (like the color roles), re-mapped per theme × mode.
+   The card maps these facets into its component slots, exactly as the
+   badge maps color-role facets into variant slots. Two layers only:
+   raw value → role facet → component slot. No primitive layer.
+     raised      card sheet lifting off the page
+     sunken      recessed field (media, nested wells)
+     line        hairline boundary
+     line-strong stronger neutral block (nested thumb)
+     ink         primary reading ink
+     ink-muted   secondary ink
+   ============================================================ */
+:root,
+[data-theme="luxury"][data-mode="light"] {
+  --surface-raised:      #ffffff;
+  --surface-sunken:      #f4f1ee;
+  --surface-line:        #e4ddd6;
+  --surface-line-strong: #d4cec6;
+  --surface-ink:         #2a2520;
+  --surface-ink-muted:   #8a7e72;
+}
+[data-theme="luxury"][data-mode="dark"] {
+  --surface-raised:      #27211c;
+  --surface-sunken:      #1f1a16;
+  --surface-line:        #332c27;
+  --surface-line-strong: #4e4840;
+  --surface-ink:         #ece6df;
+  --surface-ink-muted:   #9a8d80;
+}
+[data-theme="cozy"][data-mode="light"] {
+  --surface-raised:      #ffffff;
+  --surface-sunken:      #f5ede8;
+  --surface-line:        #ece2da;
+  --surface-line-strong: #d6cfc9;
+  --surface-ink:         #2b2521;
+  --surface-ink-muted:   #8c7f74;
+}
+[data-theme="cozy"][data-mode="dark"] {
+  --surface-raised:      #2d2520;
+  --surface-sunken:      #251e1a;
+  --surface-line:        #382e29;
+  --surface-line-strong: #43362e;
+  --surface-ink:         #efe7e1;
+  --surface-ink-muted:   #a2938a;
 }
 
 .badge {
@@ -353,4 +875,162 @@
   --badge-bg: var(--disabled-bg);
   --badge-fg: var(--disabled-fg);
   --badge-border: var(--disabled-border);
+}
+
+/* ============================================================
+   CARD COMPONENT
+   Maps the SURFACE role facets into card slots (--card-*), the same way
+   .badge maps color-role facets into --badge-* slots. Card rules below
+   reference only --card-* — no raw values, no --surface-* facets directly.
+   ============================================================ */
+.card {
+  --card-bg:       var(--surface-raised);
+  --card-inset:    var(--surface-sunken);
+  --card-line:     var(--surface-line);
+  --card-fill:     var(--surface-line-strong);
+  --card-fg:       var(--surface-ink);
+  --card-fg-muted: var(--surface-ink-muted);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--card-line);
+  border-radius: var(--shape-radius);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--card-fg);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--page-accent);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card__media {
+  background: var(--card-inset);
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card__media-label {
+  font-size: 0.7rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--card-fg-muted);
+  letter-spacing: 0.08em;
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--card-fg);
+  margin: 0;
+}
+
+.card__desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--card-fg-muted);
+  margin: 0;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--card-fg-muted);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card__meta-sep {
+  opacity: 0.4;
+}
+
+.card__nested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.card__nested-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--card-inset);
+  border: 1px solid var(--card-line);
+  border-radius: var(--shape-radius);
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+
+.card__nested-item:hover {
+  border-color: var(--page-accent);
+}
+
+.card__nested-thumb {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: calc(var(--shape-radius) / 2);
+  background: var(--card-fill);
+  flex-shrink: 0;
+}
+
+.card__nested-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.card__nested-title {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--card-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__nested-date {
+  font-size: 0.68rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--card-fg-muted);
+}
+
+@media (max-width: 680px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }
