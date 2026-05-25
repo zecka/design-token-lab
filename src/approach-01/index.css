@@ -8,6 +8,14 @@
    ============================================================ */
 
 /* luxury + light reuses shared/demo.css :root defaults — no override needed */
+/* Surface and text hierarchy tokens default (luxury light) */
+:root {
+  --surface-raised:  #ffffff;
+  --surface-inset:   #f4f1ee;
+  --surface-border:  var(--page-line);
+  --text-primary:    var(--page-text);
+  --text-secondary:  var(--page-muted);
+}
 
 /* Generic dark surfaces (luxury dark; cozy dark overrides below) */
 [data-mode="dark"] {
@@ -30,6 +38,9 @@
   --demo-chip-c-bg:     #1e2a1f;
   --demo-chip-c-fg:     #8fce97;
   --demo-chip-c-border: #324a34;
+
+  --surface-raised:  #27211c;
+  --surface-inset:   #1f1a16;
 }
 
 [data-theme="cozy"][data-mode="light"] {
@@ -52,6 +63,9 @@
   --demo-chip-c-bg:     #eef6ee;
   --demo-chip-c-fg:     #3a7340;
   --demo-chip-c-border: #cfe4cf;
+
+  --surface-raised:  #ffffff;
+  --surface-inset:   #f5ede8;
 }
 
 [data-theme="cozy"][data-mode="dark"] {
@@ -74,6 +88,9 @@
   --demo-chip-c-bg:     #202a21;
   --demo-chip-c-fg:     #8fce97;
   --demo-chip-c-border: #35492f;
+
+  --surface-raised:  #2d2520;
+  --surface-inset:   #251e1a;
 }
 
 /* ============================================================
@@ -735,5 +752,156 @@ body {
 .badge:disabled {
   opacity: 0.38;
   cursor: not-allowed;
+}
+
+/* ============================================================
+   CARD COMPONENT
+   Uses --surface-* and --text-* structural tokens exclusively.
+   No raw values. No --role-* tokens — cards are theme-neutral.
+   The badge inside a card still uses --c-* via data-role as usual.
+   ============================================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--shape-radius);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--page-accent);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Image / media placeholder — uses surface-inset to contrast with card bg */
+.card__media {
+  background: var(--surface-inset);
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card__media-label {
+  font-size: 0.7rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card__desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--text-secondary);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card__meta-sep {
+  opacity: 0.4;
+}
+
+/* Nested items — third surface level: page → card → nested item */
+.card__nested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.card__nested-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-inset);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--shape-radius);
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+
+.card__nested-item:hover {
+  border-color: var(--page-accent);
+}
+
+.card__nested-thumb {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: calc(var(--shape-radius) / 2);
+  background: var(--surface-border);
+  flex-shrink: 0;
+}
+
+.card__nested-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.card__nested-title {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__nested-date {
+  font-size: 0.68rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 680px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 

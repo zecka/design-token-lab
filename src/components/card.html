@@ -1,0 +1,71 @@
+    <!-- Card component demo -->
+    <section>
+      <p class="demo-section__title">Card Component</p>
+
+      <div class="card-grid">
+
+        <!-- Card A — standard article card with image area -->
+        <article class="card">
+          <div class="card__media">
+            <span class="card__media-label">image · 16:9</span>
+          </div>
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="soft" data-role="morning">Morning</button>
+              <button class="badge" data-variant="soft" data-role="success">Confirmed</button>
+            </div>
+            <h3 class="card__title">Sunrise Meditation Ritual</h3>
+            <p class="card__desc">A gentle morning practice to ground your day with intention and clarity before the world takes over.</p>
+            <div class="card__meta">
+              <span class="card__meta-item">3 min read</span>
+              <span class="card__meta-sep">·</span>
+              <span class="card__meta-item">Apr 21, 2026</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card B — nested related items (surface layering: page → card → nested item) -->
+        <article class="card">
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="highlight" data-role="primary">Featured</button>
+            </div>
+            <h3 class="card__title">Related Articles</h3>
+            <div class="card__nested-list">
+              <div class="card__nested-item">
+                <div class="card__nested-thumb"></div>
+                <div class="card__nested-body">
+                  <span class="card__nested-title">Lineup confirmed for FIBA Women's Basketball 2026</span>
+                  <span class="card__nested-date">Apr 21, 2026</span>
+                </div>
+              </div>
+              <div class="card__nested-item">
+                <div class="card__nested-thumb"></div>
+                <div class="card__nested-body">
+                  <span class="card__nested-title">The must-watch group games of the World Cup</span>
+                  <span class="card__nested-date">Apr 21, 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card C — minimal, no image, outline badge -->
+        <article class="card">
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="outline" data-role="neutral">Short Read</button>
+              <button class="badge" data-variant="soft" data-role="evening">Members Only</button>
+            </div>
+            <h3 class="card__title">Evening Wind-down: Why Slowing Down Is a Skill</h3>
+            <p class="card__desc">Transition rituals for professionals who can't switch off.</p>
+            <div class="card__meta">
+              <span class="card__meta-item">5 min read</span>
+              <span class="card__meta-sep">·</span>
+              <span class="card__meta-item">May 20, 2026</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>

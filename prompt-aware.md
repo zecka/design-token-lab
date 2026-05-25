@@ -26,9 +26,11 @@ This is a plain HTML and CSS playground. No framework. No JavaScript. No build-t
 The project explores different ways to name and structure CSS custom property color tokens.
 Each approach is fully standalone: one HTML file, one CSS file.
 
-Page layout styles and the badge demo HTML are shared via a build step:
-- `src/shared/demo.css` — page chrome (header, grid, disabled section styles). Already exists.
-- `src/components/badge.html` — the badge demo HTML (grid + disabled + in-context). Already exists.
+Page layout styles and component HTML are shared via a build step:
+- `src/shared/demo.css` — page chrome (header, grid, disabled section styles, token legend table, theme switcher). Already exists.
+- `src/components/badge.html` — badge demo HTML (grid + disabled + in-context). Already exists.
+- `src/components/card.html` — card demo HTML (3 cards: image area, nested items, minimal). Already exists.
+- `src/components/theme-switcher.html` — theme switcher nav + inline JS. Already exists.
 
 The build script resolves `<include src="...">` tags in HTML files before copying to `dist/`.
 
@@ -86,6 +88,8 @@ Two files only:
 
     <include src="../components/badge.html"></include>
 
+    <include src="../components/card.html"></include>
+
   </main>
 
 </body>
@@ -97,6 +101,7 @@ Two files only:
 This file must contain:
 1. Your token definitions (whatever layers you choose)
 2. The `.badge` component styles
+3. The `.card` component styles
 
 Rules for the CSS:
 - Component selectors (`.badge`, `.badge[data-variant="..."]`, etc.) must not contain any raw color values (no hex, no rgb, no hsl). They reference CSS custom properties only.
@@ -118,6 +123,32 @@ The demo grid in `badge.html` shows all 7 roles × 3 variants.
 The disabled section shows all roles in all variants with the `disabled` HTML attribute.
 
 Required interactive states: normal, hover, focus-visible, active, disabled.
+
+---
+
+## Card component spec
+
+`card.html` contains three cards in a `.card-grid` layout. Each card is an `<article class="card">`.
+The card component demonstrates structural token concepts that badges cannot surface:
+
+- **Surface layering** — three depth levels: page background → raised card surface → inset nested element
+- **Text hierarchy** — primary text (title) vs secondary text (metadata, description)
+- **Hover state** — border-color shift on the full card
+- **Badge in context** — existing `.badge` elements placed inside card body
+
+Structural/neutral token vocabulary the card introduces (no hue — these are separate from the colored role tokens):
+
+```
+--surface-raised    card background, elevated above --page-bg
+--surface-inset     nested surface inside card (image placeholder, inner list items)
+--surface-border    card border edge (often aliases --page-line)
+--text-primary      title / main label color
+--text-secondary    metadata / description / muted text color
+```
+
+These names are suggestions — your approach may use different names that fit its naming convention,
+as long as the concepts (three surface levels, two text levels) are expressed through tokens and
+no raw values appear in `.card` rules.
 
 ---
 
@@ -187,6 +218,22 @@ After reading existing approaches, consider these axes:
 **Scope** — are tokens global (`:root`) or scoped to components?
 
 **Explicitness** — are token names self-explanatory to a designer, or optimized for a developer?
+
+**Structural vs semantic tokens** — how does your approach separate neutral surface tokens (background, text hierarchy) from colored semantic role tokens? Are they in the same layer or distinct layers?
+
+**Multi-theming** — does the architecture hold when two totally different visual families (e.g. luxury serif vs cozy rounded sans-serif) share the same component layer? Only the semantic role layer should need to change.
+
+---
+
+## Multi-theming (optional)
+
+To stress-test your token architecture, add multi-theming: two visual families × two modes = 4 variants.
+
+- Two attributes on `<html>`: `data-theme="familyA|familyB"` × `data-mode="light|dark"`
+- Token names stay theme-agnostic — theme identity lives only in `[data-theme][data-mode]` selectors, never in token names
+- Only the semantic role layer re-maps per combination; the component layer (`.badge`, `.card`) stays identical — that's the proof the indirection works
+- A small inline `<script>` for the toggle is allowed (the project's no-JS rule is relaxed for this); use `<include src="../components/theme-switcher.html">` — the HTML + JS already exist
+- The switcher CSS is in `shared/demo.css` — no additional styles needed
 
 ---
 
