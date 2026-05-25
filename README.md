@@ -79,6 +79,18 @@ Each approach must be standalone. Do not import files from other approaches or f
 - Color roles describe intent (`primary`, `success`, `error`) not appearance.
 - The number of layers between raw values and components is itself a variable — each approach may test a different depth.
 
+### Multi-theming (approach-01 POC)
+
+Approach-01 is a proof of concept for multi-theming: two theme families (luxury, cozy) × two
+modes (light, dark). Themes are selected via `data-theme` / `data-mode` attributes on `<html>` —
+never baked into token names. Only the semantic role layer is re-mapped per theme; the component
+alias layer (`--c-*`) and the badge component rules stay identical, proving the indirection holds.
+The demo chrome (`shared/demo.css`) exposes `--page-*` / `--demo-*` variables so the page surfaces
+also follow the active theme (a dark demo is truly dark).
+
+A small inline `<script>` drives the theme switcher — the project's otherwise no-JS rule is
+relaxed for this single interactive control.
+
 ---
 
 ## Token layering — what each approach can explore

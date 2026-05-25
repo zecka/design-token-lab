@@ -1,4 +1,82 @@
 /* ============================================================
+   DEMO STYLE
+   The demo chrome (shared/demo.css) exposes --page-* and --demo-*
+   variables. Here we re-map them per theme x mode so the page and
+   the demo surfaces follow the active theme — a dark demo is truly dark.
+   Theme axes live in attributes (data-theme / data-mode), never in token names.
+   Default (no attribute) = luxury / light, matching shared/demo.css defaults.
+   ============================================================ */
+
+/* luxury + light reuses shared/demo.css :root defaults — no override needed */
+
+/* Generic dark surfaces (luxury dark; cozy dark overrides below) */
+[data-mode="dark"] {
+  --page-bg:     #1b1714;
+  --page-text:   #ece6df;
+  --page-muted:  #9a8d80;
+  --page-line:   #322c27;
+  --page-accent: #d4a96a;
+
+  --demo-cell-bg:     #221d19;
+  --demo-rowlabel-bg: #1f1a16;
+  --demo-header-bg:   #272019;
+  --demo-strip-bg:    #221d19;
+
+  --demo-chip-a-bg:     #2a241f;
+  --demo-chip-a-border: #3a322b;
+  --demo-chip-b-bg:     #2e2618;
+  --demo-chip-b-fg:     #d4a96a;
+  --demo-chip-b-border: #463a22;
+  --demo-chip-c-bg:     #1e2a1f;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #324a34;
+}
+
+[data-theme="cozy"][data-mode="light"] {
+  --page-bg:     #fbf7f4;
+  --page-text:   #2b2521;
+  --page-muted:  #8c7f74;
+  --page-line:   #ece2da;
+  --page-accent: #c4453a;
+
+  --demo-cell-bg:     #ffffff;
+  --demo-rowlabel-bg: #faf5f2;
+  --demo-header-bg:   #f6ede8;
+  --demo-strip-bg:    #fffaf8;
+
+  --demo-chip-a-bg:     #f5efe9;
+  --demo-chip-a-border: #e6d8cf;
+  --demo-chip-b-bg:     #fbe9e4;
+  --demo-chip-b-fg:     #c4453a;
+  --demo-chip-b-border: #f2ccc2;
+  --demo-chip-c-bg:     #eef6ee;
+  --demo-chip-c-fg:     #3a7340;
+  --demo-chip-c-border: #cfe4cf;
+}
+
+[data-theme="cozy"][data-mode="dark"] {
+  --page-bg:     #211b18;
+  --page-text:   #efe7e1;
+  --page-muted:  #a2938a;
+  --page-line:   #382e29;
+  --page-accent: #ee8678;
+
+  --demo-cell-bg:     #2a221e;
+  --demo-rowlabel-bg: #251e1a;
+  --demo-header-bg:   #2e241f;
+  --demo-strip-bg:    #2a221e;
+
+  --demo-chip-a-bg:     #312822;
+  --demo-chip-a-border: #43362e;
+  --demo-chip-b-bg:     #36271f;
+  --demo-chip-b-fg:     #ee8678;
+  --demo-chip-b-border: #54392c;
+  --demo-chip-c-bg:     #202a21;
+  --demo-chip-c-fg:     #8fce97;
+  --demo-chip-c-border: #35492f;
+}
+
+/* ============================================================
    LAYER 1 — PRIMITIVE TOKENS
    Raw palette values. Never referenced inside component rules.
    ============================================================ */
@@ -88,15 +166,110 @@
   --primitive-brand3-edge:  #aec4e0;
   --primitive-brand3-exact: #3b6fb5;
   --primitive-brand3-ink:   #2c5489;
+
+  /* ---- Cozy family palette (modern, warm, Airbnb-ish) ---- */
+
+  /* Coral — warm rausch (cozy primary) */
+  --primitive-coral-100: #fff0ee;
+  --primitive-coral-200: #ffd9d3;
+  --primitive-coral-300: #f7b3a8;
+  --primitive-coral-400: #ee8678;
+  --primitive-coral-500: #e25d4d;
+  --primitive-coral-600: #c4453a;
+  --primitive-coral-700: #9c352c;
+  --primitive-coral-800: #6e2620;
+
+  /* Warm grey — cozy neutral */
+  --primitive-greywarm-100: #f7f5f3;
+  --primitive-greywarm-200: #ebe7e3;
+  --primitive-greywarm-300: #d6cfc9;
+  --primitive-greywarm-400: #b3a99f;
+  --primitive-greywarm-500: #8c8077;
+  --primitive-greywarm-600: #6b615a;
+  --primitive-greywarm-700: #4d4641;
+  --primitive-greywarm-800: #2f2b27;
+
+  /* Green — cozy success */
+  --primitive-green-100: #eef6ee;
+  --primitive-green-200: #d2e9d3;
+  --primitive-green-300: #a6d0a8;
+  --primitive-green-400: #72b076;
+  --primitive-green-500: #4a9150;
+  --primitive-green-600: #3a7340;
+  --primitive-green-700: #2c5731;
+  --primitive-green-800: #1c3a20;
+
+  /* Brick — cozy error */
+  --primitive-brick-100: #fdeee9;
+  --primitive-brick-200: #f7d3c6;
+  --primitive-brick-300: #eba994;
+  --primitive-brick-400: #db7d62;
+  --primitive-brick-500: #c4533a;
+  --primitive-brick-600: #a03f2b;
+  --primitive-brick-700: #782e20;
+  --primitive-brick-800: #4e1d14;
+
+  /* Haze — cozy morning (soft blue-grey) */
+  --primitive-haze-100: #eef3f6;
+  --primitive-haze-200: #d6e3ea;
+  --primitive-haze-300: #aec6d3;
+  --primitive-haze-400: #80a3b6;
+  --primitive-haze-500: #587e93;
+  --primitive-haze-600: #456575;
+  --primitive-haze-700: #344c58;
+  --primitive-haze-800: #22323b;
+
+  /* Peach — cozy afternoon (apricot) */
+  --primitive-peach-100: #fff3e8;
+  --primitive-peach-200: #ffe0c4;
+  --primitive-peach-300: #f7c089;
+  --primitive-peach-400: #ec9b4e;
+  --primitive-peach-500: #d4781f;
+  --primitive-peach-600: #ab5f18;
+  --primitive-peach-700: #804711;
+  --primitive-peach-800: #54300b;
+
+  /* Plum — cozy evening (soft) */
+  --primitive-plum-100: #f6eff4;
+  --primitive-plum-200: #e8d2e4;
+  --primitive-plum-300: #cfa6c8;
+  --primitive-plum-400: #ad77a3;
+  --primitive-plum-500: #885080;
+  --primitive-plum-600: #6c3f66;
+  --primitive-plum-700: #502f4c;
+  --primitive-plum-800: #341e31;
 }
 
 /* ============================================================
-   LAYER 2 — ROLE TOKENS
-   Semantic intent. Composed from primitives only.
-   Each role exposes: subtle, border, text, base, base-hover, on-base.
+   SHAPE / TYPOGRAPHY TOKENS — per theme family
+   Theme 2 (cozy) differs in shape and type, not only color.
    ============================================================ */
-:root {
-  /* Primary — warm gold */
+:root,
+[data-theme="luxury"] {
+  --shape-radius: 4px;
+  --theme-font: "Georgia", "Times New Roman", serif;
+}
+[data-theme="cozy"] {
+  --shape-radius: 12px;
+  --theme-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--theme-font, "Georgia", serif);
+}
+
+/* ============================================================
+   LAYER 2 — ROLE TOKENS  (re-mapped per theme x mode)
+   Semantic intent. Composed from primitives.
+   Each role exposes: subtle, border, text, base, base-hover, on-base.
+   This is the ONLY layer that changes between themes — the component
+   layer below stays identical. Brand bases are the EXACT hex in every
+   variant; only on-base shifts to keep WCAG AA.
+   ============================================================ */
+
+/* ---- Theme: LUXURY · LIGHT  (also the no-attribute fallback) ---- */
+:root,
+[data-theme="luxury"][data-mode="light"] {
   --role-primary-subtle:     var(--primitive-gold-100);
   --role-primary-border:     var(--primitive-gold-300);
   --role-primary-text:       var(--primitive-gold-700);
@@ -104,7 +277,6 @@
   --role-primary-base-hover: var(--primitive-gold-700);
   --role-primary-on-base:    #ffffff;
 
-  /* Neutral — warm stone */
   --role-neutral-subtle:     var(--primitive-stone-100);
   --role-neutral-border:     var(--primitive-stone-300);
   --role-neutral-text:       var(--primitive-stone-700);
@@ -112,7 +284,6 @@
   --role-neutral-base-hover: var(--primitive-stone-700);
   --role-neutral-on-base:    #ffffff;
 
-  /* Success — forest sage */
   --role-success-subtle:     var(--primitive-sage-100);
   --role-success-border:     var(--primitive-sage-300);
   --role-success-text:       var(--primitive-sage-700);
@@ -120,7 +291,6 @@
   --role-success-base-hover: var(--primitive-sage-600);
   --role-success-on-base:    #ffffff;
 
-  /* Error — muted terracotta */
   --role-error-subtle:       var(--primitive-terra-100);
   --role-error-border:       var(--primitive-terra-300);
   --role-error-text:         var(--primitive-terra-700);
@@ -128,7 +298,6 @@
   --role-error-base-hover:   var(--primitive-terra-600);
   --role-error-on-base:      #ffffff;
 
-  /* Morning — mineral mist */
   --role-morning-subtle:     var(--primitive-mist-100);
   --role-morning-border:     var(--primitive-mist-300);
   --role-morning-text:       var(--primitive-mist-700);
@@ -136,15 +305,13 @@
   --role-morning-base-hover: var(--primitive-mist-600);
   --role-morning-on-base:    #ffffff;
 
-  /* Afternoon — warm amber */
   --role-afternoon-subtle:     var(--primitive-amber-100);
   --role-afternoon-border:     var(--primitive-amber-300);
   --role-afternoon-text:       var(--primitive-amber-700);
-  --role-afternoon-base:       var(--primitive-amber-600);
-  --role-afternoon-base-hover: var(--primitive-amber-700);
+  --role-afternoon-base:       var(--primitive-amber-700);
+  --role-afternoon-base-hover: var(--primitive-amber-800);
   --role-afternoon-on-base:    #ffffff;
 
-  /* Evening — warm dusk */
   --role-evening-subtle:     var(--primitive-dusk-100);
   --role-evening-border:     var(--primitive-dusk-300);
   --role-evening-text:       var(--primitive-dusk-700);
@@ -152,7 +319,7 @@
   --role-evening-base-hover: var(--primitive-dusk-600);
   --role-evening-on-base:    #ffffff;
 
-  /* Brand 1 — light yellow. base is the EXACT brand color; on-base must be dark ink. */
+  /* Brand — light backdrop */
   --role-brand1-subtle:     var(--primitive-brand1-tint);
   --role-brand1-border:     var(--primitive-brand1-edge);
   --role-brand1-text:       var(--primitive-brand1-ink);
@@ -160,7 +327,6 @@
   --role-brand1-base-hover: var(--primitive-brand1-edge);
   --role-brand1-on-base:    var(--primitive-brand1-ink);
 
-  /* Brand 2 — dark violet. Dark enough to serve as its own soft/outline text. */
   --role-brand2-subtle:     var(--primitive-brand2-tint);
   --role-brand2-border:     var(--primitive-brand2-edge);
   --role-brand2-text:       var(--primitive-brand2-exact);
@@ -168,12 +334,233 @@
   --role-brand2-base-hover: #2e2147;
   --role-brand2-on-base:    #ffffff;
 
-  /* Brand 3 — medium blue. on-base white = 5.1:1 (AA), black would fail at 4.1:1. */
   --role-brand3-subtle:     var(--primitive-brand3-tint);
   --role-brand3-border:     var(--primitive-brand3-edge);
   --role-brand3-text:       var(--primitive-brand3-ink);
   --role-brand3-base:       var(--primitive-brand3-exact);
   --role-brand3-base-hover: var(--primitive-brand3-ink);
+  --role-brand3-on-base:    #ffffff;
+}
+
+/* ---- Theme: LUXURY · DARK ---- */
+[data-theme="luxury"][data-mode="dark"] {
+  --role-primary-subtle:     var(--primitive-gold-800);
+  --role-primary-border:     var(--primitive-gold-600);
+  --role-primary-text:       var(--primitive-gold-300);
+  --role-primary-base:       var(--primitive-gold-400);
+  --role-primary-base-hover: var(--primitive-gold-300);
+  --role-primary-on-base:    #2a2410;
+
+  --role-neutral-subtle:     var(--primitive-stone-800);
+  --role-neutral-border:     var(--primitive-stone-600);
+  --role-neutral-text:       var(--primitive-stone-300);
+  --role-neutral-base:       var(--primitive-stone-400);
+  --role-neutral-base-hover: var(--primitive-stone-300);
+  --role-neutral-on-base:    #2a2520;
+
+  --role-success-subtle:     var(--primitive-sage-800);
+  --role-success-border:     var(--primitive-sage-600);
+  --role-success-text:       var(--primitive-sage-300);
+  --role-success-base:       var(--primitive-sage-400);
+  --role-success-base-hover: var(--primitive-sage-300);
+  --role-success-on-base:    #14241a;
+
+  --role-error-subtle:       var(--primitive-terra-800);
+  --role-error-border:       var(--primitive-terra-600);
+  --role-error-text:         var(--primitive-terra-300);
+  --role-error-base:         var(--primitive-terra-400);
+  --role-error-base-hover:   var(--primitive-terra-300);
+  --role-error-on-base:      #3a1714;
+
+  --role-morning-subtle:     var(--primitive-mist-800);
+  --role-morning-border:     var(--primitive-mist-600);
+  --role-morning-text:       var(--primitive-mist-300);
+  --role-morning-base:       var(--primitive-mist-400);
+  --role-morning-base-hover: var(--primitive-mist-300);
+  --role-morning-on-base:    #14202c;
+
+  --role-afternoon-subtle:     var(--primitive-amber-800);
+  --role-afternoon-border:     var(--primitive-amber-600);
+  --role-afternoon-text:       var(--primitive-amber-300);
+  --role-afternoon-base:       var(--primitive-amber-400);
+  --role-afternoon-base-hover: var(--primitive-amber-300);
+  --role-afternoon-on-base:    #2a2008;
+
+  --role-evening-subtle:     var(--primitive-dusk-800);
+  --role-evening-border:     var(--primitive-dusk-600);
+  --role-evening-text:       var(--primitive-dusk-300);
+  --role-evening-base:       var(--primitive-dusk-400);
+  --role-evening-base-hover: var(--primitive-dusk-300);
+  --role-evening-on-base:    #16142a;
+
+  /* Brand — exact bases, dark-surface backdrop */
+  --role-brand1-subtle:     #3a3208;
+  --role-brand1-border:     #6b5a0c;
+  --role-brand1-text:       #ecd24a;
+  --role-brand1-base:       var(--primitive-brand1-exact);
+  --role-brand1-base-hover: var(--primitive-brand1-edge);
+  --role-brand1-on-base:    var(--primitive-brand1-ink);
+
+  --role-brand2-subtle:     #241a36;
+  --role-brand2-border:     #4a3a6e;
+  --role-brand2-text:       #b9a8d8;
+  --role-brand2-base:       var(--primitive-brand2-exact);
+  --role-brand2-base-hover: #2e2147;
+  --role-brand2-on-base:    #ffffff;
+
+  --role-brand3-subtle:     #1c2c44;
+  --role-brand3-border:     #2c5489;
+  --role-brand3-text:       #9fc0e6;
+  --role-brand3-base:       var(--primitive-brand3-exact);
+  --role-brand3-base-hover: #305c99;
+  --role-brand3-on-base:    #ffffff;
+}
+
+/* ---- Theme: COZY · LIGHT ---- */
+[data-theme="cozy"][data-mode="light"] {
+  --role-primary-subtle:     var(--primitive-coral-100);
+  --role-primary-border:     var(--primitive-coral-300);
+  --role-primary-text:       var(--primitive-coral-700);
+  --role-primary-base:       var(--primitive-coral-600);
+  --role-primary-base-hover: var(--primitive-coral-700);
+  --role-primary-on-base:    #ffffff;
+
+  --role-neutral-subtle:     var(--primitive-greywarm-100);
+  --role-neutral-border:     var(--primitive-greywarm-300);
+  --role-neutral-text:       var(--primitive-greywarm-700);
+  --role-neutral-base:       var(--primitive-greywarm-600);
+  --role-neutral-base-hover: var(--primitive-greywarm-700);
+  --role-neutral-on-base:    #ffffff;
+
+  --role-success-subtle:     var(--primitive-green-100);
+  --role-success-border:     var(--primitive-green-300);
+  --role-success-text:       var(--primitive-green-700);
+  --role-success-base:       var(--primitive-green-600);
+  --role-success-base-hover: var(--primitive-green-700);
+  --role-success-on-base:    #ffffff;
+
+  --role-error-subtle:       var(--primitive-brick-100);
+  --role-error-border:       var(--primitive-brick-300);
+  --role-error-text:         var(--primitive-brick-700);
+  --role-error-base:         var(--primitive-brick-500);
+  --role-error-base-hover:   var(--primitive-brick-600);
+  --role-error-on-base:      #ffffff;
+
+  --role-morning-subtle:     var(--primitive-haze-100);
+  --role-morning-border:     var(--primitive-haze-300);
+  --role-morning-text:       var(--primitive-haze-700);
+  --role-morning-base:       var(--primitive-haze-600);
+  --role-morning-base-hover: var(--primitive-haze-700);
+  --role-morning-on-base:    #ffffff;
+
+  --role-afternoon-subtle:     var(--primitive-peach-100);
+  --role-afternoon-border:     var(--primitive-peach-300);
+  --role-afternoon-text:       var(--primitive-peach-700);
+  --role-afternoon-base:       var(--primitive-peach-600);
+  --role-afternoon-base-hover: var(--primitive-peach-700);
+  --role-afternoon-on-base:    #ffffff;
+
+  --role-evening-subtle:     var(--primitive-plum-100);
+  --role-evening-border:     var(--primitive-plum-300);
+  --role-evening-text:       var(--primitive-plum-700);
+  --role-evening-base:       var(--primitive-plum-500);
+  --role-evening-base-hover: var(--primitive-plum-600);
+  --role-evening-on-base:    #ffffff;
+
+  /* Brand — identical exact identity across families */
+  --role-brand1-subtle:     var(--primitive-brand1-tint);
+  --role-brand1-border:     var(--primitive-brand1-edge);
+  --role-brand1-text:       var(--primitive-brand1-ink);
+  --role-brand1-base:       var(--primitive-brand1-exact);
+  --role-brand1-base-hover: var(--primitive-brand1-edge);
+  --role-brand1-on-base:    var(--primitive-brand1-ink);
+
+  --role-brand2-subtle:     var(--primitive-brand2-tint);
+  --role-brand2-border:     var(--primitive-brand2-edge);
+  --role-brand2-text:       var(--primitive-brand2-exact);
+  --role-brand2-base:       var(--primitive-brand2-exact);
+  --role-brand2-base-hover: #2e2147;
+  --role-brand2-on-base:    #ffffff;
+
+  --role-brand3-subtle:     var(--primitive-brand3-tint);
+  --role-brand3-border:     var(--primitive-brand3-edge);
+  --role-brand3-text:       var(--primitive-brand3-ink);
+  --role-brand3-base:       var(--primitive-brand3-exact);
+  --role-brand3-base-hover: var(--primitive-brand3-ink);
+  --role-brand3-on-base:    #ffffff;
+}
+
+/* ---- Theme: COZY · DARK ---- */
+[data-theme="cozy"][data-mode="dark"] {
+  --role-primary-subtle:     var(--primitive-coral-800);
+  --role-primary-border:     var(--primitive-coral-600);
+  --role-primary-text:       var(--primitive-coral-300);
+  --role-primary-base:       var(--primitive-coral-400);
+  --role-primary-base-hover: var(--primitive-coral-300);
+  --role-primary-on-base:    #3a1410;
+
+  --role-neutral-subtle:     var(--primitive-greywarm-800);
+  --role-neutral-border:     var(--primitive-greywarm-600);
+  --role-neutral-text:       var(--primitive-greywarm-300);
+  --role-neutral-base:       var(--primitive-greywarm-400);
+  --role-neutral-base-hover: var(--primitive-greywarm-300);
+  --role-neutral-on-base:    #2f2b27;
+
+  --role-success-subtle:     var(--primitive-green-800);
+  --role-success-border:     var(--primitive-green-600);
+  --role-success-text:       var(--primitive-green-300);
+  --role-success-base:       var(--primitive-green-400);
+  --role-success-base-hover: var(--primitive-green-300);
+  --role-success-on-base:    #14241a;
+
+  --role-error-subtle:       var(--primitive-brick-800);
+  --role-error-border:       var(--primitive-brick-600);
+  --role-error-text:         var(--primitive-brick-300);
+  --role-error-base:         var(--primitive-brick-400);
+  --role-error-base-hover:   var(--primitive-brick-300);
+  --role-error-on-base:      #2a1610;
+
+  --role-morning-subtle:     var(--primitive-haze-800);
+  --role-morning-border:     var(--primitive-haze-600);
+  --role-morning-text:       var(--primitive-haze-300);
+  --role-morning-base:       var(--primitive-haze-400);
+  --role-morning-base-hover: var(--primitive-haze-300);
+  --role-morning-on-base:    #1a262c;
+
+  --role-afternoon-subtle:     var(--primitive-peach-800);
+  --role-afternoon-border:     var(--primitive-peach-600);
+  --role-afternoon-text:       var(--primitive-peach-300);
+  --role-afternoon-base:       var(--primitive-peach-400);
+  --role-afternoon-base-hover: var(--primitive-peach-300);
+  --role-afternoon-on-base:    #2a1c08;
+
+  --role-evening-subtle:     var(--primitive-plum-800);
+  --role-evening-border:     var(--primitive-plum-600);
+  --role-evening-text:       var(--primitive-plum-300);
+  --role-evening-base:       var(--primitive-plum-400);
+  --role-evening-base-hover: var(--primitive-plum-300);
+  --role-evening-on-base:    #241626;
+
+  /* Brand — exact bases, dark-surface backdrop (same as luxury dark) */
+  --role-brand1-subtle:     #3a3208;
+  --role-brand1-border:     #6b5a0c;
+  --role-brand1-text:       #ecd24a;
+  --role-brand1-base:       var(--primitive-brand1-exact);
+  --role-brand1-base-hover: var(--primitive-brand1-edge);
+  --role-brand1-on-base:    var(--primitive-brand1-ink);
+
+  --role-brand2-subtle:     #241a36;
+  --role-brand2-border:     #4a3a6e;
+  --role-brand2-text:       #b9a8d8;
+  --role-brand2-base:       var(--primitive-brand2-exact);
+  --role-brand2-base-hover: #2e2147;
+  --role-brand2-on-base:    #ffffff;
+
+  --role-brand3-subtle:     #1c2c44;
+  --role-brand3-border:     #2c5489;
+  --role-brand3-text:       #9fc0e6;
+  --role-brand3-base:       var(--primitive-brand3-exact);
+  --role-brand3-base-hover: #305c99;
   --role-brand3-on-base:    #ffffff;
 }
 
@@ -271,7 +658,7 @@
   align-items: center;
   gap: 0.35em;
   padding: 0.3em 0.75em;
-  border-radius: 4px;
+  border-radius: var(--shape-radius, 4px);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -342,3 +729,4 @@
   opacity: 0.38;
   cursor: not-allowed;
 }
+

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="luxury" data-mode="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,8 +18,12 @@
       component alias. Components consume only the component-level aliases
       (<code>--c-*</code>), which are resolved per color role via
       <code>data-role</code>. No raw values inside component selectors.
+      Multi-theming POC: only the semantic role layer is re-mapped per
+      <code>data-theme</code> × <code>data-mode</code> — the component layer never changes.
     </p>
   </header>
+
+  <include src="../components/theme-switcher.html"></include>
 
   <main class="page-main">
 
@@ -58,6 +62,7 @@
     <include src="../components/badge.html"></include>
 
   </main>
+
 
 </body>
 </html>

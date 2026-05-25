@@ -1,0 +1,33 @@
+<nav class="theme-switcher" aria-label="Theme controls">
+  <div class="theme-switcher__group">
+    <span class="theme-switcher__label">Theme</span>
+    <button class="theme-switcher__btn" type="button" data-set-theme="luxury" aria-pressed="true">Luxury</button>
+    <button class="theme-switcher__btn" type="button" data-set-theme="cozy" aria-pressed="false">Cozy</button>
+  </div>
+  <div class="theme-switcher__group">
+    <span class="theme-switcher__label">Mode</span>
+    <button class="theme-switcher__btn" type="button" data-set-mode="light" aria-pressed="true">Light</button>
+    <button class="theme-switcher__btn" type="button" data-set-mode="dark" aria-pressed="false">Dark</button>
+  </div>
+</nav>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function bind(attr) {
+      var key = 'data-' + attr;
+      var buttons = document.querySelectorAll('[data-set-' + attr + ']');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var value = btn.getAttribute('data-set-' + attr);
+          root.setAttribute(key, value);
+          buttons.forEach(function (b) {
+            b.setAttribute('aria-pressed', String(b.getAttribute('data-set-' + attr) === value));
+          });
+        });
+      });
+    }
+    bind('theme');
+    bind('mode');
+  })();
+</script>
