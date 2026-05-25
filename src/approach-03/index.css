@@ -19,122 +19,6 @@
 
 
 
-/* ── Approach note ── */
-
-.approach-note__body {
-  font-size: 0.875rem;
-  color: var(--page-muted);
-  max-width: 560px;
-  line-height: 1.7;
-  margin-top: 0.5rem;
-}
-
-.approach-note__body code {
-  font-family: "SF Mono", "Fira Code", monospace;
-  font-size: 0.8em;
-  padding: 0.15em 0.4em;
-  border-radius: 3px;
-  background: #f0ece8;
-  border: 1px solid #ddd8d0;
-}
-
-
-/* ============================================================
-   MULTI-THEMING — demo chrome + structural surfaces
-   Re-maps shared/demo.css --page-*/--demo-* and the card's
-   --surface-*/--text-* per data-theme × data-mode.
-   Default (no attribute) = luxury / light. Theme axes live in
-   attributes, never in dimension names. Only the dimension layer
-   below is re-mapped per theme; the badge rules never change.
-   ============================================================ */
-/* Component surface tokens are NOT generic here: neutral surfaces get their
-   own perceptual dimensions (leaf / well / rule / shard / glyph / murmur),
-   bound onto the card via --c-* exactly as color dimensions bind onto the
-   badge via --b-*. Only the demo chrome (--page-*/--demo-*) is remapped here. */
-
-/* Generic dark demo chrome (luxury dark; cozy dark overrides below) */
-[data-mode="dark"] {
-  --page-bg:     #1b1714;
-  --page-text:   #ece6df;
-  --page-muted:  #9a8d80;
-  --page-line:   #322c27;
-  --page-accent: #d4a96a;
-
-  --demo-cell-bg:     #221d19;
-  --demo-rowlabel-bg: #1f1a16;
-  --demo-header-bg:   #272019;
-  --demo-strip-bg:    #221d19;
-
-  --demo-chip-a-bg:     #2a241f;
-  --demo-chip-a-border: #3a322b;
-  --demo-chip-b-bg:     #2e2618;
-  --demo-chip-b-fg:     #d4a96a;
-  --demo-chip-b-border: #463a22;
-  --demo-chip-c-bg:     #1e2a1f;
-  --demo-chip-c-fg:     #8fce97;
-  --demo-chip-c-border: #324a34;
-}
-
-[data-theme="cozy"][data-mode="light"] {
-  --page-bg:     #fbf7f4;
-  --page-text:   #2b2521;
-  --page-muted:  #8c7f74;
-  --page-line:   #ece2da;
-  --page-accent: #c4453a;
-
-  --demo-cell-bg:     #ffffff;
-  --demo-rowlabel-bg: #faf5f2;
-  --demo-header-bg:   #f6ede8;
-  --demo-strip-bg:    #fffaf8;
-
-  --demo-chip-a-bg:     #f5efe9;
-  --demo-chip-a-border: #e6d8cf;
-  --demo-chip-b-bg:     #fbe9e4;
-  --demo-chip-b-fg:     #c4453a;
-  --demo-chip-b-border: #f2ccc2;
-  --demo-chip-c-bg:     #eef6ee;
-  --demo-chip-c-fg:     #3a7340;
-  --demo-chip-c-border: #cfe4cf;
-}
-
-[data-theme="cozy"][data-mode="dark"] {
-  --page-bg:     #211b18;
-  --page-text:   #efe7e1;
-  --page-muted:  #a2938a;
-  --page-line:   #382e29;
-  --page-accent: #ee8678;
-
-  --demo-cell-bg:     #2a221e;
-  --demo-rowlabel-bg: #251e1a;
-  --demo-header-bg:   #2e241f;
-  --demo-strip-bg:    #2a221e;
-
-  --demo-chip-a-bg:     #312822;
-  --demo-chip-a-border: #43362e;
-  --demo-chip-b-bg:     #36271f;
-  --demo-chip-b-fg:     #ee8678;
-  --demo-chip-b-border: #54392c;
-  --demo-chip-c-bg:     #202a21;
-  --demo-chip-c-fg:     #8fce97;
-  --demo-chip-c-border: #35492f;
-}
-
-/* Shape / typography per theme family (cozy differs in shape + type) */
-:root,
-[data-theme="luxury"] {
-  --shape-radius: 4px;
-  --theme-font: "Georgia", "Times New Roman", serif;
-}
-[data-theme="cozy"] {
-  --shape-radius: 12px;
-  --theme-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-
-body {
-  font-family: var(--theme-font, "Georgia", serif);
-}
-
-
 /* ── Layer 1: Chromatic Dimension Tokens — LUXURY · LIGHT ── */
 /* (also the no-attribute fallback) */
 
@@ -635,7 +519,7 @@ body {
 }
 
 .card:hover {
-  border-color: var(--page-accent);
+  border-color: var(--c-shard);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -719,7 +603,7 @@ body {
 }
 
 .card__nested-item:hover {
-  border-color: var(--page-accent);
+  border-color: var(--c-shard);
 }
 
 .card__nested-thumb {
@@ -757,4 +641,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-

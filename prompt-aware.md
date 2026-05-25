@@ -24,7 +24,11 @@ If you genuinely cannot find a better or meaningfully different approach, say so
 This is a plain HTML and CSS playground. No framework. No JavaScript. No build-time CSS processing.
 
 The project explores different ways to name and structure CSS custom property color tokens.
-Each approach is fully standalone: one HTML file, one CSS file.
+Each approach is fully standalone. The approach CSS must keep token/component
+logic separate from demo/page chrome:
+- `index.css` — token definitions and component styles for the approach.
+- `demo.css` — optional approach-specific demo/page styling, theme switcher
+  presentation, or page-token remapping. Do not put this in `index.css`.
 
 Page layout styles and component HTML are shared via a build step:
 - `src/shared/demo.css` — page chrome (header, grid, disabled section styles, token legend table, theme switcher). Already exists.
@@ -38,7 +42,7 @@ The build script resolves `<include src="...">` tags in HTML files before copyin
 
 ## What to create
 
-Two files only:
+Create these files:
 
 ### `src/approach-XX/index.html`
 
@@ -50,6 +54,7 @@ Two files only:
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Approach XX — [Your approach name]</title>
   <link rel="stylesheet" href="../shared/demo.css" />
+  <link rel="stylesheet" href="demo.css" />
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
@@ -103,10 +108,15 @@ This file must contain:
 2. The `.badge` component styles
 3. The `.card` component styles
 
+### `src/approach-XX/demo.css`
+
+Use this file only if the approach needs local demo/page styling or page-token
+remapping. Keep token architecture and component rules in `index.css`.
+
 Rules for the CSS:
 - Component selectors (`.badge`, `.badge[data-variant="..."]`, etc.) must not contain any raw color values (no hex, no rgb, no hsl). They reference CSS custom properties only.
 - Token names must be theme-agnostic. No "light", "dark", "white", "black" in token names.
-- Token names must not mirror the HTML attribute names. `data-role` is an implementation detail — do not let it dictate your token prefix or naming convention.
+- `data-role` is an implementation hook. It may map into your token system, but it should not force your token architecture.
 - The `.badge` component reads color via `data-role` attribute on the element.
 - `data-role` values: `primary`, `neutral`, `success`, `error`, `morning`, `afternoon`, `evening`, `brand1`, `brand2`, `brand3`
 - `data-variant` values: `highlight` (solid fill), `soft` (tinted background), `outline` (border only)
@@ -129,26 +139,18 @@ Required interactive states: normal, hover, focus-visible, active, disabled.
 ## Card component spec
 
 `card.html` contains three cards in a `.card-grid` layout. Each card is an `<article class="card">`.
-The card component demonstrates structural token concepts that badges cannot surface:
+The card component demonstrates structural concepts that badges cannot surface:
 
 - **Surface layering** — three depth levels: page background → raised card surface → inset nested element
 - **Text hierarchy** — primary text (title) vs secondary text (metadata, description)
 - **Hover state** — border-color shift on the full card
 - **Badge in context** — existing `.badge` elements placed inside card body
 
-Structural/neutral token vocabulary the card introduces (no hue — these are separate from the colored role tokens):
-
-```
---surface-raised    card background, elevated above --page-bg
---surface-inset     nested surface inside card (image placeholder, inner list items)
---surface-border    card border edge (often aliases --page-line)
---text-primary      title / main label color
---text-secondary    metadata / description / muted text color
-```
-
-These names are suggestions — your approach may use different names that fit its naming convention,
-as long as the concepts (three surface levels, two text levels) are expressed through tokens and
-no raw values appear in `.card` rules.
+Do not use the names above as a prescribed token vocabulary. Choose whatever
+token names, layers, scopes, or mapping model best fit your approach. The only
+requirement is that the card expresses the surface levels, text hierarchy, and
+interactive border state through CSS custom properties, with no raw color values
+inside `.card` component rules.
 
 ---
 
@@ -206,9 +208,9 @@ After reading existing approaches, consider these axes:
 
 **Layering depth** — more or fewer indirection levels between raw values and component rules.
 
-**Naming convention** — how tokens are named changes what they communicate. Examples:
-- `--color-primary-base` vs `--primary` vs `--badge-primary-bg` vs `--surface-accent`
-- Flat names vs namespaced vs hierarchical
+**Naming convention** — how tokens are named changes what they communicate.
+Explore names that support your model; avoid treating examples from existing
+approaches or this prompt as preferred vocabulary.
 
 **Mapping logic** — where the role-to-component mapping happens:
 - On the component element via `data-*` → CSS custom property override
@@ -219,9 +221,13 @@ After reading existing approaches, consider these axes:
 
 **Explicitness** — are token names self-explanatory to a designer, or optimized for a developer?
 
-**Structural vs semantic tokens** — how does your approach separate neutral surface tokens (background, text hierarchy) from colored semantic role tokens? Are they in the same layer or distinct layers?
+**Structural vs color concerns** — how does your approach handle neutral
+surfaces, text hierarchy, and colored meanings? They may share a layer, use
+separate layers, be scoped differently, or follow another model entirely.
 
-**Multi-theming** — does the architecture hold when two totally different visual families (e.g. luxury serif vs cozy rounded sans-serif) share the same component layer? Only the semantic role layer should need to change.
+**Multi-theming** — does the architecture hold when two totally different
+visual families (e.g. luxury serif vs cozy rounded sans-serif) share identical
+component rules? Which token layer(s) would your model re-map?
 
 ---
 
@@ -231,9 +237,12 @@ To stress-test your token architecture, add multi-theming: two visual families �
 
 - Two attributes on `<html>`: `data-theme="familyA|familyB"` × `data-mode="light|dark"`
 - Token names stay theme-agnostic — theme identity lives only in `[data-theme][data-mode]` selectors, never in token names
-- Only the semantic role layer re-maps per combination; the component layer (`.badge`, `.card`) stays identical — that's the proof the indirection works
+- Re-map whichever token layer(s) your architecture designates for theming. The
+  component rules (`.badge`, `.card`) should stay identical across theme
+  combinations — that's the proof the indirection works.
 - A small inline `<script>` for the toggle is allowed (the project's no-JS rule is relaxed for this); use `<include src="../components/theme-switcher.html">` — the HTML + JS already exist
-- The switcher CSS is in `shared/demo.css` — no additional styles needed
+- Shared switcher CSS is in `shared/demo.css`; put any approach-specific demo
+  overrides in `src/approach-XX/demo.css`.
 
 ---
 

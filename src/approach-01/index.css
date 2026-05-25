@@ -1,86 +1,4 @@
 /* ============================================================
-   DEMO STYLE
-   The demo chrome (shared/demo.css) exposes --page-* and --demo-*
-   variables. Here we re-map them per theme x mode so the page and
-   the demo surfaces follow the active theme — a dark demo is truly dark.
-   Theme axes live in attributes (data-theme / data-mode), never in token names.
-   Default (no attribute) = luxury / light, matching shared/demo.css defaults.
-   ============================================================ */
-
-/* luxury + light reuses shared/demo.css :root defaults — no override needed */
-/* Component surface tokens are NOT generic here: they flow through this
-   approach's own three-layer model — primitive-neutral ramp → --role-surface-*
-   → --card-* alias (see LAYER 2 SURFACE ROLES + CARD below). Only the demo
-   chrome (--page-*/--demo-*) is remapped per theme in this section. */
-
-/* Generic dark demo chrome (luxury dark; cozy dark overrides below) */
-[data-mode="dark"] {
-  --page-bg:     #1b1714;
-  --page-text:   #ece6df;
-  --page-muted:  #9a8d80;
-  --page-line:   #322c27;
-  --page-accent: #d4a96a;
-
-  --demo-cell-bg:     #221d19;
-  --demo-rowlabel-bg: #1f1a16;
-  --demo-header-bg:   #272019;
-  --demo-strip-bg:    #221d19;
-
-  --demo-chip-a-bg:     #2a241f;
-  --demo-chip-a-border: #3a322b;
-  --demo-chip-b-bg:     #2e2618;
-  --demo-chip-b-fg:     #d4a96a;
-  --demo-chip-b-border: #463a22;
-  --demo-chip-c-bg:     #1e2a1f;
-  --demo-chip-c-fg:     #8fce97;
-  --demo-chip-c-border: #324a34;
-}
-
-[data-theme="cozy"][data-mode="light"] {
-  --page-bg:     #fbf7f4;
-  --page-text:   #2b2521;
-  --page-muted:  #8c7f74;
-  --page-line:   #ece2da;
-  --page-accent: #c4453a;
-
-  --demo-cell-bg:     #ffffff;
-  --demo-rowlabel-bg: #faf5f2;
-  --demo-header-bg:   #f6ede8;
-  --demo-strip-bg:    #fffaf8;
-
-  --demo-chip-a-bg:     #f5efe9;
-  --demo-chip-a-border: #e6d8cf;
-  --demo-chip-b-bg:     #fbe9e4;
-  --demo-chip-b-fg:     #c4453a;
-  --demo-chip-b-border: #f2ccc2;
-  --demo-chip-c-bg:     #eef6ee;
-  --demo-chip-c-fg:     #3a7340;
-  --demo-chip-c-border: #cfe4cf;
-}
-
-[data-theme="cozy"][data-mode="dark"] {
-  --page-bg:     #211b18;
-  --page-text:   #efe7e1;
-  --page-muted:  #a2938a;
-  --page-line:   #382e29;
-  --page-accent: #ee8678;
-
-  --demo-cell-bg:     #2a221e;
-  --demo-rowlabel-bg: #251e1a;
-  --demo-header-bg:   #2e241f;
-  --demo-strip-bg:    #2a221e;
-
-  --demo-chip-a-bg:     #312822;
-  --demo-chip-a-border: #43362e;
-  --demo-chip-b-bg:     #36271f;
-  --demo-chip-b-fg:     #ee8678;
-  --demo-chip-b-border: #54392c;
-  --demo-chip-c-bg:     #202a21;
-  --demo-chip-c-fg:     #8fce97;
-  --demo-chip-c-border: #35492f;
-}
-
-/* ============================================================
    LAYER 1 — PRIMITIVE TOKENS
    Raw palette values. Never referenced inside component rules.
    ============================================================ */
@@ -263,24 +181,6 @@
   --primitive-neutral-ink-inv:   #ece6df;
   --primitive-neutral-muted:     #8a7e72;
   --primitive-neutral-muted-inv: #9a8d80;
-}
-
-/* ============================================================
-   SHAPE / TYPOGRAPHY TOKENS — per theme family
-   Theme 2 (cozy) differs in shape and type, not only color.
-   ============================================================ */
-:root,
-[data-theme="luxury"] {
-  --shape-radius: 4px;
-  --theme-font: "Georgia", "Times New Roman", serif;
-}
-[data-theme="cozy"] {
-  --shape-radius: 12px;
-  --theme-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-
-body {
-  font-family: var(--theme-font, "Georgia", serif);
 }
 
 /* ============================================================
@@ -844,7 +744,7 @@ body {
 }
 
 .card:hover {
-  border-color: var(--page-accent);
+  border-color: var(--card-fill);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -929,7 +829,7 @@ body {
 }
 
 .card__nested-item:hover {
-  border-color: var(--page-accent);
+  border-color: var(--card-fill);
 }
 
 .card__nested-thumb {
@@ -967,4 +867,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
