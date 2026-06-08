@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* ============================================================
+   Swiss Luxury Wellness theme
+   Warm, premium, calm, refined. Warm neutrals, gold/bronze,
+   deep greens, soft mineral tones. No generic SaaS, no oversat.
+
+   Token naming follows HeroUI conventions:
+     --role                 filled background
+     --role-foreground      text on filled background
+     --role-soft            tinted background
+     --role-soft-foreground text on tinted / outline background
+   ============================================================ */
+
+@layer base {
+  :root,
+  [data-theme="wellness"] {
+    color-scheme: light;
+
+    /* --- Canvas: warm stone / greige --- */
+    --background: oklch(0.965 0.008 83);
+    --foreground: oklch(0.27 0.012 70);
+    --surface: oklch(0.992 0.004 83);
+    --surface-foreground: var(--foreground);
+    --muted: oklch(0.55 0.012 75);
+    --border: oklch(0.9 0.008 80);
+    --separator: oklch(0.9 0.008 80);
+    --focus: var(--accent);
+    --link: var(--accent);
+
+    /* --- Accent — deep forest / pine green (primary CTA) --- */
+    --accent: oklch(0.32 0.09 155);
+    --accent-foreground: oklch(0.97 0.006 80);
+    --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
+    --accent-soft-foreground: oklch(0.32 0.08 155);
+
+    /* --- Neutral — warm stone / greige (custom role) --- */
+    --neutral: oklch(0.79 0.012 78);
+    --neutral-foreground: oklch(0.3 0.01 75);
+    --neutral-soft: color-mix(in oklab, var(--neutral) 22%, transparent);
+    --neutral-soft-foreground: oklch(0.4 0.012 75);
+
+    /* --- Success — deep forest / sage (overrides HeroUI default) --- */
+    --success: oklch(0.52 0.065 150);
+    --success-foreground: oklch(0.97 0.012 150);
+    --success-soft: color-mix(in oklab, var(--success) 16%, transparent);
+    --success-soft-foreground: oklch(0.44 0.06 150);
+
+    /* --- Danger — muted terracotta / dusty rose (overrides HeroUI default) --- */
+    --danger: oklch(0.6 0.105 33);
+    --danger-foreground: oklch(0.98 0.01 33);
+    --danger-soft: color-mix(in oklab, var(--danger) 16%, transparent);
+    --danger-soft-foreground: oklch(0.5 0.1 34);
+
+    /* --- Morning — soft mineral, cool-leaning slate / mist (custom role) --- */
+    --morning: oklch(0.74 0.028 235);
+    --morning-foreground: oklch(0.3 0.025 235);
+    --morning-soft: color-mix(in oklab, var(--morning) 18%, transparent);
+    --morning-soft-foreground: oklch(0.46 0.04 235);
+
+    /* --- Afternoon — warm amber / honey (custom role) --- */
+    --afternoon: oklch(0.78 0.095 75);
+    --afternoon-foreground: oklch(0.3 0.05 68);
+    --afternoon-soft: color-mix(in oklab, var(--afternoon) 18%, transparent);
+    --afternoon-soft-foreground: oklch(0.46 0.07 70);
+
+    /* --- Evening — deep indigo / warm violet (custom role) --- */
+    --evening: oklch(0.46 0.1 288);
+    --evening-foreground: oklch(0.97 0.015 288);
+    --evening-soft: color-mix(in oklab, var(--evening) 14%, transparent);
+    --evening-soft-foreground: oklch(0.47 0.1 288);
+
+    /* --- Brand 1 — exact #f6d425 (custom role) --- */
+    --brand1: #f6d425;
+    --brand1-foreground: #4a3f08;
+    --brand1-soft: color-mix(in oklab, var(--brand1) 20%, transparent);
+    --brand1-soft-foreground: #4a3f08;
+
+    /* --- Brand 2 — exact #3b2a5a (custom role) --- */
+    --brand2: #3b2a5a;
+    --brand2-foreground: #ece9f3;
+    --brand2-soft: color-mix(in oklab, var(--brand2) 14%, transparent);
+    --brand2-soft-foreground: #3b2a5a;
+
+    /* --- Brand 3 — exact #3b6fb5 (custom role) --- */
+    --brand3: #3b6fb5;
+    --brand3-foreground: #e9f0f8;
+    --brand3-soft: color-mix(in oklab, var(--brand3) 16%, transparent);
+    --brand3-soft-foreground: #2c5489;
+  }
+}
+
+/* ============================================================
+   Expose custom roles to Tailwind (bg-morning, text-evening-foreground, …)
+   Built-in HeroUI roles (accent, success, danger) are already bridged.
+   ============================================================ */
+@theme inline {
+  --color-neutral: var(--neutral);
+  --color-neutral-foreground: var(--neutral-foreground);
+  --color-neutral-soft: var(--neutral-soft);
+  --color-neutral-soft-foreground: var(--neutral-soft-foreground);
+
+  --color-morning: var(--morning);
+  --color-morning-foreground: var(--morning-foreground);
+  --color-morning-soft: var(--morning-soft);
+  --color-morning-soft-foreground: var(--morning-soft-foreground);
+
+  --color-afternoon: var(--afternoon);
+  --color-afternoon-foreground: var(--afternoon-foreground);
+  --color-afternoon-soft: var(--afternoon-soft);
+  --color-afternoon-soft-foreground: var(--afternoon-soft-foreground);
+
+  --color-evening: var(--evening);
+  --color-evening-foreground: var(--evening-foreground);
+  --color-evening-soft: var(--evening-soft);
+  --color-evening-soft-foreground: var(--evening-soft-foreground);
+
+  --color-brand1: var(--brand1);
+  --color-brand1-foreground: var(--brand1-foreground);
+  --color-brand1-soft: var(--brand1-soft);
+  --color-brand1-soft-foreground: var(--brand1-soft-foreground);
+
+  --color-brand2: var(--brand2);
+  --color-brand2-foreground: var(--brand2-foreground);
+  --color-brand2-soft: var(--brand2-soft);
+  --color-brand2-soft-foreground: var(--brand2-soft-foreground);
+
+  --color-brand3: var(--brand3);
+  --color-brand3-foreground: var(--brand3-foreground);
+  --color-brand3-soft: var(--brand3-soft);
+  --color-brand3-soft-foreground: var(--brand3-soft-foreground);
+}
+
+/* ============================================================
+   HeroUI Chip overrides — register each role for <Chip color="…">.
+   BEM contract: chip--primary (filled) · chip--soft · chip--secondary (outline).
+   ============================================================ */
+@layer components {
+  /* filled */
+  .chip--primary.chip--accent      { background: var(--accent);    color: var(--accent-foreground); }
+  .chip--primary.chip--neutral     { background: var(--neutral);   color: var(--neutral-foreground); }
+  .chip--primary.chip--success     { background: var(--success);   color: var(--success-foreground); }
+  .chip--primary.chip--danger      { background: var(--danger);    color: var(--danger-foreground); }
+  .chip--primary.chip--morning     { background: var(--morning);   color: var(--morning-foreground); }
+  .chip--primary.chip--afternoon   { background: var(--afternoon); color: var(--afternoon-foreground); }
+  .chip--primary.chip--evening     { background: var(--evening);   color: var(--evening-foreground); }
+  .chip--primary.chip--brand1      { background: var(--brand1);    color: var(--brand1-foreground); }
+  .chip--primary.chip--brand2      { background: var(--brand2);    color: var(--brand2-foreground); }
+  .chip--primary.chip--brand3      { background: var(--brand3);    color: var(--brand3-foreground); }
+
+  /* soft / tint */
+  .chip--soft.chip--accent      { background: var(--accent-soft);    color: var(--accent-soft-foreground); }
+  .chip--soft.chip--neutral     { background: var(--neutral-soft);   color: var(--neutral-soft-foreground); }
+  .chip--soft.chip--success     { background: var(--success-soft);   color: var(--success-soft-foreground); }
+  .chip--soft.chip--danger      { background: var(--danger-soft);    color: var(--danger-soft-foreground); }
+  .chip--soft.chip--morning     { background: var(--morning-soft);   color: var(--morning-soft-foreground); }
+  .chip--soft.chip--afternoon   { background: var(--afternoon-soft); color: var(--afternoon-soft-foreground); }
+  .chip--soft.chip--evening     { background: var(--evening-soft);   color: var(--evening-soft-foreground); }
+  .chip--soft.chip--brand1      { background: var(--brand1-soft);    color: var(--brand1-soft-foreground); }
+  .chip--soft.chip--brand2      { background: var(--brand2-soft);    color: var(--brand2-soft-foreground); }
+  .chip--soft.chip--brand3      { background: var(--brand3-soft);    color: var(--brand3-soft-foreground); }
+
+  /* outline */
+  .chip--secondary.chip--accent    { background: transparent; border-color: color-mix(in oklab, var(--accent) 42%, transparent);    color: var(--accent-soft-foreground); }
+  .chip--secondary.chip--neutral   { background: transparent; border-color: color-mix(in oklab, var(--neutral) 52%, transparent);   color: var(--neutral-soft-foreground); }
+  .chip--secondary.chip--success   { background: transparent; border-color: color-mix(in oklab, var(--success) 42%, transparent);   color: var(--success-soft-foreground); }
+  .chip--secondary.chip--danger    { background: transparent; border-color: color-mix(in oklab, var(--danger) 42%, transparent);    color: var(--danger-soft-foreground); }
+  .chip--secondary.chip--morning   { background: transparent; border-color: color-mix(in oklab, var(--morning) 46%, transparent);   color: var(--morning-soft-foreground); }
+  .chip--secondary.chip--afternoon { background: transparent; border-color: color-mix(in oklab, var(--afternoon) 46%, transparent); color: var(--afternoon-soft-foreground); }
+  .chip--secondary.chip--evening   { background: transparent; border-color: color-mix(in oklab, var(--evening) 40%, transparent);   color: var(--evening-soft-foreground); }
+  .chip--secondary.chip--brand1    { background: transparent; border-color: color-mix(in oklab, var(--brand1) 48%, transparent);    color: var(--brand1-soft-foreground); }
+  .chip--secondary.chip--brand2    { background: transparent; border-color: color-mix(in oklab, var(--brand2) 40%, transparent);    color: var(--brand2-soft-foreground); }
+  .chip--secondary.chip--brand3    { background: transparent; border-color: color-mix(in oklab, var(--brand3) 42%, transparent);    color: var(--brand3-soft-foreground); }
+}
