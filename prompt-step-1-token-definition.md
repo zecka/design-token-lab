@@ -77,6 +77,7 @@ Define your token architecture:
 - Surface role: what visual purpose (fill, bg, border, text, etc.)
 - Intent: why it exists and how it's used
 
+
 ---
 
 ## Key constraints (all modes)
@@ -102,22 +103,6 @@ Swiss luxury wellness: warm, premium, calm, refined.
 - **afternoon** — warm amber or honey
 - **evening** — deep indigo or warm violet
 
----
-
-## Example architectures (inspiration only)
-
-**Layered by intensity:**
-- `--chroma-*` → vivid fill
-- `--echo-*` → faint bg
-- `--trace-*` → border / edge
-- `--mark-*` → ink on vivid
-- `--script-*` → ink on soft
-
-**Semantic intent:**
-- `--fill` → dominant color (highlight)
-- `--soft` → tinted background
-- `--text` → readable ink
-- `--border` → boundary line
 
 ---
 
@@ -137,6 +122,31 @@ Create `src/approach-XX/tokens.md` with this structure:
 |-------|--------------|-----------------|
 | `--token-name-*` | vivid fill | explanation |
 | ... | ... | ... |
+
+## Example Usage
+
+Show how tokens are applied in component styles. Example: `.badge` with `data-role="primary"` and `data-variant="highlight"`:
+
+```css
+.badge-primary[data-variant="highlight"][data-role="primary"] {
+  ...
+  &:hover{
+   ...
+  }
+  &:focus-visible{
+   ...
+  }
+  &:active{
+   ...
+  }
+  &:disabled{
+   ...
+  }
+}
+
+```
+
+Show component consuming tokens with no raw hex/rgb values.
 
 ```
 

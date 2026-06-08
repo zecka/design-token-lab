@@ -1,0 +1,89 @@
+/* ================================================================
+   APPROACH 04 — demo.css
+   Page chrome token overrides per theme + mode.
+   Remaps --page-* and --demo-* tokens from shared/demo.css
+   to match each of the four theme variants.
+   ================================================================ */
+
+/* Luxury · Light ------------------------------------------------- */
+[data-theme="luxury"][data-mode="light"] {
+  --page-bg:     #F9F7F4;
+  --page-text:   #2A2318;
+  --page-muted:  #9A8E7E;
+  --page-line:   #E4DED6;
+  --page-accent: #B07D3E;
+
+  --demo-cell-bg:      #FFFFFF;
+  --demo-rowlabel-bg:  #F8F4EF;
+  --demo-header-bg:    #F2EDE8;
+  --demo-strip-bg:     #FFFFFF;
+}
+
+/* Luxury · Dark -------------------------------------------------- */
+[data-theme="luxury"][data-mode="dark"] {
+  --page-bg:     #181410;
+  --page-text:   #EDE5D4;
+  --page-muted:  #786858;
+  --page-line:   #3C3028;
+  --page-accent: #D4A050;
+
+  --demo-cell-bg:      #282018;
+  --demo-rowlabel-bg:  #201C14;
+  --demo-header-bg:    #1C1810;
+  --demo-strip-bg:     #282018;
+
+  --demo-chip-a-bg:     #2E2820;
+  --demo-chip-a-border: #3C3428;
+  --demo-chip-b-bg:     #2E2410;
+  --demo-chip-b-fg:     #D4A050;
+  --demo-chip-b-border: #3C3020;
+  --demo-chip-c-bg:     #142018;
+  --demo-chip-c-fg:     #98D4B0;
+  --demo-chip-c-border: #203828;
+}
+
+/* Cozy · Light --------------------------------------------------- */
+[data-theme="cozy"][data-mode="light"] {
+  --page-bg:     #FAF5EE;
+  --page-text:   #2E2018;
+  --page-muted:  #9A8070;
+  --page-line:   #EAE0D4;
+  --page-accent: #C05A38;
+
+  --demo-cell-bg:      #FEFAF5;
+  --demo-rowlabel-bg:  #F5EDE4;
+  --demo-header-bg:    #F0E8DE;
+  --demo-strip-bg:     #FEFAF5;
+
+  --demo-chip-a-bg:     #F0E8DF;
+  --demo-chip-a-border: #E4D8CC;
+  --demo-chip-b-bg:     #F8EEE4;
+  --demo-chip-b-fg:     #C05A38;
+  --demo-chip-b-border: #EAD8C8;
+  --demo-chip-c-bg:     #E8F0E8;
+  --demo-chip-c-fg:     #3A5840;
+  --demo-chip-c-border: #C8DCC8;
+}
+
+/* Cozy · Dark ---------------------------------------------------- */
+[data-theme="cozy"][data-mode="dark"] {
+  --page-bg:     #1C140E;
+  --page-text:   #EEE0D0;
+  --page-muted:  #806858;
+  --page-line:   #382C20;
+  --page-accent: #D87050;
+
+  --demo-cell-bg:      #261C14;
+  --demo-rowlabel-bg:  #201810;
+  --demo-header-bg:    #1C1410;
+  --demo-strip-bg:     #261C14;
+
+  --demo-chip-a-bg:     #301E14;
+  --demo-chip-a-border: #3E2C1E;
+  --demo-chip-b-bg:     #301808;
+  --demo-chip-b-fg:     #D87050;
+  --demo-chip-b-border: #3E2410;
+  --demo-chip-c-bg:     #162410;
+  --demo-chip-c-fg:     #BCDCC0;
+  --demo-chip-c-border: #243818;
+}

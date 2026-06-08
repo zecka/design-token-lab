@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury" data-mode="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approach 06 — Stateful Contrast Pairs</title>
+  <link rel="stylesheet" href="../shared/demo.css" />
+  <link rel="stylesheet" href="demo.css" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header class="page-header">
+    <a class="page-header__back" href="../index.html">← Back to overview</a>
+    <p class="page-header__eyebrow">Approach 06</p>
+    <h1 class="page-header__title">Stateful Contrast Pairs</h1>
+    <p class="page-header__desc">
+      Each role exposes variant-ready contrast pairs for rest and interaction states.
+      Components choose a variant recipe while the theme owns every surface, ink, border, and focus color.
+    </p>
+  </header>
+
+  <main class="page-main">
+
+    <!-- Token Architecture Reference -->
+    <section>
+      <p class="token-map__title">Token Architecture</p>
+      <table class="token-legend">
+        <thead>
+          <tr>
+            <th>Facet</th>
+            <th>Surface role</th>
+            <th>Intent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--pair-[role]-highlight-bg</code></td>
+            <td>vivid fill</td>
+            <td>Strong role expression for high-emphasis badges.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-highlight-fg</code></td>
+            <td>text on vivid fill</td>
+            <td>Contrast-matched label ink for the vivid surface.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-highlight-border</code></td>
+            <td>vivid border</td>
+            <td>Edge color aligned to the highlight surface.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-highlight-bg-hover</code></td>
+            <td>vivid hover fill</td>
+            <td>Theme-tuned hover continuation of the highlight pair.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-highlight-bg-active</code></td>
+            <td>vivid pressed fill</td>
+            <td>Pressed high-emphasis surface that preserves contrast.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-soft-bg</code></td>
+            <td>faint background</td>
+            <td>Quiet tinted role surface for low-emphasis badges.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-soft-fg</code></td>
+            <td>text on faint background</td>
+            <td>Readable role-colored ink for soft surfaces.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-soft-border</code></td>
+            <td>faint border</td>
+            <td>Subtle edge for separating soft surfaces.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-soft-bg-hover</code></td>
+            <td>faint hover background</td>
+            <td>Slightly stronger soft surface on hover.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-soft-bg-active</code></td>
+            <td>faint pressed background</td>
+            <td>Pressed state for quiet controls.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-outline-bg</code></td>
+            <td>ambient background</td>
+            <td>Resting outline background, often transparent.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-outline-fg</code></td>
+            <td>outline text</td>
+            <td>Readable role ink for outline badges.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-outline-border</code></td>
+            <td>outline stroke</td>
+            <td>Visible role stroke for outline controls.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-outline-bg-hover</code></td>
+            <td>outline hover wash</td>
+            <td>Tinted wash introduced by outline hover.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-outline-border-hover</code></td>
+            <td>outline hover stroke</td>
+            <td>Stronger outline edge for hover and active emphasis.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-focus-ring</code></td>
+            <td>focus indicator</td>
+            <td>Accessible role-associated focus ring.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-focus-gap</code></td>
+            <td>focus separation</td>
+            <td>Local surface gap that keeps focus visible.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-disabled-bg</code></td>
+            <td>disabled background</td>
+            <td>Muted inactive surface assigned through the pair contract.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-disabled-fg</code></td>
+            <td>disabled text</td>
+            <td>Muted inactive text without relying on opacity.</td>
+          </tr>
+          <tr>
+            <td><code>--pair-[role]-disabled-border</code></td>
+            <td>disabled border</td>
+            <td>Muted inactive edge that keeps shape stable.</td>
+          </tr>
+          <tr>
+            <td><code>--surface-canvas</code></td>
+            <td>page background</td>
+            <td>Theme foundation behind components.</td>
+          </tr>
+          <tr>
+            <td><code>--surface-panel</code></td>
+            <td>raised surface</td>
+            <td>Panel and demo cell background.</td>
+          </tr>
+          <tr>
+            <td><code>--surface-panel-alt</code></td>
+            <td>nested surface</td>
+            <td>Secondary surface for labels and nested content.</td>
+          </tr>
+          <tr>
+            <td><code>--surface-border</code></td>
+            <td>structural border</td>
+            <td>Neutral edge for demo frames and dividers.</td>
+          </tr>
+          <tr>
+            <td><code>--surface-border-hover</code></td>
+            <td>structural hover border</td>
+            <td>Theme-level hover edge for later surface components.</td>
+          </tr>
+          <tr>
+            <td><code>--ink-strong</code></td>
+            <td>primary text</td>
+            <td>Main readable text on neutral surfaces.</td>
+          </tr>
+          <tr>
+            <td><code>--ink-muted</code></td>
+            <td>secondary text</td>
+            <td>Supporting readable text on neutral surfaces.</td>
+          </tr>
+          <tr>
+            <td><code>--ink-subtle</code></td>
+            <td>metadata text</td>
+            <td>Lowest-emphasis theme text.</td>
+          </tr>
+          <tr>
+            <td><code>--component-bg</code></td>
+            <td>resolved component background</td>
+            <td>Local alias selected from a role pair by variant and state.</td>
+          </tr>
+          <tr>
+            <td><code>--component-fg</code></td>
+            <td>resolved component text</td>
+            <td>Local alias selected from the paired foreground token.</td>
+          </tr>
+          <tr>
+            <td><code>--component-border</code></td>
+            <td>resolved component edge</td>
+            <td>Local alias selected from the pair border token.</td>
+          </tr>
+          <tr>
+            <td><code>--component-focus-ring</code></td>
+            <td>resolved focus ring</td>
+            <td>Local alias for the role focus ring.</td>
+          </tr>
+          <tr>
+            <td><code>--component-focus-gap</code></td>
+            <td>resolved focus gap</td>
+            <td>Local alias for focus separation.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="token-map">
+        <div class="token-map__row">
+          <span class="token-map__layer">--pair-primary-highlight-bg: #956b38</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[primary][highlight] --component-bg</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">background: var(--component-bg)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer">--pair-primary-soft-bg-hover: #ecdbc0</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[primary][soft]:hover --component-bg</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">background: var(--component-bg)</span>
+        </div>
+
+        <div class="token-map__row">
+          <span class="token-map__layer">--pair-brand3-outline-border: #3B6FB5</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[brand3][outline] --component-border</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">border-color: var(--component-border)</span>
+        </div>
+      </div>
+    </section>
+
+    <include src="../components/badge.html"></include>
+
+  </main>
+
+</body>
+</html>

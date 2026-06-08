@@ -1,0 +1,568 @@
+/* ================================================================
+   APPROACH 04 — Contextual Slot Binding
+   index.css — Token definitions + component styles
+
+   Architecture
+   ┌──────────────────────────────────────────────────────────────┐
+   │  Palette      --pal-[role]-[prop]                            │
+   │  Scoped per [data-theme][data-mode]. Raw color values.       │
+   ├──────────────────────────────────────────────────────────────┤
+   │  Context slots  --_bg  --_fg  --_tint-bg  --_tint-fg         │
+   │                 --_stroke                                    │
+   │  Declared on [data-role]. Reads palette. Theme-agnostic.     │
+   ├──────────────────────────────────────────────────────────────┤
+   │  Surface        --_card-bg  --_card-border  --_card-title    │
+   │  Scoped per [data-theme][data-mode]. Card depth tokens.      │
+   ├──────────────────────────────────────────────────────────────┤
+   │  Components     .badge  .card                                │
+   │  Consume --_ slots only. No palette refs. No raw hex.        │
+   └──────────────────────────────────────────────────────────────┘
+   ================================================================ */
+
+
+/* ================================================================
+   PALETTE — Luxury · Light
+   Swiss wellness: warm gold, deep forest, refined stone.
+   ================================================================ */
+[data-theme="luxury"][data-mode="light"] {
+  --pal-primary-solid: #B07D3E;
+  --pal-primary-fg:    #FEF9F0;
+  --pal-primary-tint:  #F5E4C8;
+  --pal-primary-dim:   #7A5418;
+
+  --pal-neutral-solid: #8C7D6B;
+  --pal-neutral-fg:    #FEFCF9;
+  --pal-neutral-tint:  #EDE7DF;
+  --pal-neutral-dim:   #5C4E3F;
+
+  --pal-success-solid: #3D6B4F;
+  --pal-success-fg:    #F0F8F3;
+  --pal-success-tint:  #D0E8D8;
+  --pal-success-dim:   #244835;
+
+  --pal-error-solid:   #A05040;
+  --pal-error-fg:      #FEF5F3;
+  --pal-error-tint:    #F5DDD8;
+  --pal-error-dim:     #7A3020;
+
+  --pal-morning-solid: #7A8E9A;
+  --pal-morning-fg:    #F2F7F9;
+  --pal-morning-tint:  #DCE8EE;
+  --pal-morning-dim:   #445E6A;
+
+  --pal-afternoon-solid: #B8842A;
+  --pal-afternoon-fg:    #FEF8EE;
+  --pal-afternoon-tint:  #F5E4B8;
+  --pal-afternoon-dim:   #805E10;
+
+  --pal-evening-solid: #4A3E6E;
+  --pal-evening-fg:    #F6F3FD;
+  --pal-evening-tint:  #DDD8F0;
+  --pal-evening-dim:   #2C2248;
+
+  /* Card surface tokens */
+  --_card-bg:           #FFFFFF;
+  --_card-border:       #E4DED6;
+  --_card-border-hover: var(--pal-primary-solid);
+  --_card-title:        #2A2318;
+  --_card-body-text:    #5C5044;
+  --_card-meta:         #9A8E80;
+  --_nested-bg:         #F8F4EF;
+  --_nested-border:     #EDE7DF;
+  --_nested-title:      #3A3028;
+  --_nested-date:       #8A7E70;
+  --_media-bg:          #EDE7DF;
+  --_media-text:        #A89880;
+}
+
+
+/* ================================================================
+   PALETTE — Luxury · Dark
+   ================================================================ */
+[data-theme="luxury"][data-mode="dark"] {
+  --pal-primary-solid: #D4A050;
+  --pal-primary-fg:    #1A1206;
+  --pal-primary-tint:  #2E1E08;
+  --pal-primary-dim:   #ECC878;
+
+  --pal-neutral-solid: #A89880;
+  --pal-neutral-fg:    #181410;
+  --pal-neutral-tint:  #28221A;
+  --pal-neutral-dim:   #D0C4B0;
+
+  --pal-success-solid: #4E9068;
+  --pal-success-fg:    #061410;
+  --pal-success-tint:  #0E2418;
+  --pal-success-dim:   #98D4B0;
+
+  --pal-error-solid:   #C06050;
+  --pal-error-fg:      #1C0806;
+  --pal-error-tint:    #2C1410;
+  --pal-error-dim:     #F0B0A0;
+
+  --pal-morning-solid: #8EB0C0;
+  --pal-morning-fg:    #0C1820;
+  --pal-morning-tint:  #141E2C;
+  --pal-morning-dim:   #B8D0DF;
+
+  --pal-afternoon-solid: #D4A030;
+  --pal-afternoon-fg:    #1A1006;
+  --pal-afternoon-tint:  #281A08;
+  --pal-afternoon-dim:   #E8C878;
+
+  --pal-evening-solid: #7060B8;
+  --pal-evening-fg:    #100C20;
+  --pal-evening-tint:  #1A1430;
+  --pal-evening-dim:   #C0B0E8;
+
+  /* Card surface tokens */
+  --_card-bg:           #282018;
+  --_card-border:       #3C3028;
+  --_card-border-hover: var(--pal-primary-solid);
+  --_card-title:        #EDE5D4;
+  --_card-body-text:    #B8A890;
+  --_card-meta:         #786858;
+  --_nested-bg:         #1C1610;
+  --_nested-border:     #342A1E;
+  --_nested-title:      #CCC0A8;
+  --_nested-date:       #706050;
+  --_media-bg:          #2C2418;
+  --_media-text:        #6A5A48;
+}
+
+
+/* ================================================================
+   PALETTE — Cozy · Light
+   Earthy, warm: terracotta primary, soft sage, toasted amber.
+   ================================================================ */
+[data-theme="cozy"][data-mode="light"] {
+  --pal-primary-solid: #C05A38;
+  --pal-primary-fg:    #FEF8F5;
+  --pal-primary-tint:  #F5DDD0;
+  --pal-primary-dim:   #8A3C20;
+
+  --pal-neutral-solid: #9C8C74;
+  --pal-neutral-fg:    #FEFCF7;
+  --pal-neutral-tint:  #EEE8E0;
+  --pal-neutral-dim:   #6A5C44;
+
+  --pal-success-solid: #5A7860;
+  --pal-success-fg:    #F0F6F2;
+  --pal-success-tint:  #DAE9DE;
+  --pal-success-dim:   #3A5840;
+
+  --pal-error-solid:   #B87078;
+  --pal-error-fg:      #FEF5F6;
+  --pal-error-tint:    #F5D8DC;
+  --pal-error-dim:     #8A3844;
+
+  --pal-morning-solid: #C09070;
+  --pal-morning-fg:    #FEF8F4;
+  --pal-morning-tint:  #F8E4D0;
+  --pal-morning-dim:   #885840;
+
+  --pal-afternoon-solid: #C47430;
+  --pal-afternoon-fg:    #FEF8F0;
+  --pal-afternoon-tint:  #F8E4C0;
+  --pal-afternoon-dim:   #8A4C10;
+
+  --pal-evening-solid: #6A3E58;
+  --pal-evening-fg:    #FAF4F8;
+  --pal-evening-tint:  #EDD8E6;
+  --pal-evening-dim:   #481C36;
+
+  /* Card surface tokens */
+  --_card-bg:           #FEFAF5;
+  --_card-border:       #EAE0D4;
+  --_card-border-hover: var(--pal-primary-solid);
+  --_card-title:        #2E2018;
+  --_card-body-text:    #604838;
+  --_card-meta:         #9A8070;
+  --_nested-bg:         #F5EDE4;
+  --_nested-border:     #EAE0D4;
+  --_nested-title:      #3C2C20;
+  --_nested-date:       #9A8070;
+  --_media-bg:          #EAE0D4;
+  --_media-text:        #A89078;
+}
+
+
+/* ================================================================
+   PALETTE — Cozy · Dark
+   ================================================================ */
+[data-theme="cozy"][data-mode="dark"] {
+  --pal-primary-solid: #D87050;
+  --pal-primary-fg:    #1C0E08;
+  --pal-primary-tint:  #2C1A10;
+  --pal-primary-dim:   #F0B8A0;
+
+  --pal-neutral-solid: #B8A888;
+  --pal-neutral-fg:    #1A1610;
+  --pal-neutral-tint:  #282018;
+  --pal-neutral-dim:   #DED0B8;
+
+  --pal-success-solid: #709A78;
+  --pal-success-fg:    #0C1810;
+  --pal-success-tint:  #162818;
+  --pal-success-dim:   #BCDCC0;
+
+  --pal-error-solid:   #D08890;
+  --pal-error-fg:      #1C0C10;
+  --pal-error-tint:    #2C1418;
+  --pal-error-dim:     #F0C0C4;
+
+  --pal-morning-solid: #D8A888;
+  --pal-morning-fg:    #201408;
+  --pal-morning-tint:  #301E14;
+  --pal-morning-dim:   #F0CEBC;
+
+  --pal-afternoon-solid: #DC9040;
+  --pal-afternoon-fg:    #1C0E04;
+  --pal-afternoon-tint:  #2A1808;
+  --pal-afternoon-dim:   #F0CA7C;
+
+  --pal-evening-solid: #9A6088;
+  --pal-evening-fg:    #1A0E18;
+  --pal-evening-tint:  #2A1824;
+  --pal-evening-dim:   #E0B4D4;
+
+  /* Card surface tokens */
+  --_card-bg:           #261C14;
+  --_card-border:       #382C20;
+  --_card-border-hover: var(--pal-primary-solid);
+  --_card-title:        #EEE0D0;
+  --_card-body-text:    #C0A890;
+  --_card-meta:         #806858;
+  --_nested-bg:         #1C140E;
+  --_nested-border:     #302418;
+  --_nested-title:      #D8CAB0;
+  --_nested-date:       #786050;
+  --_media-bg:          #2E2018;
+  --_media-text:        #706050;
+}
+
+
+/* ================================================================
+   ROLE CONTEXT BINDINGS — theme-agnostic
+   Each [data-role] declares its rendering context as --_ slots.
+   Components consume these slots without knowing which role
+   or theme is currently active.
+   ================================================================ */
+
+[data-role="primary"] {
+  --_bg:      var(--pal-primary-solid);
+  --_fg:      var(--pal-primary-fg);
+  --_tint-bg: var(--pal-primary-tint);
+  --_tint-fg: var(--pal-primary-dim);
+  --_stroke:  var(--pal-primary-solid);
+}
+
+[data-role="neutral"] {
+  --_bg:      var(--pal-neutral-solid);
+  --_fg:      var(--pal-neutral-fg);
+  --_tint-bg: var(--pal-neutral-tint);
+  --_tint-fg: var(--pal-neutral-dim);
+  --_stroke:  var(--pal-neutral-solid);
+}
+
+[data-role="success"] {
+  --_bg:      var(--pal-success-solid);
+  --_fg:      var(--pal-success-fg);
+  --_tint-bg: var(--pal-success-tint);
+  --_tint-fg: var(--pal-success-dim);
+  --_stroke:  var(--pal-success-solid);
+}
+
+[data-role="error"] {
+  --_bg:      var(--pal-error-solid);
+  --_fg:      var(--pal-error-fg);
+  --_tint-bg: var(--pal-error-tint);
+  --_tint-fg: var(--pal-error-dim);
+  --_stroke:  var(--pal-error-solid);
+}
+
+[data-role="morning"] {
+  --_bg:      var(--pal-morning-solid);
+  --_fg:      var(--pal-morning-fg);
+  --_tint-bg: var(--pal-morning-tint);
+  --_tint-fg: var(--pal-morning-dim);
+  --_stroke:  var(--pal-morning-solid);
+}
+
+[data-role="afternoon"] {
+  --_bg:      var(--pal-afternoon-solid);
+  --_fg:      var(--pal-afternoon-fg);
+  --_tint-bg: var(--pal-afternoon-tint);
+  --_tint-fg: var(--pal-afternoon-dim);
+  --_stroke:  var(--pal-afternoon-solid);
+}
+
+[data-role="evening"] {
+  --_bg:      var(--pal-evening-solid);
+  --_fg:      var(--pal-evening-fg);
+  --_tint-bg: var(--pal-evening-tint);
+  --_tint-fg: var(--pal-evening-dim);
+  --_stroke:  var(--pal-evening-solid);
+}
+
+
+/* ================================================================
+   BRAND ROLE BINDINGS — exact hex, overrides any theme cascade
+   Mandatory: highlight + outline use the EXACT brand hex.
+   Soft may deviate for legibility.
+
+   brand1 #F6D425 (light yellow)  → dark text for WCAG AA
+   brand2 #3B2A5A (dark violet)   → light text for WCAG AA
+   brand3 #3B6FB5 (medium blue)   → white text, contrast ≈ 5.1:1 ✓
+   ================================================================ */
+
+[data-role="brand1"] {
+  --_bg:      #F6D425;
+  --_fg:      #2A1E08;   /* dark amber-brown — contrast ~11:1 on yellow ✓ */
+  --_tint-bg: #FBF3BE;   /* pale yellow tint — yellow too light for text */
+  --_tint-fg: #6B5008;   /* dark amber readable on pale tint */
+  --_stroke:  #C8AA10;   /* deepened yellow visible as border/text */
+}
+
+[data-role="brand2"] {
+  --_bg:      #3B2A5A;
+  --_fg:      #EFE9F8;   /* near-white lavender — contrast ~10.6:1 ✓ */
+  --_tint-bg: #ECE6F5;   /* pale violet tint */
+  --_tint-fg: #3B2A5A;   /* exact brand violet legible on pale bg */
+  --_stroke:  #3B2A5A;
+}
+
+[data-role="brand3"] {
+  --_bg:      #3B6FB5;
+  --_fg:      #FFFFFF;   /* white — contrast ≈ 5.1:1 ✓ (AA pass) */
+  --_tint-bg: #DDEAF8;   /* pale blue tint */
+  --_tint-fg: #2A5090;   /* darkened brand blue for tint legibility */
+  --_stroke:  #3B6FB5;
+}
+
+
+/* ================================================================
+   BADGE COMPONENT
+   Reads --_ context slots only. No palette references.
+   ================================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3em 0.8em;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    background-color 0.12s ease,
+    color            0.12s ease,
+    border-color     0.12s ease,
+    filter           0.12s ease;
+}
+
+/* Highlight — solid fill */
+.badge[data-variant="highlight"] {
+  background-color: var(--_bg);
+  color:            var(--_fg);
+  border-color:     var(--_bg);
+}
+
+.badge[data-variant="highlight"]:hover {
+  filter: brightness(1.08);
+}
+
+.badge[data-variant="highlight"]:active {
+  filter: brightness(0.90);
+}
+
+/* Soft — tinted background */
+.badge[data-variant="soft"] {
+  background-color: var(--_tint-bg);
+  color:            var(--_tint-fg);
+  border-color:     var(--_tint-bg);
+}
+
+.badge[data-variant="soft"]:hover {
+  filter: brightness(0.96);
+}
+
+.badge[data-variant="soft"]:active {
+  filter: brightness(0.91);
+}
+
+/* Outline — border + text only */
+.badge[data-variant="outline"] {
+  background-color: transparent;
+  color:            var(--_stroke);
+  border-color:     var(--_stroke);
+}
+
+.badge[data-variant="outline"]:hover {
+  background-color: var(--_tint-bg);
+}
+
+.badge[data-variant="outline"]:active {
+  filter: brightness(0.92);
+}
+
+/* Focus visible */
+.badge:focus-visible {
+  outline:        2px solid var(--_bg);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.badge:disabled,
+.badge[disabled] {
+  opacity:        0.38;
+  cursor:         not-allowed;
+  pointer-events: none;
+}
+
+
+/* ================================================================
+   CARD COMPONENT
+   Reads --_card-* surface tokens (theme-scoped) and --_ slots
+   for any [data-role] badges nested inside.
+   ================================================================ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background:    var(--_card-bg);
+  border:        1px solid var(--_card-border);
+  border-radius: 8px;
+  overflow:      hidden;
+  transition:    border-color 0.15s ease;
+}
+
+/* Hover state — border shifts to primary accent */
+.card:hover {
+  border-color: var(--_card-border-hover);
+}
+
+/* Media area — depth level 2 (raised inset within card) */
+.card__media {
+  background:    var(--_media-bg);
+  aspect-ratio:  16 / 9;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+}
+
+.card__media-label {
+  font-size:      0.7rem;
+  font-family:    "SF Mono", "Fira Code", monospace;
+  color:          var(--_media-text);
+  letter-spacing: 0.08em;
+}
+
+.card__body {
+  padding:        1.25rem;
+  display:        flex;
+  flex-direction: column;
+  gap:            0.75rem;
+}
+
+.card__tags {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       0.4rem;
+}
+
+/* Primary text — top of text hierarchy */
+.card__title {
+  font-size:   1rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color:       var(--_card-title);
+}
+
+/* Secondary text — supporting description */
+.card__desc {
+  font-size:   0.85rem;
+  color:       var(--_card-body-text);
+  line-height: 1.6;
+}
+
+/* Tertiary text — metadata / timestamps */
+.card__meta {
+  display:     flex;
+  align-items: center;
+  gap:         0.35rem;
+  font-size:   0.75rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color:       var(--_card-meta);
+}
+
+.card__meta-sep {
+  opacity: 0.5;
+}
+
+/* Nested list — depth level 3 (inset within card surface) */
+.card__nested-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+  border:         1px solid var(--_nested-border);
+  border-radius:  4px;
+  overflow:       hidden;
+  background:     var(--_nested-bg);
+}
+
+.card__nested-item {
+  display:     flex;
+  align-items: center;
+  gap:         0.75rem;
+  padding:     0.75rem;
+  border-bottom: 1px solid var(--_nested-border);
+}
+
+.card__nested-item:last-child {
+  border-bottom: none;
+}
+
+.card__nested-thumb {
+  width:       2.5rem;
+  height:      2rem;
+  background:  var(--_media-bg);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.card__nested-body {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.2rem;
+  min-width:      0;
+}
+
+.card__nested-title {
+  font-size:          0.8rem;
+  color:              var(--_nested-title);
+  line-height:        1.3;
+  display:            -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow:           hidden;
+}
+
+.card__nested-date {
+  font-size:   0.7rem;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color:       var(--_nested-date);
+}

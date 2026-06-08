@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury" data-mode="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approach 04 — Contextual Slot Binding</title>
+  <link rel="stylesheet" href="../shared/demo.css" />
+  <link rel="stylesheet" href="demo.css" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header class="page-header">
+    <a class="page-header__back" href="../index.html">← Back to overview</a>
+    <p class="page-header__eyebrow">Approach 04</p>
+    <h1 class="page-header__title">Contextual Slot Binding</h1>
+    <p class="page-header__desc">
+      Palette tokens (<code>--pal-*</code>) are declared per <code>[data-theme][data-mode]</code> scope.
+      Each <code>[data-role]</code> element binds palette values into a compact set of local rendering
+      slots — <code>--_bg</code>, <code>--_fg</code>, <code>--_tint-bg</code>, <code>--_tint-fg</code>,
+      <code>--_stroke</code>. Component rules consume only those slots, remaining
+      completely oblivious to which role or theme is active.
+    </p>
+  </header>
+
+  <include src="../components/theme-switcher.html"></include>
+
+  <main class="page-main">
+
+    <!-- Token Architecture Reference -->
+    <section>
+      <p class="token-map__title">Token Architecture</p>
+      <div class="token-map">
+
+        <!-- Layer 1 → 2 → 3: palette → role context → badge highlight -->
+        <div class="token-map__row">
+          <span class="token-map__layer">[data-theme][data-mode] --pal-primary-solid: #B07D3E</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">[data-role="primary"] --_bg: var(--pal-primary-solid)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[highlight] background: var(--_bg)</span>
+        </div>
+
+        <!-- Soft variant chain -->
+        <div class="token-map__row">
+          <span class="token-map__layer">[data-theme][data-mode] --pal-primary-tint: #F5E4C8</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">[data-role="primary"] --_tint-bg: var(--pal-primary-tint)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[soft] background: var(--_tint-bg)</span>
+        </div>
+
+        <!-- Outline variant chain -->
+        <div class="token-map__row">
+          <span class="token-map__layer">[data-theme][data-mode] --pal-primary-solid: #B07D3E</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">[data-role="primary"] --_stroke: var(--pal-primary-solid)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.badge[outline] border-color: var(--_stroke)</span>
+        </div>
+
+        <!-- Card surface — 2-layer chain -->
+        <div class="token-map__row">
+          <span class="token-map__layer">[data-theme][data-mode] --_card-border-hover: var(--pal-primary-solid)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer">.card:hover border-color: var(--_card-border-hover)</span>
+        </div>
+
+      </div>
+    </section>
+
+    <include src="../components/badge.html"></include>
+
+    <include src="../components/card.html"></include>
+
+  </main>
+
+</body>
+</html>

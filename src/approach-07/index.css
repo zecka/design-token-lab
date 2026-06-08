@@ -1,0 +1,73 @@
+[color="primary"] {
+    
+    --_bg: var(--color-primary-bg);
+    --_fg: var(--color-primary-fg);
+    --_border: var(--color-primary-border);
+    --_opacity: var(--color-primary-opacity, 1);
+
+    --_bg-hover: var(--color-primary-bg-hover);
+    --_fg-hover: var(--color-primary-fg-hover);
+    --_border-hover: var(--color-primary-border-hover);
+    --_opacity-hover: var(--color-primary-opacity-hover);
+
+    --_bg-active: var(--color-primary-bg-active);
+    --_fg-active: var(--color-primary-fg-active);
+    --_border-active: var(--color-primary-border-active);
+    --_opacity-active: var(--color-primary-opacity-active);
+
+    --_bg-focus: var(--color-primary-bg-focus);
+    --_fg-focus: var(--color-primary-fg-focus);
+    --_border-focus: var(--color-primary-border-focus);
+    --_opacity-focus: var(--color-primary-opacity-focus);
+
+    &[soft]{
+        --_bg: var(--color-primary-bg-soft);
+        --_fg: var(--color-primary-fg-soft);
+        --_border: var(--color-primary-border-soft);
+        --_opacity: var(--color-primary-opacity-soft);
+    
+        --_bg-hover: var(--color-primary-bg-soft-hover);
+        --_fg-hover: var(--color-primary-fg-soft-hover);
+        --_border-hover: var(--color-primary-border-soft-hover);
+        --_opacity-hover: var(--color-primary-opacity-soft-hover);
+    
+        --_bg-active: var(--color-primary-bg-soft-active);
+        --_fg-active: var(--color-primary-fg-soft-active);
+        --_border-active: var(--color-primary-border-soft-active);
+        --_opacity-active: var(--color-primary-opacity-soft-active);
+    
+        --_bg-focus: var(--color-primary-bg-soft-focus);
+        --_fg-focus: var(--color-primary-fg-soft-focus);
+        --_border-focus: var(--color-primary-border-soft-focus);
+        --_opacity-focus: var(--color-primary-opacity-soft-focus);
+    }
+
+}
+
+
+.tag {
+    background-color: var(--_bg);
+    color: var(--_fg);
+    border-color: var(--_border);
+    opacity: var(--_opacity);
+    &:hover {
+        background-color: var(--_bg-hover);
+        color: var(--_fg-hover);
+        border-color: var(--_border-hover);
+        opacity: var(--_opacity-hover);
+    }
+    &:active {
+        background-color: var(--_bg-active);
+        color: var(--_fg-active);
+        border-color: var(--_border-active);
+        opacity: var(--_opacity-active);
+    }
+    &:focus {
+        background-color: var(--_bg-focus);
+        color: var(--_fg-focus);
+        border-color: var(--_border-focus);
+        opacity: var(--_opacity-focus);
+    }
+
+    
+}
