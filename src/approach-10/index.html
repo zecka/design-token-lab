@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approach 10 — Seed Derivation + Hue Channel</title>
+  <link rel="stylesheet" href="../shared/demo.css" />
+  <link rel="stylesheet" href="demo.css" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header class="page-header">
+    <a class="page-header__back" href="../index.html">← Back to overview</a>
+    <p class="page-header__eyebrow">Approach 10</p>
+    <h1 class="page-header__title">Seed Derivation + Hue Channel</h1>
+    <p class="page-header__desc">
+      Only seeds are literal values: 3 base colors plus 2 per hue. Every other token
+      (hover, soft, ink, separators, disabled, hierarchy) is derived with color-mix()
+      in OKLab — a full dark mode is 3 redefined seeds. Components read a generic
+      --hue-* channel published by data-color, with a neutral fallback: no role
+      notion, any color works on any variant. Unlike existing approaches (all static
+      hex tables remapped per theme×mode), the palette here is computed, and adding
+      a theme or a hue means declaring seeds, not repainting every token.
+    </p>
+  </header>
+
+  <main class="page-main">
+
+    <nav class="theme-switcher" aria-label="Theme controls">
+      <div class="theme-switcher__group">
+        <span class="theme-switcher__label">Theme</span>
+        <button class="theme-switcher__btn" type="button" data-set-theme="luxury" aria-pressed="true">Luxury</button>
+        <button class="theme-switcher__btn" type="button" data-set-theme="cozy" aria-pressed="false">Cozy</button>
+      </div>
+      <div class="theme-switcher__group">
+        <span class="theme-switcher__label">Mode</span>
+        <button class="theme-switcher__btn" type="button" data-set-mode="light" aria-pressed="true">Light</button>
+        <button class="theme-switcher__btn" type="button" data-set-mode="dark" aria-pressed="false">Dark</button>
+      </div>
+    </nav>
+
+    <!-- Token Architecture Reference -->
+    <section>
+      <p class="token-map__title">Token Architecture</p>
+      <div class="token-map">
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">seed · --color-accent: oklch(56% 0.1 78)</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">derived · --color-accent-hover: color-mix(in oklab, accent 85%, accent-foreground)</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">seed · --color-accent + --color-surface</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--b">derived · --color-accent-soft: color-mix(in oklab, accent 14%, surface)</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--b">channel · [data-color="danger"] { --hue: var(--color-danger) }</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">component · --badge-bg: var(--hue, var(--color-neutral))</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--a">theming · [data-mode="dark"] redefines 3 seeds</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">every derived token recomputes, components untouched</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --button-bg: var(--color-danger) }</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--a">no --hue-* read: locked, data-color ignored</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main comparison grid -->
+    <section>
+      <p class="demo-section__title">All Colors × All Variants</p>
+
+      <div class="demo-grid">
+
+        <!-- Column headers -->
+        <div class="demo-grid__col-header">Color</div>
+        <div class="demo-grid__col-header">Highlight</div>
+        <div class="demo-grid__col-header">Soft</div>
+        <div class="demo-grid__col-header">Outline</div>
+
+        <!-- No data-color: the hue channel is unset, variants fall back to neutral -->
+        <div class="demo-grid__row-label">(none)</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight">Default</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft">Default</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline">Default</button>
+        </div>
+
+        <!-- Accent -->
+        <div class="demo-grid__row-label" data-color="accent">accent</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="accent">Accent</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="accent">Accent</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="accent">Accent</button>
+        </div>
+
+        <!-- Neutral -->
+        <div class="demo-grid__row-label" data-color="neutral">neutral</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="neutral">Neutral</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="neutral">Neutral</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="neutral">Neutral</button>
+        </div>
+
+        <!-- Success -->
+        <div class="demo-grid__row-label" data-color="success">success</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="success">Success</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="success">Success</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="success">Success</button>
+        </div>
+
+        <!-- Danger -->
+        <div class="demo-grid__row-label" data-color="danger">danger</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="danger">Danger</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="danger">Danger</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="danger">Danger</button>
+        </div>
+
+        <!-- Warning -->
+        <div class="demo-grid__row-label" data-color="warning">warning</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="warning">Warning</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="warning">Warning</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="warning">Warning</button>
+        </div>
+
+        <!-- Info -->
+        <div class="demo-grid__row-label" data-color="info">info</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="info">Info</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="info">Info</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="info">Info</button>
+        </div>
+
+        <!-- Extension colors — added on top of the core set, same contract -->
+        <div class="demo-grid__group-label">Extension colors</div>
+
+        <div class="demo-grid__row-label" data-color="morning">morning</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="morning">Morning</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="morning">Morning</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="morning">Morning</button>
+        </div>
+
+        <div class="demo-grid__row-label" data-color="afternoon">afternoon</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="afternoon">Afternoon</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="afternoon">Afternoon</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="afternoon">Afternoon</button>
+        </div>
+
+        <div class="demo-grid__row-label" data-color="evening">evening</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="evening">Evening</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="evening">Evening</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="evening">Evening</button>
+        </div>
+
+        <!-- Brand colors — mandatory rule: each approach must surface these exact colors -->
+        <div class="demo-grid__group-label">Brand colors</div>
+
+        <div class="demo-grid__row-label" data-color="brand1">brand1</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="brand1">Brand 1</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="brand1">Brand 1</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="brand1">Brand 1</button>
+        </div>
+
+        <div class="demo-grid__row-label" data-color="brand2">brand2</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="brand2">Brand 2</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="brand2">Brand 2</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="brand2">Brand 2</button>
+        </div>
+
+        <div class="demo-grid__row-label" data-color="brand3">brand3</div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="highlight" data-color="brand3">Brand 3</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="soft" data-color="brand3">Brand 3</button>
+        </div>
+        <div class="demo-grid__cell">
+          <button class="badge" data-variant="outline" data-color="brand3">Brand 3</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Disabled state showcase -->
+    <section>
+      <p class="demo-section__title">Disabled State — All Colors</p>
+      <div class="disabled-grid">
+
+        <div class="disabled-row">
+          <span class="disabled-row__label">highlight</span>
+          <button class="badge" data-variant="highlight" data-color="accent"    disabled>Accent</button>
+          <button class="badge" data-variant="highlight" data-color="neutral"   disabled>Neutral</button>
+          <button class="badge" data-variant="highlight" data-color="success"   disabled>Success</button>
+          <button class="badge" data-variant="highlight" data-color="danger"    disabled>Danger</button>
+          <button class="badge" data-variant="highlight" data-color="warning"   disabled>Warning</button>
+          <button class="badge" data-variant="highlight" data-color="info"      disabled>Info</button>
+          <button class="badge" data-variant="highlight" data-color="morning"   disabled>Morning</button>
+          <button class="badge" data-variant="highlight" data-color="afternoon" disabled>Afternoon</button>
+          <button class="badge" data-variant="highlight" data-color="evening"   disabled>Evening</button>
+          <button class="badge" data-variant="highlight" data-color="brand1"    disabled>Brand 1</button>
+          <button class="badge" data-variant="highlight" data-color="brand2"    disabled>Brand 2</button>
+          <button class="badge" data-variant="highlight" data-color="brand3"    disabled>Brand 3</button>
+        </div>
+
+        <div class="disabled-row">
+          <span class="disabled-row__label">soft</span>
+          <button class="badge" data-variant="soft" data-color="accent"    disabled>Accent</button>
+          <button class="badge" data-variant="soft" data-color="neutral"   disabled>Neutral</button>
+          <button class="badge" data-variant="soft" data-color="success"   disabled>Success</button>
+          <button class="badge" data-variant="soft" data-color="danger"    disabled>Danger</button>
+          <button class="badge" data-variant="soft" data-color="warning"   disabled>Warning</button>
+          <button class="badge" data-variant="soft" data-color="info"      disabled>Info</button>
+          <button class="badge" data-variant="soft" data-color="morning"   disabled>Morning</button>
+          <button class="badge" data-variant="soft" data-color="afternoon" disabled>Afternoon</button>
+          <button class="badge" data-variant="soft" data-color="evening"   disabled>Evening</button>
+          <button class="badge" data-variant="soft" data-color="brand1"    disabled>Brand 1</button>
+          <button class="badge" data-variant="soft" data-color="brand2"    disabled>Brand 2</button>
+          <button class="badge" data-variant="soft" data-color="brand3"    disabled>Brand 3</button>
+        </div>
+
+        <div class="disabled-row">
+          <span class="disabled-row__label">outline</span>
+          <button class="badge" data-variant="outline" data-color="accent"    disabled>Accent</button>
+          <button class="badge" data-variant="outline" data-color="neutral"   disabled>Neutral</button>
+          <button class="badge" data-variant="outline" data-color="success"   disabled>Success</button>
+          <button class="badge" data-variant="outline" data-color="danger"    disabled>Danger</button>
+          <button class="badge" data-variant="outline" data-color="warning"   disabled>Warning</button>
+          <button class="badge" data-variant="outline" data-color="info"      disabled>Info</button>
+          <button class="badge" data-variant="outline" data-color="morning"   disabled>Morning</button>
+          <button class="badge" data-variant="outline" data-color="afternoon" disabled>Afternoon</button>
+          <button class="badge" data-variant="outline" data-color="evening"   disabled>Evening</button>
+          <button class="badge" data-variant="outline" data-color="brand1"    disabled>Brand 1</button>
+          <button class="badge" data-variant="outline" data-color="brand2"    disabled>Brand 2</button>
+          <button class="badge" data-variant="outline" data-color="brand3"    disabled>Brand 3</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Realistic usage examples -->
+    <section>
+      <p class="demo-section__title">In Context</p>
+      <div class="in-context-strip">
+        <button class="badge" data-variant="soft"      data-color="success">Confirmed</button>
+        <button class="badge" data-variant="soft"      data-color="danger">Cancelled</button>
+        <button class="badge" data-variant="soft"      data-color="accent">Premium</button>
+        <button class="badge" data-variant="soft">Draft</button>
+        <button class="badge" data-variant="highlight" data-color="accent">New</button>
+        <button class="badge" data-variant="soft"      data-color="warning">Almost Full</button>
+        <button class="badge" data-variant="soft"      data-color="info">Updated</button>
+        <button class="badge" data-variant="soft"      data-color="morning">Morning Ritual</button>
+        <button class="badge" data-variant="soft"      data-color="afternoon">Afternoon Reset</button>
+        <button class="badge" data-variant="soft"      data-color="evening">Evening Wind-down</button>
+        <button class="badge" data-variant="outline">Archived</button>
+        <button class="badge" data-variant="outline"   data-color="success">Verified</button>
+        <button class="badge" data-variant="highlight" data-color="evening">Members Only</button>
+        <button class="badge" data-variant="highlight" data-color="brand1">Brand</button>
+        <button class="badge" data-variant="highlight" data-color="brand2">Brand</button>
+        <button class="badge" data-variant="highlight" data-color="brand3">Brand</button>
+      </div>
+    </section>
+
+    <!-- Button component demo -->
+    <section>
+      <p class="demo-section__title">Button Component — UX-Oriented API</p>
+      <p class="button-demo__note">
+        Deliberately more opinionated than the badge: only design-system-vetted
+        variants are exposed. primary, secondary and ghost still accept the
+        optional data-color override through the --hue-* channel; danger and
+        danger-soft are locked to the danger tokens.
+      </p>
+
+      <div class="button-demo">
+
+        <div class="button-strip">
+          <span class="button-strip__label">variants</span>
+          <button class="button" data-variant="primary">Book a Session</button>
+          <button class="button" data-variant="secondary">View Details</button>
+          <button class="button" data-variant="ghost">Dismiss</button>
+          <button class="button" data-variant="danger">Delete Account</button>
+          <button class="button" data-variant="danger-soft">Cancel Booking</button>
+        </div>
+
+        <div class="button-strip">
+          <span class="button-strip__label">disabled</span>
+          <button class="button" data-variant="primary" disabled>Book a Session</button>
+          <button class="button" data-variant="secondary" disabled>View Details</button>
+          <button class="button" data-variant="ghost" disabled>Dismiss</button>
+          <button class="button" data-variant="danger" disabled>Delete Account</button>
+          <button class="button" data-variant="danger-soft" disabled>Cancel Booking</button>
+        </div>
+
+        <div class="button-strip">
+          <span class="button-strip__label">hue override</span>
+          <button class="button" data-variant="primary" data-color="success">Approve</button>
+          <button class="button" data-variant="primary" data-color="brand2">Brand Action</button>
+          <button class="button" data-variant="secondary" data-color="info">Learn More</button>
+          <button class="button" data-variant="ghost" data-color="evening">Wind Down</button>
+          <button class="button" data-variant="danger" data-color="success">Locked (stays danger)</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Card component demo -->
+    <section>
+      <p class="demo-section__title">Card Component</p>
+
+      <div class="card-grid">
+
+        <!-- Card A — standard article card with image area -->
+        <article class="card">
+          <div class="card__media">
+            <span class="card__media-label">image · 16:9</span>
+          </div>
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="soft" data-color="morning">Morning</button>
+              <button class="badge" data-variant="soft" data-color="success">Confirmed</button>
+            </div>
+            <h3 class="card__title">Sunrise Meditation Ritual</h3>
+            <p class="card__desc">A gentle morning practice to ground your day with intention and clarity before the world takes over.</p>
+            <div class="card__meta">
+              <span class="card__meta-item">3 min read</span>
+              <span class="card__meta-sep">·</span>
+              <span class="card__meta-item">Apr 21, 2026</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card B — nested related items (surface layering: page → card → nested item) -->
+        <article class="card">
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="highlight" data-color="accent">Featured</button>
+            </div>
+            <h3 class="card__title">Related Articles</h3>
+            <div class="card__nested-list">
+              <div class="card__nested-item">
+                <div class="card__nested-thumb"></div>
+                <div class="card__nested-body">
+                  <span class="card__nested-title">Lineup confirmed for FIBA Women's Basketball 2026</span>
+                  <span class="card__nested-date">Apr 21, 2026</span>
+                </div>
+              </div>
+              <div class="card__nested-item">
+                <div class="card__nested-thumb"></div>
+                <div class="card__nested-body">
+                  <span class="card__nested-title">The must-watch group games of the World Cup</span>
+                  <span class="card__nested-date">Apr 21, 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card C — minimal, no image, outline badge -->
+        <article class="card">
+          <div class="card__body">
+            <div class="card__tags">
+              <button class="badge" data-variant="outline">Short Read</button>
+              <button class="badge" data-variant="soft" data-color="evening">Members Only</button>
+            </div>
+            <h3 class="card__title">Evening Wind-down: Why Slowing Down Is a Skill</h3>
+            <p class="card__desc">Transition rituals for professionals who can't switch off.</p>
+            <div class="card__meta">
+              <span class="card__meta-item">5 min read</span>
+              <span class="card__meta-sep">·</span>
+              <span class="card__meta-item">May 20, 2026</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function bind(attr) {
+        var key = 'data-' + attr;
+        var buttons = document.querySelectorAll('[data-set-' + attr + ']');
+        buttons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var value = btn.getAttribute('data-set-' + attr);
+            root.setAttribute(key, value);
+            buttons.forEach(function (b) {
+              b.setAttribute('aria-pressed', String(b.getAttribute('data-set-' + attr) === value));
+            });
+          });
+        });
+      }
+      bind('theme');
+      bind('mode');
+    })();
+  </script>
+
+</body>
+</html>
