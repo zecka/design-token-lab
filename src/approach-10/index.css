@@ -1,0 +1,657 @@
+/* ============================================================
+   APPROACH 10 — SEED DERIVATION + HUE CHANNEL
+   ------------------------------------------------------------
+   Model:
+   1. SEEDS — the only literal color values in the system.
+      Base seeds: background, surface, foreground (3 per theme×mode).
+      Hue seeds: 2 per hue (--color-x + --color-x-foreground).
+   2. DERIVED — every other token is computed with color-mix()
+      in OKLab from the seeds: hover, soft, soft-hover,
+      soft-foreground, ink, separators, disabled, hierarchy levels.
+      Redefine a seed → the whole family recomputes.
+      A full dark mode is 3 redefined seeds.
+   3. HUE CHANNEL — components never know about hue names.
+      [data-color="x"] publishes a generic --hue-* channel;
+      component variants read var(--hue-*, neutral-fallback).
+      No "role" notion: any color works on any variant.
+
+   Conventions:
+   - No dedicated active color: pressed = transform.
+   - No dedicated focus color token per hue: focus = ring.
+   - "separator", not "border" (avoids CSS property collision).
+   - No per-hue border token: outline uses ink + currentColor.
+   - Disabled has its own neutral colors (not opacity).
+   - OKLCH as authoring format, color-mix(in oklab) for derivation.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. SEEDS + DERIVED TOKENS — default theme (luxury / light)
+   ------------------------------------------------------------ */
+
+:root {
+  /* ---- Shape ---- */
+  --pressed-transformation: scale(0.96);
+
+  --radius: 3px;
+  --radius-full: calc(var(--radius) * 9999);
+  --radius-box: calc(var(--radius) * 3);
+  --radius-field: calc(var(--radius) * 2);
+  --radius-selector: var(--radius);
+
+  /* component-level radius (important components only) */
+  --radius-badge: var(--radius-selector);
+  --radius-button: var(--radius-field);
+  --radius-card: var(--radius-box);
+
+  /* ---- Base seeds ---- */
+  --color-background: oklch(97.5% 0.009 85);
+  --color-surface: oklch(99.2% 0.005 90);
+  --color-foreground: oklch(26% 0.018 65);
+
+  /* ---- Base derived ---- */
+  --color-background-secondary: color-mix(in oklab, var(--color-background) 96%, var(--color-foreground));
+  --color-background-tertiary: color-mix(in oklab, var(--color-background) 92%, var(--color-foreground));
+
+  --color-surface-secondary: color-mix(in oklab, var(--color-surface) 96%, var(--color-foreground));
+  --color-surface-tertiary: color-mix(in oklab, var(--color-surface) 92%, var(--color-foreground));
+
+  --color-foreground-secondary: color-mix(in oklab, var(--color-foreground) 78%, var(--color-background));
+  --color-foreground-tertiary: color-mix(in oklab, var(--color-foreground) 55%, var(--color-background));
+
+  --color-separator: color-mix(in oklab, var(--color-foreground) 15%, var(--color-background));
+  --color-separator-secondary: color-mix(in oklab, var(--color-foreground) 10%, var(--color-background));
+  --color-separator-tertiary: color-mix(in oklab, var(--color-foreground) 6%, var(--color-background));
+
+  --color-disabled: color-mix(in oklab, var(--color-foreground) 7%, var(--color-background));
+  --color-disabled-foreground: color-mix(in oklab, var(--color-foreground) 42%, var(--color-background));
+  --color-disabled-ink: var(--color-disabled-foreground);
+
+  --color-backdrop: oklch(20% 0.02 65 / 0.55);
+  --color-focus: var(--color-accent);
+
+  /* ---- Hue seeds + derived ----
+     Per hue, only the first 2 tokens are seeds.
+     The 5 derived tokens follow the same formula for every hue. */
+
+  /* accent — warm bronze gold */
+  --color-accent: oklch(56% 0.1 78);
+  --color-accent-foreground: oklch(98.5% 0.01 90);
+  --color-accent-hover: color-mix(in oklab, var(--color-accent) 85%, var(--color-accent-foreground));
+  --color-accent-soft: color-mix(in oklab, var(--color-accent) 14%, var(--color-surface));
+  --color-accent-soft-hover: color-mix(in oklab, var(--color-accent) 22%, var(--color-surface));
+  --color-accent-soft-foreground: color-mix(in oklab, var(--color-accent) 55%, var(--color-foreground));
+  --color-accent-ink: var(--color-accent-soft-foreground);
+
+  /* neutral — warm stone */
+  --color-neutral: oklch(47% 0.022 70);
+  --color-neutral-foreground: oklch(98.5% 0.006 85);
+  --color-neutral-hover: color-mix(in oklab, var(--color-neutral) 85%, var(--color-neutral-foreground));
+  --color-neutral-soft: color-mix(in oklab, var(--color-neutral) 14%, var(--color-surface));
+  --color-neutral-soft-hover: color-mix(in oklab, var(--color-neutral) 22%, var(--color-surface));
+  --color-neutral-soft-foreground: color-mix(in oklab, var(--color-neutral) 55%, var(--color-foreground));
+  --color-neutral-ink: var(--color-neutral-soft-foreground);
+
+  /* success — deep forest */
+  --color-success: oklch(48% 0.085 155);
+  --color-success-foreground: oklch(98.5% 0.008 150);
+  --color-success-hover: color-mix(in oklab, var(--color-success) 85%, var(--color-success-foreground));
+  --color-success-soft: color-mix(in oklab, var(--color-success) 14%, var(--color-surface));
+  --color-success-soft-hover: color-mix(in oklab, var(--color-success) 22%, var(--color-surface));
+  --color-success-soft-foreground: color-mix(in oklab, var(--color-success) 55%, var(--color-foreground));
+  --color-success-ink: var(--color-success-soft-foreground);
+
+  /* danger — muted terracotta */
+  --color-danger: oklch(56% 0.115 32);
+  --color-danger-foreground: oklch(98.6% 0.008 30);
+  --color-danger-hover: color-mix(in oklab, var(--color-danger) 85%, var(--color-danger-foreground));
+  --color-danger-soft: color-mix(in oklab, var(--color-danger) 14%, var(--color-surface));
+  --color-danger-soft-hover: color-mix(in oklab, var(--color-danger) 22%, var(--color-surface));
+  --color-danger-soft-foreground: color-mix(in oklab, var(--color-danger) 55%, var(--color-foreground));
+  --color-danger-ink: var(--color-danger-soft-foreground);
+
+  /* warning — honey amber (light hue → dark foreground) */
+  --color-warning: oklch(76% 0.125 82);
+  --color-warning-foreground: oklch(31% 0.05 78);
+  --color-warning-hover: color-mix(in oklab, var(--color-warning) 85%, var(--color-warning-foreground));
+  --color-warning-soft: color-mix(in oklab, var(--color-warning) 14%, var(--color-surface));
+  --color-warning-soft-hover: color-mix(in oklab, var(--color-warning) 22%, var(--color-surface));
+  --color-warning-soft-foreground: color-mix(in oklab, var(--color-warning) 55%, var(--color-foreground));
+  --color-warning-ink: var(--color-warning-soft-foreground);
+
+  /* info — soft mineral blue */
+  --color-info: oklch(55% 0.075 240);
+  --color-info-foreground: oklch(98.5% 0.007 240);
+  --color-info-hover: color-mix(in oklab, var(--color-info) 85%, var(--color-info-foreground));
+  --color-info-soft: color-mix(in oklab, var(--color-info) 14%, var(--color-surface));
+  --color-info-soft-hover: color-mix(in oklab, var(--color-info) 22%, var(--color-surface));
+  --color-info-soft-foreground: color-mix(in oklab, var(--color-info) 55%, var(--color-foreground));
+  --color-info-ink: var(--color-info-soft-foreground);
+
+  /* ---- Extension hues — same contract, added on top of the core set ---- */
+
+  /* morning — pale slate mist */
+  --color-morning: oklch(78% 0.035 235);
+  --color-morning-foreground: oklch(29% 0.04 240);
+  --color-morning-hover: color-mix(in oklab, var(--color-morning) 85%, var(--color-morning-foreground));
+  --color-morning-soft: color-mix(in oklab, var(--color-morning) 14%, var(--color-surface));
+  --color-morning-soft-hover: color-mix(in oklab, var(--color-morning) 22%, var(--color-surface));
+  --color-morning-soft-foreground: color-mix(in oklab, var(--color-morning) 55%, var(--color-foreground));
+  --color-morning-ink: var(--color-morning-soft-foreground);
+
+  /* afternoon — warm amber */
+  --color-afternoon: oklch(72% 0.115 68);
+  --color-afternoon-foreground: oklch(30% 0.05 65);
+  --color-afternoon-hover: color-mix(in oklab, var(--color-afternoon) 85%, var(--color-afternoon-foreground));
+  --color-afternoon-soft: color-mix(in oklab, var(--color-afternoon) 14%, var(--color-surface));
+  --color-afternoon-soft-hover: color-mix(in oklab, var(--color-afternoon) 22%, var(--color-surface));
+  --color-afternoon-soft-foreground: color-mix(in oklab, var(--color-afternoon) 55%, var(--color-foreground));
+  --color-afternoon-ink: var(--color-afternoon-soft-foreground);
+
+  /* evening — deep indigo */
+  --color-evening: oklch(40% 0.095 292);
+  --color-evening-foreground: oklch(97.5% 0.01 295);
+  --color-evening-hover: color-mix(in oklab, var(--color-evening) 85%, var(--color-evening-foreground));
+  --color-evening-soft: color-mix(in oklab, var(--color-evening) 14%, var(--color-surface));
+  --color-evening-soft-hover: color-mix(in oklab, var(--color-evening) 22%, var(--color-surface));
+  --color-evening-soft-foreground: color-mix(in oklab, var(--color-evening) 55%, var(--color-foreground));
+  --color-evening-ink: var(--color-evening-soft-foreground);
+
+  /* ---- Brand hues — exact hex seeds (mandatory), derived like any hue ---- */
+
+  /* brand1 — light yellow. Seed is the exact brand hex.
+     Only exception in the system: the default 55% soft-foreground mix
+     stays too light to read, so this hue overrides the mix ratio. */
+  --color-brand1: #F6D425;
+  --color-brand1-foreground: #33290A; /* 9.8:1 on the exact hex */
+  --color-brand1-hover: color-mix(in oklab, var(--color-brand1) 85%, var(--color-brand1-foreground));
+  --color-brand1-soft: color-mix(in oklab, var(--color-brand1) 14%, var(--color-surface));
+  --color-brand1-soft-hover: color-mix(in oklab, var(--color-brand1) 22%, var(--color-surface));
+  --color-brand1-soft-foreground: color-mix(in oklab, var(--color-brand1) 38%, var(--color-foreground));
+  --color-brand1-ink: var(--color-brand1-soft-foreground);
+
+  /* brand2 — dark violet */
+  --color-brand2: #3B2A5A;
+  --color-brand2-foreground: #F4F1F9; /* 11.3:1 on the exact hex */
+  --color-brand2-hover: color-mix(in oklab, var(--color-brand2) 85%, var(--color-brand2-foreground));
+  --color-brand2-soft: color-mix(in oklab, var(--color-brand2) 14%, var(--color-surface));
+  --color-brand2-soft-hover: color-mix(in oklab, var(--color-brand2) 22%, var(--color-surface));
+  --color-brand2-soft-foreground: color-mix(in oklab, var(--color-brand2) 55%, var(--color-foreground));
+  --color-brand2-ink: var(--color-brand2-soft-foreground);
+
+  /* brand3 — medium blue */
+  --color-brand3: #3B6FB5;
+  --color-brand3-foreground: #FFFFFF; /* 5.1:1 on the exact hex */
+  --color-brand3-hover: color-mix(in oklab, var(--color-brand3) 85%, var(--color-brand3-foreground));
+  --color-brand3-soft: color-mix(in oklab, var(--color-brand3) 14%, var(--color-surface));
+  --color-brand3-soft-hover: color-mix(in oklab, var(--color-brand3) 22%, var(--color-surface));
+  --color-brand3-soft-foreground: color-mix(in oklab, var(--color-brand3) 55%, var(--color-foreground));
+  --color-brand3-ink: var(--color-brand3-soft-foreground);
+}
+
+/* ------------------------------------------------------------
+   2. THEMING — redefine seeds only, derivation does the rest
+   ------------------------------------------------------------ */
+
+/* Dark mode = 3 redefined base seeds.
+   Separators, disabled, hierarchy levels, soft tints, inks:
+   all recompute from these. Highlight pairs (bg + foreground)
+   are self-contained and need no change. */
+[data-mode="dark"] {
+  --color-background: oklch(21% 0.012 65);
+  --color-surface: oklch(25.5% 0.014 65);
+  --color-foreground: oklch(93% 0.01 85);
+}
+
+/* Cozy family = shape + base seeds + accent seeds.
+   Every accent derivative (hover, soft, ink, focus ring)
+   follows the new terracotta seed automatically. */
+[data-theme="cozy"] {
+  --radius: 10px;
+
+  --color-background: oklch(97.8% 0.011 40);
+  --color-surface: oklch(99.3% 0.006 40);
+  --color-foreground: oklch(27% 0.02 40);
+
+  --color-accent: oklch(55% 0.13 30);
+  --color-accent-foreground: oklch(98.7% 0.008 30);
+}
+
+[data-theme="cozy"][data-mode="dark"] {
+  --color-background: oklch(22% 0.015 35);
+  --color-surface: oklch(26.5% 0.017 35);
+  --color-foreground: oklch(93.5% 0.012 40);
+}
+
+/* ------------------------------------------------------------
+   3. HUE CHANNEL — data-color publishes generic --hue-* variables
+   ------------------------------------------------------------
+   Works on any element, for any component that opts in.
+   A component variant reads var(--hue-*, <its-default>). */
+
+[data-color="accent"] {
+  --hue: var(--color-accent);
+  --hue-hover: var(--color-accent-hover);
+  --hue-foreground: var(--color-accent-foreground);
+  --hue-soft: var(--color-accent-soft);
+  --hue-soft-hover: var(--color-accent-soft-hover);
+  --hue-soft-foreground: var(--color-accent-soft-foreground);
+  --hue-ink: var(--color-accent-ink);
+}
+
+[data-color="neutral"] {
+  --hue: var(--color-neutral);
+  --hue-hover: var(--color-neutral-hover);
+  --hue-foreground: var(--color-neutral-foreground);
+  --hue-soft: var(--color-neutral-soft);
+  --hue-soft-hover: var(--color-neutral-soft-hover);
+  --hue-soft-foreground: var(--color-neutral-soft-foreground);
+  --hue-ink: var(--color-neutral-ink);
+}
+
+[data-color="success"] {
+  --hue: var(--color-success);
+  --hue-hover: var(--color-success-hover);
+  --hue-foreground: var(--color-success-foreground);
+  --hue-soft: var(--color-success-soft);
+  --hue-soft-hover: var(--color-success-soft-hover);
+  --hue-soft-foreground: var(--color-success-soft-foreground);
+  --hue-ink: var(--color-success-ink);
+}
+
+[data-color="danger"] {
+  --hue: var(--color-danger);
+  --hue-hover: var(--color-danger-hover);
+  --hue-foreground: var(--color-danger-foreground);
+  --hue-soft: var(--color-danger-soft);
+  --hue-soft-hover: var(--color-danger-soft-hover);
+  --hue-soft-foreground: var(--color-danger-soft-foreground);
+  --hue-ink: var(--color-danger-ink);
+}
+
+[data-color="warning"] {
+  --hue: var(--color-warning);
+  --hue-hover: var(--color-warning-hover);
+  --hue-foreground: var(--color-warning-foreground);
+  --hue-soft: var(--color-warning-soft);
+  --hue-soft-hover: var(--color-warning-soft-hover);
+  --hue-soft-foreground: var(--color-warning-soft-foreground);
+  --hue-ink: var(--color-warning-ink);
+}
+
+[data-color="info"] {
+  --hue: var(--color-info);
+  --hue-hover: var(--color-info-hover);
+  --hue-foreground: var(--color-info-foreground);
+  --hue-soft: var(--color-info-soft);
+  --hue-soft-hover: var(--color-info-soft-hover);
+  --hue-soft-foreground: var(--color-info-soft-foreground);
+  --hue-ink: var(--color-info-ink);
+}
+
+[data-color="morning"] {
+  --hue: var(--color-morning);
+  --hue-hover: var(--color-morning-hover);
+  --hue-foreground: var(--color-morning-foreground);
+  --hue-soft: var(--color-morning-soft);
+  --hue-soft-hover: var(--color-morning-soft-hover);
+  --hue-soft-foreground: var(--color-morning-soft-foreground);
+  --hue-ink: var(--color-morning-ink);
+}
+
+[data-color="afternoon"] {
+  --hue: var(--color-afternoon);
+  --hue-hover: var(--color-afternoon-hover);
+  --hue-foreground: var(--color-afternoon-foreground);
+  --hue-soft: var(--color-afternoon-soft);
+  --hue-soft-hover: var(--color-afternoon-soft-hover);
+  --hue-soft-foreground: var(--color-afternoon-soft-foreground);
+  --hue-ink: var(--color-afternoon-ink);
+}
+
+[data-color="evening"] {
+  --hue: var(--color-evening);
+  --hue-hover: var(--color-evening-hover);
+  --hue-foreground: var(--color-evening-foreground);
+  --hue-soft: var(--color-evening-soft);
+  --hue-soft-hover: var(--color-evening-soft-hover);
+  --hue-soft-foreground: var(--color-evening-soft-foreground);
+  --hue-ink: var(--color-evening-ink);
+}
+
+[data-color="brand1"] {
+  --hue: var(--color-brand1);
+  --hue-hover: var(--color-brand1-hover);
+  --hue-foreground: var(--color-brand1-foreground);
+  --hue-soft: var(--color-brand1-soft);
+  --hue-soft-hover: var(--color-brand1-soft-hover);
+  --hue-soft-foreground: var(--color-brand1-soft-foreground);
+  --hue-ink: var(--color-brand1-ink);
+}
+
+[data-color="brand2"] {
+  --hue: var(--color-brand2);
+  --hue-hover: var(--color-brand2-hover);
+  --hue-foreground: var(--color-brand2-foreground);
+  --hue-soft: var(--color-brand2-soft);
+  --hue-soft-hover: var(--color-brand2-soft-hover);
+  --hue-soft-foreground: var(--color-brand2-soft-foreground);
+  --hue-ink: var(--color-brand2-ink);
+}
+
+[data-color="brand3"] {
+  --hue: var(--color-brand3);
+  --hue-hover: var(--color-brand3-hover);
+  --hue-foreground: var(--color-brand3-foreground);
+  --hue-soft: var(--color-brand3-soft);
+  --hue-soft-hover: var(--color-brand3-soft-hover);
+  --hue-soft-foreground: var(--color-brand3-soft-foreground);
+  --hue-ink: var(--color-brand3-ink);
+}
+
+/* ------------------------------------------------------------
+   4. BADGE — component tokens on the component itself.
+   Variants read the hue channel, fall back to neutral.
+   ------------------------------------------------------------ */
+
+.badge {
+  --badge-bg: transparent;
+  --badge-bg-hover: var(--badge-bg);
+  --badge-fg: var(--color-foreground);
+  --badge-border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.3em 0.75em;
+  border-radius: var(--radius-badge);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+
+  background-color: var(--badge-bg);
+  color: var(--badge-fg);
+  border: 1px solid var(--badge-border);
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.badge[data-variant="highlight"] {
+  --badge-bg: var(--hue, var(--color-neutral));
+  --badge-bg-hover: var(--hue-hover, var(--color-neutral-hover));
+  --badge-fg: var(--hue-foreground, var(--color-neutral-foreground));
+}
+
+.badge[data-variant="soft"] {
+  --badge-bg: var(--hue-soft, var(--color-neutral-soft));
+  --badge-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
+  --badge-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+}
+
+.badge[data-variant="outline"] {
+  --badge-bg: transparent;
+  --badge-bg-hover: var(--hue-soft, var(--color-neutral-soft));
+  --badge-fg: var(--hue-ink, var(--color-neutral-ink));
+  --badge-border: currentColor;
+}
+
+/* States: hover shifts background, pressed is a transform,
+   focus is a ring. No per-state foreground tokens. */
+.badge:not(:disabled):hover {
+  background-color: var(--badge-bg-hover);
+}
+
+.badge:not(:disabled):active {
+  transform: var(--pressed-transformation);
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.badge:disabled {
+  --badge-bg: var(--color-disabled);
+  --badge-bg-hover: var(--color-disabled);
+  --badge-fg: var(--color-disabled-foreground);
+  --badge-border: transparent;
+  cursor: not-allowed;
+}
+
+.badge[data-variant="outline"]:disabled {
+  --badge-bg: transparent;
+  --badge-fg: var(--color-disabled-ink);
+  --badge-border: var(--color-separator);
+}
+
+/* ------------------------------------------------------------
+   5. BUTTON — UX-oriented API, deliberately more opinionated
+   than the badge.
+   ------------------------------------------------------------
+   The badge is orthogonal: variant × any color. The button only
+   exposes combinations the design system has vetted:
+
+     primary      solid × accent      main action
+     secondary    soft  × neutral     secondary action
+     ghost        bare  × neutral     tertiary / toolbar action
+     danger       solid × danger      confirmed destructive
+     danger-soft  soft  × danger      secondary destructive
+
+   primary, secondary and ghost still honor the optional
+   data-color override through the --hue-* channel (fallbacks
+   carry the vetted default). danger and danger-soft are locked:
+   they read --color-danger-* directly, so destructive semantics
+   cannot be recolored. */
+
+.button {
+  --button-bg: transparent;
+  --button-bg-hover: var(--button-bg);
+  --button-fg: var(--color-foreground);
+  --button-border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  padding: 0.55em 1.1em;
+  border-radius: var(--radius-button);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  border: 1px solid var(--button-border);
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.button[data-variant="primary"] {
+  --button-bg: var(--hue, var(--color-accent));
+  --button-bg-hover: var(--hue-hover, var(--color-accent-hover));
+  --button-fg: var(--hue-foreground, var(--color-accent-foreground));
+}
+
+.button[data-variant="secondary"] {
+  --button-bg: var(--hue-soft, var(--color-neutral-soft));
+  --button-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
+  --button-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+}
+
+.button[data-variant="ghost"] {
+  --button-bg: transparent;
+  --button-bg-hover: var(--hue-soft, var(--color-neutral-soft));
+  --button-fg: var(--hue-ink, var(--color-foreground));
+}
+
+/* Locked variants: no --hue-* reads, data-color has no effect. */
+.button[data-variant="danger"] {
+  --button-bg: var(--color-danger);
+  --button-bg-hover: var(--color-danger-hover);
+  --button-fg: var(--color-danger-foreground);
+}
+
+.button[data-variant="danger-soft"] {
+  --button-bg: var(--color-danger-soft);
+  --button-bg-hover: var(--color-danger-soft-hover);
+  --button-fg: var(--color-danger-soft-foreground);
+}
+
+.button:not(:disabled):hover {
+  background-color: var(--button-bg-hover);
+}
+
+.button:not(:disabled):active {
+  transform: var(--pressed-transformation);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  --button-bg: var(--color-disabled);
+  --button-bg-hover: var(--color-disabled);
+  --button-fg: var(--color-disabled-foreground);
+  --button-border: transparent;
+  cursor: not-allowed;
+}
+
+.button[data-variant="ghost"]:disabled {
+  --button-bg: transparent;
+  --button-fg: var(--color-disabled-ink);
+}
+
+/* ------------------------------------------------------------
+   6. CARD — same model: component tokens fed by base tokens
+   ------------------------------------------------------------ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.card {
+  --card-surface: var(--color-surface);
+  --card-inset: var(--color-surface-secondary);
+  --card-media: var(--color-surface-tertiary);
+  --card-separator: var(--color-separator-secondary);
+  --card-separator-hover: color-mix(in oklab, var(--color-accent) 30%, var(--color-separator));
+  --card-title-fg: var(--color-foreground);
+  --card-body-fg: var(--color-foreground-secondary);
+  --card-meta-fg: var(--color-foreground-tertiary);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--card-surface);
+  border: 1px solid var(--card-separator);
+  border-radius: var(--radius-card);
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--card-separator-hover);
+}
+
+.card__media {
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  background-color: var(--card-media);
+}
+
+.card__media-label {
+  font-size: 0.75rem;
+  color: var(--card-meta-fg);
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.card__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--card-title-fg);
+}
+
+.card__desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--card-body-fg);
+}
+
+.card__meta {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--card-meta-fg);
+}
+
+.card__nested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card__nested-item {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  background-color: var(--card-inset);
+  border-radius: var(--radius-field);
+}
+
+.card__nested-thumb {
+  flex-shrink: 0;
+  width: 56px;
+  height: 42px;
+  background-color: var(--card-media);
+  border-radius: var(--radius-selector);
+}
+
+.card__nested-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.card__nested-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--card-title-fg);
+}
+
+.card__nested-date {
+  font-size: 0.7rem;
+  color: var(--card-meta-fg);
+}

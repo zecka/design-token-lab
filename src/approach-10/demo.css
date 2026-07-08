@@ -1,0 +1,78 @@
+/* ============================================================
+   APPROACH 10 DEMO CHROME
+   Instead of hardcoding one chrome palette per theme×mode block
+   (like other approaches), the page chrome is wired directly
+   into the approach's own derived tokens. Theme and mode switch
+   for free, because the tokens themselves recompute from seeds.
+   ============================================================ */
+
+:root {
+  --page-bg: var(--color-background);
+  --page-text: var(--color-foreground);
+  --page-muted: var(--color-foreground-tertiary);
+  --page-line: var(--color-separator);
+  --page-accent: var(--color-accent-ink);
+
+  --demo-cell-bg: var(--color-surface);
+  --demo-rowlabel-bg: var(--color-background-secondary);
+  --demo-header-bg: var(--color-background-tertiary);
+  --demo-strip-bg: var(--color-surface);
+
+  --demo-chip-a-bg: var(--color-background-secondary);
+  --demo-chip-a-border: var(--color-separator-secondary);
+  --demo-chip-b-bg: var(--color-accent-soft);
+  --demo-chip-b-fg: var(--color-accent-soft-foreground);
+  --demo-chip-b-border: var(--color-accent-soft-hover);
+  --demo-chip-c-bg: var(--color-success-soft);
+  --demo-chip-c-fg: var(--color-success-soft-foreground);
+  --demo-chip-c-border: var(--color-success-soft-hover);
+}
+
+/* Typography per theme family */
+:root,
+[data-theme="luxury"] {
+  --demo-font: "Georgia", "Times New Roman", serif;
+}
+
+[data-theme="cozy"] {
+  --demo-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--demo-font);
+}
+
+/* Button demo section (local to this approach) */
+.button-demo__note {
+  max-width: 60ch;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--page-muted);
+}
+
+.button-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.button-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: var(--demo-strip-bg);
+  border: 1px solid var(--page-line);
+  border-radius: 8px;
+}
+
+.button-strip__label {
+  min-width: 6.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+}
