@@ -23,6 +23,7 @@ Chaque entrée: la décision, pourquoi, et les alternatives écartées avec la r
 - soft = 14 % teinte + surface, soft-hover = 22 % (adaptatif au dark mode puisque surface change)
 - soft-foreground = 55 % teinte + 45 % foreground de page (adaptatif aussi)
 - ink = alias de soft-foreground
+- ink-hover = 70 % ink + 30 % foreground de page. Dérivé de `ink` (pas de la formule brute): les overrides d'ink par teinte (brand1) se propagent automatiquement. Directionnel selon le mode: fonce en light, éclaircit en dark.
 
 **Exception unique**: `brand1` (jaune clair) passe son soft-foreground à 38 % de teinte, sinon illisible. Volontairement la seule dérogation — elle prouve que la règle générale tient.
 
@@ -53,6 +54,8 @@ Hex exacts obligatoires en seeds (`#F6D425`, `#3B2A5A`, `#3B6FB5`), foregrounds 
 
 **Pourquoi.** Un seul mécanisme d'override d'instance, réutilisable par tout composant qui opte. Le HTML de l'approche est cloné (pas d'includes partagés) pour ne pas être influencé par le vocabulaire `data-role` de l'existant.
 
+**Limitation assumée: le canal recolore, il ne restyle pas.** C'est la variante qui décide quelles facettes écoutent le canal et sur quel slot. Exemple: secondary étant outline par défaut, son bg est transparent par construction — impossible d'écrire `--_button-bg: var(--hue, transparent)` et d'attendre qu'un `data-color` produise un bouton plein. Le canal opère à l'intérieur du style choisi par la variante. Cette opinion est la contrepartie du modèle; documentée dans l'index.html (bloc « Limitation » de la couche canal).
+
 **Écarté.**
 - *Canal nommé `--color`, `--color-hover`, `--color-foreground`* (proposition initiale): collision frontale — `--color-foreground` est déjà le token de base du texte, hérité partout, donc le fallback ne jouerait jamais. D'où le namespace `--hue-*`.
 - *Overrides directs par rôle* (`.badge[data-role=x] { --_badge-bg: … }`): déjà exploré par les approches existantes, re-crée la notion de rôle.
@@ -73,7 +76,9 @@ Hex exacts obligatoires en seeds (`#F6D425`, `#3B2A5A`, `#3B6FB5`), foregrounds 
 
 ### Badge orthogonal, bouton orienté UX
 
-**Décision.** Le badge expose variant × couleur librement. Le bouton n'expose que 5 combinaisons validées: `primary` (solid × accent), `secondary` (soft × neutral), `ghost`, `danger` (solid × danger), `danger-soft`.
+**Décision.** Le badge expose variant × couleur librement. Le bouton n'expose que 5 combinaisons validées: `primary` (solid × accent), `secondary` (outline × neutral), `ghost`, `danger` (solid × danger), `danger-soft`.
+
+*Révision:* `secondary` était initialement soft × neutral; le style par défaut retenu est outline (bg transparent, fg `neutral-ink`, border `currentColor`, hover = remplissage soft, canal via `--hue-ink`/`--hue-soft`). Son disabled garde la structure outline (border `separator`), comme le badge outline.
 
 **Pourquoi.** Analyse des trois philosophies d'API (orthogonale type Radix Themes / orientée UX type Base Web, HeroUI, Carbon / hybride BaseButton + Button). L'orientée UX guide les équipes et reflète les bonnes pratiques du DS, et la flexibilité reste disponible via le canal hue.
 
@@ -118,7 +123,7 @@ Priorité partout: **canal (instance) > hook (thème/scope) > défaut validé**.
 
 ### Facette `border`: les styles aussi sont rethémables
 
-**Décision.** Chaque variante expose un 4e hook `--ui-button-<variante>-border` (défaut `transparent`). Les 4 facettes {bg, bg-hover, fg, border} couvrent tous les styles (solid, soft, outline, ghost): un thème peut donc transformer le style d'une variante par tokens seuls — exemple, secondary en outline = bg transparent + fg ink + border `currentColor`.
+**Décision.** Chaque variante expose un 4e hook `--ui-button-<variante>-border` (défaut `transparent`). Les 4 facettes {bg, bg-hover, fg, border} couvrent tous les styles (solid, soft, outline, ghost): un thème peut donc transformer le style d'une variante par tokens seuls — exemple, primary en outline = bg transparent + fg `accent-ink` + border `currentColor`.
 
 **Pourquoi.** Sans hook border, un thème ne pouvait pas rendre le secondary outline (la bordure était privée, figée transparente). Compléter l'espace de facettes résout la classe entière de besoins « changer le style d'une variante », sans nouveau concept. La chaîne border n'a que 2 niveaux (hook > défaut, pas de `--hue-*`): la bordure est une facette de style, pas de couleur — en `currentColor` elle suit le fg, qui écoute déjà le canal.
 
@@ -127,7 +132,25 @@ Priorité partout: **canal (instance) > hook (thème/scope) > défaut validé**.
 - *Le thème cible `.button[data-variant]` en CSS*: viole « un thème = des tokens ».
 - *Changer le markup*: décision produit, pas thème, et casserait l'API orientée UX.
 
-**Limite assumée.** Le thème doit poser 4 hooks cohérents; le système ne valide pas la lisibilité de la combinaison. Prix du niveau d'abstraction facettes, acceptable tant que les thèmes sont écrits par des gens du DS.
+**Limite assumée.** Le thème doit poser des hooks cohérents; le système ne valide pas la lisibilité de la combinaison. Prix du niveau d'abstraction facettes, acceptable tant que les thèmes sont écrits par des gens du DS.
+
+### Facette `fg-hover` + token dérivé `ink-hover`
+
+**Décision.** Besoin déclencheur: un thème veut un bouton outline dont le hover garde le fond transparent, seuls texte et bordure changent. Deux ajouts:
+1. Facette `fg-hover` sur le bouton, défaut = `var(--_button-fg)` (texte stable au hover — la doctrine « le background porte le feedback » reste le défaut, elle devient non obligatoire). Hooks `--ui-button-<variante>-fg-hover`, chaîne à 2 niveaux (facette de style, pas de `--hue-*`).
+2. Token dérivé `--color-x-ink-hover` sur les 12 teintes + slot `--hue-ink-hover` dans le canal: la grammaire du DS dit « outline = ink », il fallait la réponse systémique pour son hover, plutôt que laisser chaque thème pointer une valeur à la main.
+
+**Écarté.**
+- *`filter: brightness()` au hover*: global, dénaturerait les hex brand exacts.
+- *fg-hover lisant le canal* (`var(--hue-ink-hover, …)` en tête de chaîne): casserait les variantes solid/soft recolorées par `data-color` (leur texte doit rester stable au hover). Le canal ne sait pas quelle facette une variante utilise.
+
+**Limite connue (composition thème × instance).** Si un thème pointe `--ui-button-secondary-fg-hover: var(--color-neutral-ink-hover)` et qu'une instance ajoute `data-color="danger"`, le texte est danger au repos mais le hover retombe sur l'ink-hover *neutral* du hook (le hook ne peut pas être relatif à la teinte de l'instance). Documentée et démontrée dans index.html (section « Known Limit — Theme Hooks × data-color »). Résoudre demanderait des tokens relatifs à la teinte courante dans les hooks — non traité, besoin non récurrent à ce stade.
+
+### Composant `link`
+
+**Décision.** Lien inline dans du texte: couleur `ink` (accent par défaut), souligné, hover `ink-hover`. Recolorable par `data-color` (chaîne canal > défaut). Pas de hooks `--ui-link-*` tant qu'aucun besoin de theming n'apparaît (règle du besoin récurrent).
+
+**Pourquoi.** C'est l'habitat naturel du token ink (« cette teinte, lisible comme texte sur la page ») — le composant met en avant la paire ink/ink-hover sans background pour porter le feedback.
 
 ### Choix du préfixe `--ui-`
 

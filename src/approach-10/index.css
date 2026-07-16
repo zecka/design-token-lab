@@ -93,7 +93,9 @@
 
   /* ---- Hue seeds + derived ----
      Per hue, only the first 2 tokens are seeds.
-     The 5 derived tokens follow the same formula for every hue. */
+     The 6 derived tokens follow the same formula for every hue.
+     ink-hover derives from ink itself (not from the raw formula)
+     so per-hue ink overrides (brand1) propagate automatically. */
 
   /* accent — warm bronze gold */
   --color-accent: oklch(56% 0.1 78);
@@ -103,6 +105,7 @@
   --color-accent-soft-hover: color-mix(in oklab, var(--color-accent) 22%, var(--color-surface));
   --color-accent-soft-foreground: color-mix(in oklab, var(--color-accent) 55%, var(--color-foreground));
   --color-accent-ink: var(--color-accent-soft-foreground);
+  --color-accent-ink-hover: color-mix(in oklab, var(--color-accent-ink) 70%, var(--color-foreground));
 
   /* neutral — warm stone */
   --color-neutral: oklch(47% 0.022 70);
@@ -112,6 +115,7 @@
   --color-neutral-soft-hover: color-mix(in oklab, var(--color-neutral) 22%, var(--color-surface));
   --color-neutral-soft-foreground: color-mix(in oklab, var(--color-neutral) 55%, var(--color-foreground));
   --color-neutral-ink: var(--color-neutral-soft-foreground);
+  --color-neutral-ink-hover: color-mix(in oklab, var(--color-neutral-ink) 70%, var(--color-foreground));
 
   /* success — deep forest */
   --color-success: oklch(48% 0.085 155);
@@ -121,6 +125,7 @@
   --color-success-soft-hover: color-mix(in oklab, var(--color-success) 22%, var(--color-surface));
   --color-success-soft-foreground: color-mix(in oklab, var(--color-success) 55%, var(--color-foreground));
   --color-success-ink: var(--color-success-soft-foreground);
+  --color-success-ink-hover: color-mix(in oklab, var(--color-success-ink) 70%, var(--color-foreground));
 
   /* danger — muted terracotta */
   --color-danger: oklch(56% 0.115 32);
@@ -130,6 +135,7 @@
   --color-danger-soft-hover: color-mix(in oklab, var(--color-danger) 22%, var(--color-surface));
   --color-danger-soft-foreground: color-mix(in oklab, var(--color-danger) 55%, var(--color-foreground));
   --color-danger-ink: var(--color-danger-soft-foreground);
+  --color-danger-ink-hover: color-mix(in oklab, var(--color-danger-ink) 70%, var(--color-foreground));
 
   /* warning — honey amber (light hue → dark foreground) */
   --color-warning: oklch(76% 0.125 82);
@@ -139,6 +145,7 @@
   --color-warning-soft-hover: color-mix(in oklab, var(--color-warning) 22%, var(--color-surface));
   --color-warning-soft-foreground: color-mix(in oklab, var(--color-warning) 55%, var(--color-foreground));
   --color-warning-ink: var(--color-warning-soft-foreground);
+  --color-warning-ink-hover: color-mix(in oklab, var(--color-warning-ink) 70%, var(--color-foreground));
 
   /* info — soft mineral blue */
   --color-info: oklch(55% 0.075 240);
@@ -148,6 +155,7 @@
   --color-info-soft-hover: color-mix(in oklab, var(--color-info) 22%, var(--color-surface));
   --color-info-soft-foreground: color-mix(in oklab, var(--color-info) 55%, var(--color-foreground));
   --color-info-ink: var(--color-info-soft-foreground);
+  --color-info-ink-hover: color-mix(in oklab, var(--color-info-ink) 70%, var(--color-foreground));
 
   /* ---- Extension hues — same contract, added on top of the core set ---- */
 
@@ -159,6 +167,7 @@
   --color-morning-soft-hover: color-mix(in oklab, var(--color-morning) 22%, var(--color-surface));
   --color-morning-soft-foreground: color-mix(in oklab, var(--color-morning) 55%, var(--color-foreground));
   --color-morning-ink: var(--color-morning-soft-foreground);
+  --color-morning-ink-hover: color-mix(in oklab, var(--color-morning-ink) 70%, var(--color-foreground));
 
   /* afternoon — warm amber */
   --color-afternoon: oklch(72% 0.115 68);
@@ -168,6 +177,7 @@
   --color-afternoon-soft-hover: color-mix(in oklab, var(--color-afternoon) 22%, var(--color-surface));
   --color-afternoon-soft-foreground: color-mix(in oklab, var(--color-afternoon) 55%, var(--color-foreground));
   --color-afternoon-ink: var(--color-afternoon-soft-foreground);
+  --color-afternoon-ink-hover: color-mix(in oklab, var(--color-afternoon-ink) 70%, var(--color-foreground));
 
   /* evening — deep indigo */
   --color-evening: oklch(40% 0.095 292);
@@ -177,6 +187,7 @@
   --color-evening-soft-hover: color-mix(in oklab, var(--color-evening) 22%, var(--color-surface));
   --color-evening-soft-foreground: color-mix(in oklab, var(--color-evening) 55%, var(--color-foreground));
   --color-evening-ink: var(--color-evening-soft-foreground);
+  --color-evening-ink-hover: color-mix(in oklab, var(--color-evening-ink) 70%, var(--color-foreground));
 
   /* ---- Brand hues — exact hex seeds (mandatory), derived like any hue ---- */
 
@@ -190,6 +201,7 @@
   --color-brand1-soft-hover: color-mix(in oklab, var(--color-brand1) 22%, var(--color-surface));
   --color-brand1-soft-foreground: color-mix(in oklab, var(--color-brand1) 38%, var(--color-foreground));
   --color-brand1-ink: var(--color-brand1-soft-foreground);
+  --color-brand1-ink-hover: color-mix(in oklab, var(--color-brand1-ink) 70%, var(--color-foreground));
 
   /* brand2 — dark violet */
   --color-brand2: #3B2A5A;
@@ -199,6 +211,7 @@
   --color-brand2-soft-hover: color-mix(in oklab, var(--color-brand2) 22%, var(--color-surface));
   --color-brand2-soft-foreground: color-mix(in oklab, var(--color-brand2) 55%, var(--color-foreground));
   --color-brand2-ink: var(--color-brand2-soft-foreground);
+  --color-brand2-ink-hover: color-mix(in oklab, var(--color-brand2-ink) 70%, var(--color-foreground));
 
   /* brand3 — medium blue */
   --color-brand3: #3B6FB5;
@@ -208,6 +221,7 @@
   --color-brand3-soft-hover: color-mix(in oklab, var(--color-brand3) 22%, var(--color-surface));
   --color-brand3-soft-foreground: color-mix(in oklab, var(--color-brand3) 55%, var(--color-foreground));
   --color-brand3-ink: var(--color-brand3-soft-foreground);
+  --color-brand3-ink-hover: color-mix(in oklab, var(--color-brand3-ink) 70%, var(--color-foreground));
 }
 
 /* ------------------------------------------------------------
@@ -266,6 +280,7 @@
   --hue-soft-hover: var(--color-accent-soft-hover);
   --hue-soft-foreground: var(--color-accent-soft-foreground);
   --hue-ink: var(--color-accent-ink);
+  --hue-ink-hover: var(--color-accent-ink-hover);
 }
 
 [data-color="neutral"] {
@@ -276,6 +291,7 @@
   --hue-soft-hover: var(--color-neutral-soft-hover);
   --hue-soft-foreground: var(--color-neutral-soft-foreground);
   --hue-ink: var(--color-neutral-ink);
+  --hue-ink-hover: var(--color-neutral-ink-hover);
 }
 
 [data-color="success"] {
@@ -286,6 +302,7 @@
   --hue-soft-hover: var(--color-success-soft-hover);
   --hue-soft-foreground: var(--color-success-soft-foreground);
   --hue-ink: var(--color-success-ink);
+  --hue-ink-hover: var(--color-success-ink-hover);
 }
 
 [data-color="danger"] {
@@ -296,6 +313,7 @@
   --hue-soft-hover: var(--color-danger-soft-hover);
   --hue-soft-foreground: var(--color-danger-soft-foreground);
   --hue-ink: var(--color-danger-ink);
+  --hue-ink-hover: var(--color-danger-ink-hover);
 }
 
 [data-color="warning"] {
@@ -306,6 +324,7 @@
   --hue-soft-hover: var(--color-warning-soft-hover);
   --hue-soft-foreground: var(--color-warning-soft-foreground);
   --hue-ink: var(--color-warning-ink);
+  --hue-ink-hover: var(--color-warning-ink-hover);
 }
 
 [data-color="info"] {
@@ -316,6 +335,7 @@
   --hue-soft-hover: var(--color-info-soft-hover);
   --hue-soft-foreground: var(--color-info-soft-foreground);
   --hue-ink: var(--color-info-ink);
+  --hue-ink-hover: var(--color-info-ink-hover);
 }
 
 [data-color="morning"] {
@@ -326,6 +346,7 @@
   --hue-soft-hover: var(--color-morning-soft-hover);
   --hue-soft-foreground: var(--color-morning-soft-foreground);
   --hue-ink: var(--color-morning-ink);
+  --hue-ink-hover: var(--color-morning-ink-hover);
 }
 
 [data-color="afternoon"] {
@@ -336,6 +357,7 @@
   --hue-soft-hover: var(--color-afternoon-soft-hover);
   --hue-soft-foreground: var(--color-afternoon-soft-foreground);
   --hue-ink: var(--color-afternoon-ink);
+  --hue-ink-hover: var(--color-afternoon-ink-hover);
 }
 
 [data-color="evening"] {
@@ -346,6 +368,7 @@
   --hue-soft-hover: var(--color-evening-soft-hover);
   --hue-soft-foreground: var(--color-evening-soft-foreground);
   --hue-ink: var(--color-evening-ink);
+  --hue-ink-hover: var(--color-evening-ink-hover);
 }
 
 [data-color="brand1"] {
@@ -356,6 +379,7 @@
   --hue-soft-hover: var(--color-brand1-soft-hover);
   --hue-soft-foreground: var(--color-brand1-soft-foreground);
   --hue-ink: var(--color-brand1-ink);
+  --hue-ink-hover: var(--color-brand1-ink-hover);
 }
 
 [data-color="brand2"] {
@@ -366,6 +390,7 @@
   --hue-soft-hover: var(--color-brand2-soft-hover);
   --hue-soft-foreground: var(--color-brand2-soft-foreground);
   --hue-ink: var(--color-brand2-ink);
+  --hue-ink-hover: var(--color-brand2-ink-hover);
 }
 
 [data-color="brand3"] {
@@ -376,6 +401,7 @@
   --hue-soft-hover: var(--color-brand3-soft-hover);
   --hue-soft-foreground: var(--color-brand3-soft-foreground);
   --hue-ink: var(--color-brand3-ink);
+  --hue-ink-hover: var(--color-brand3-ink-hover);
 }
 
 /* ------------------------------------------------------------
@@ -479,11 +505,11 @@
    The badge is orthogonal: variant × any color. The button only
    exposes combinations the design system has vetted:
 
-     primary      solid × accent      main action
-     secondary    soft  × neutral     secondary action
-     ghost        bare  × neutral     tertiary / toolbar action
-     danger       solid × danger      confirmed destructive
-     danger-soft  soft  × danger      secondary destructive
+     primary      solid   × accent    main action
+     secondary    outline × neutral   secondary action
+     ghost        bare    × neutral   tertiary / toolbar action
+     danger       solid   × danger    confirmed destructive
+     danger-soft  soft    × danger    secondary destructive
 
    primary, secondary and ghost still honor the optional
    data-color override through the --hue-* channel (fallbacks
@@ -495,27 +521,32 @@
    default, settable by a theme or scope). Since latent tokens
    are invisible in devtools, this is the reference list:
      --ui-button-radius
-     --ui-button-primary-bg / -bg-hover / -fg / -border
-     --ui-button-secondary-bg / -bg-hover / -fg / -border
-     --ui-button-ghost-bg / -bg-hover / -fg / -border
-     --ui-button-danger-bg / -bg-hover / -fg / -border
-     --ui-button-danger-soft-bg / -bg-hover / -fg / -border
+     --ui-button-primary-bg / -bg-hover / -fg / -fg-hover / -border
+     --ui-button-secondary-bg / -bg-hover / -fg / -fg-hover / -border
+     --ui-button-ghost-bg / -bg-hover / -fg / -fg-hover / -border
+     --ui-button-danger-bg / -bg-hover / -fg / -fg-hover / -border
+     --ui-button-danger-soft-bg / -bg-hover / -fg / -fg-hover / -border
    The danger hooks exist because the lock targets data-color
    (an instance decision); a theme keeps authority over how
    danger looks.
 
-   The four facets {bg, bg-hover, fg, border} span every style
-   (solid, soft, outline, ghost): a theme can retarget a
-   variant's whole style through hooks alone — e.g. secondary
-   as outline = transparent bg + ink fg + currentColor border.
-   The border facet reads no --hue-*: it is a style facet, not a
-   color facet. Set it to currentColor and its color follows the
-   fg, which already listens to the channel. */
+   The five facets {bg, bg-hover, fg, fg-hover, border} span
+   every style (solid, soft, outline, ghost): a theme can
+   retarget a variant's whole style through hooks alone — e.g.
+   primary as outline = transparent bg + accent-ink fg +
+   currentColor border, with a hover carried by fg-hover
+   (ink-hover) instead of the background. fg-hover defaults to
+   fg (text stable on hover: the vetted variants keep
+   background-driven feedback). border and fg-hover read no
+   --hue-*: they are style facets, not color facets. Set border
+   to currentColor and it follows the fg — hover included —
+   which already listens to the channel. */
 
 .button {
   --_button-bg: transparent;
   --_button-bg-hover: var(--_button-bg);
   --_button-fg: var(--color-foreground);
+  --_button-fg-hover: var(--_button-fg);
   --_button-border: transparent;
 
   display: inline-flex;
@@ -548,13 +579,15 @@
   --_button-bg-hover: var(--hue-hover, var(--ui-button-primary-bg-hover, var(--color-accent-hover)));
   --_button-fg: var(--hue-foreground, var(--ui-button-primary-fg, var(--color-accent-foreground)));
   --_button-border: var(--ui-button-primary-border, transparent);
+  --_button-fg-hover: var(--ui-button-primary-fg-hover, var(--_button-fg));
 }
 
 .button[data-variant="secondary"] {
-  --_button-bg: var(--hue-soft, var(--ui-button-secondary-bg, var(--color-neutral-soft)));
-  --_button-bg-hover: var(--hue-soft-hover, var(--ui-button-secondary-bg-hover, var(--color-neutral-soft-hover)));
-  --_button-fg: var(--hue-soft-foreground, var(--ui-button-secondary-fg, var(--color-neutral-soft-foreground)));
-  --_button-border: var(--ui-button-secondary-border, transparent);
+  --_button-bg: var(--ui-button-secondary-bg, transparent);
+  --_button-bg-hover: var(--hue-soft, var(--ui-button-secondary-bg-hover, var(--color-neutral-soft)));
+  --_button-fg: var(--hue-ink, var(--ui-button-secondary-fg, var(--color-neutral-ink)));
+  --_button-border: var(--ui-button-secondary-border, currentColor);
+  --_button-fg-hover: var(--ui-button-secondary-fg-hover, var(--_button-fg));
 }
 
 .button[data-variant="ghost"] {
@@ -562,6 +595,7 @@
   --_button-bg-hover: var(--hue-soft, var(--ui-button-ghost-bg-hover, var(--color-neutral-soft)));
   --_button-fg: var(--hue-ink, var(--ui-button-ghost-fg, var(--color-foreground)));
   --_button-border: var(--ui-button-ghost-border, transparent);
+  --_button-fg-hover: var(--ui-button-ghost-fg-hover, var(--_button-fg));
 }
 
 /* Locked variants: no --hue-* reads, data-color has no effect.
@@ -571,6 +605,7 @@
   --_button-bg-hover: var(--ui-button-danger-bg-hover, var(--color-danger-hover));
   --_button-fg: var(--ui-button-danger-fg, var(--color-danger-foreground));
   --_button-border: var(--ui-button-danger-border, transparent);
+  --_button-fg-hover: var(--ui-button-danger-fg-hover, var(--_button-fg));
 }
 
 .button[data-variant="danger-soft"] {
@@ -578,10 +613,12 @@
   --_button-bg-hover: var(--ui-button-danger-soft-bg-hover, var(--color-danger-soft-hover));
   --_button-fg: var(--ui-button-danger-soft-fg, var(--color-danger-soft-foreground));
   --_button-border: var(--ui-button-danger-soft-border, transparent);
+  --_button-fg-hover: var(--ui-button-danger-soft-fg-hover, var(--_button-fg));
 }
 
 .button:not(:disabled):hover {
   background-color: var(--_button-bg-hover);
+  color: var(--_button-fg-hover);
 }
 
 .button:not(:disabled):active {
@@ -604,6 +641,14 @@
 .button[data-variant="ghost"]:disabled {
   --_button-bg: transparent;
   --_button-fg: var(--color-disabled-ink);
+}
+
+/* Same disabled treatment as the badge outline variant: keep the
+   outline structure, neutralize its colors. */
+.button[data-variant="secondary"]:disabled {
+  --_button-bg: transparent;
+  --_button-fg: var(--color-disabled-ink);
+  --_button-border: var(--color-separator);
 }
 
 /* ------------------------------------------------------------
@@ -724,4 +769,34 @@
 .card__nested-date {
   font-size: 0.7rem;
   color: var(--_card-meta-fg);
+}
+
+/* ------------------------------------------------------------
+   7. LINK — inline text link, the ink tokens' natural habitat
+   ------------------------------------------------------------
+   ink = "this hue, readable as text on the page". A link sitting
+   in running text is exactly that. Default hue is accent; the
+   data-color channel recolors it per instance. Hover shifts to
+   ink-hover (no background to carry feedback on inline text).
+   Resolution: channel > vetted default. No --ui-* hooks until a
+   real theming need appears. */
+
+.link {
+  --_link-fg: var(--hue-ink, var(--color-accent-ink));
+  --_link-fg-hover: var(--hue-ink-hover, var(--color-accent-ink-hover));
+
+  color: var(--_link-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: color 0.15s ease;
+}
+
+.link:hover {
+  color: var(--_link-fg-hover);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }

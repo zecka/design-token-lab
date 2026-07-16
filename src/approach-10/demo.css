@@ -28,6 +28,55 @@
   --demo-chip-c-border: var(--color-success-soft-hover);
 }
 
+/* Token architecture reference — layered documentation blocks */
+.arch-intro {
+  max-width: 68ch;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--page-muted);
+}
+
+.arch-block {
+  margin-top: 1.75rem;
+}
+
+.arch-block__title {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--page-text);
+}
+
+.arch-block__desc {
+  max-width: 68ch;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--page-muted);
+}
+
+.arch-block__limit {
+  max-width: 68ch;
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-foreground-secondary);
+  background: var(--color-warning-soft);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-selector);
+}
+
+.arch-block__limit-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-warning-soft-foreground);
+}
+
 /* Typography per theme family */
 :root,
 [data-theme="luxury"] {
@@ -86,12 +135,28 @@ body {
   --ui-button-primary-fg: var(--color-evening-foreground);
 }
 
-/* Style retargeting via the border facet: secondary becomes an
-   outline button, tokens only. currentColor makes the border
-   follow the fg — including when data-color recolors it. */
+/* Style retargeting via the border facet: primary becomes an
+   outline button, tokens only. The hover keeps a transparent
+   background — feedback is carried by fg-hover (ink-hover), and
+   currentColor makes the border follow the text. */
 .hook-scope-outline {
-  --ui-button-secondary-bg: transparent;
-  --ui-button-secondary-bg-hover: var(--color-neutral-soft);
-  --ui-button-secondary-fg: var(--color-neutral-ink);
-  --ui-button-secondary-border: currentColor;
+  --ui-button-primary-bg: transparent;
+  --ui-button-primary-bg-hover: transparent;
+  --ui-button-primary-fg: var(--color-accent-ink);
+  --ui-button-primary-fg-hover: var(--color-accent-ink-hover);
+  --ui-button-primary-border: currentColor;
+}
+
+/* Known-limit demo: the theme pins secondary's hover ink to the
+   neutral family; an instance recolored by data-color diverges
+   from it mid-hover. */
+.hook-scope-hover {
+  --ui-button-secondary-fg-hover: var(--color-neutral-ink-hover);
+}
+
+.link-demo {
+  max-width: 62ch;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--page-text);
 }

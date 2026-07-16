@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Approach 10 — Seed Derivation + Hue Channel</title>
+  <title>Approche 10 — Dérivation par seeds + canal hue</title>
   <link rel="stylesheet" href="../shared/demo.css" />
   <link rel="stylesheet" href="demo.css" />
   <link rel="stylesheet" href="index.css" />
@@ -11,96 +11,178 @@
 <body>
 
   <header class="page-header">
-    <a class="page-header__back" href="../index.html">← Back to overview</a>
-    <p class="page-header__eyebrow">Approach 10</p>
-    <h1 class="page-header__title">Seed Derivation + Hue Channel</h1>
+    <a class="page-header__back" href="../index.html">← Retour à la vue d'ensemble</a>
+    <p class="page-header__eyebrow">Approche 10</p>
+    <h1 class="page-header__title">Dérivation par seeds + canal hue</h1>
     <p class="page-header__desc">
-      Only seeds are literal values: 3 base colors plus 2 per hue. Every other token
-      (hover, soft, ink, separators, disabled, hierarchy) is derived with color-mix()
-      in OKLab — a full dark mode is 3 redefined seeds. Components read a generic
-      --hue-* channel published by data-color, with a neutral fallback: no role
-      notion, any color works on any variant. Unlike existing approaches (all static
-      hex tables remapped per theme×mode), the palette here is computed, and adding
-      a theme or a hue means declaring seeds, not repainting every token.
+      Seules les seeds sont des valeurs littérales : 3 couleurs de base plus 2 par
+      teinte. Tout autre token (hover, soft, ink, separators, disabled, hiérarchie)
+      est dérivé par color-mix() en OKLab — un mode dark complet = 3 seeds
+      redéfinies. Les composants lisent un canal générique --hue-* publié par
+      data-color, avec fallback neutral : pas de notion de rôle, toute couleur
+      fonctionne sur toute variante. Contrairement aux approches existantes (tables
+      hex statiques remappées par thème×mode), la palette est ici calculée :
+      ajouter un thème ou une teinte, c'est déclarer des seeds, pas repeindre
+      chaque token.
     </p>
   </header>
 
   <main class="page-main">
 
-    <nav class="theme-switcher" aria-label="Theme controls">
+    <nav class="theme-switcher" aria-label="Contrôles de thème">
       <div class="theme-switcher__group">
-        <span class="theme-switcher__label">Theme</span>
+        <span class="theme-switcher__label">Thème</span>
         <button class="theme-switcher__btn" type="button" data-set-theme="luxury" aria-pressed="true">Luxury</button>
         <button class="theme-switcher__btn" type="button" data-set-theme="cozy" aria-pressed="false">Cozy</button>
       </div>
       <div class="theme-switcher__group">
         <span class="theme-switcher__label">Mode</span>
-        <button class="theme-switcher__btn" type="button" data-set-mode="light" aria-pressed="true">Light</button>
-        <button class="theme-switcher__btn" type="button" data-set-mode="dark" aria-pressed="false">Dark</button>
+        <button class="theme-switcher__btn" type="button" data-set-mode="light" aria-pressed="true">Clair</button>
+        <button class="theme-switcher__btn" type="button" data-set-mode="dark" aria-pressed="false">Sombre</button>
       </div>
     </nav>
 
-    <!-- Token Architecture Reference -->
+    <!-- Référence de l'architecture des tokens -->
     <section>
-      <p class="token-map__title">Token Architecture</p>
-      <div class="token-map">
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--a">seed · --color-accent: oklch(56% 0.1 78)</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--b">derived · --color-accent-hover: color-mix(in oklab, accent 85%, accent-foreground)</span>
+      <p class="token-map__title">Architecture des tokens</p>
+      <p class="arch-intro">
+        Quatre couches de tokens, de la plus stable à la plus contextuelle.
+        Quand plusieurs couches veulent colorer la même chose, la priorité est
+        toujours la même : canal (instance) &gt; hook (thème ou scope) &gt;
+        défaut validé par le design system.
+      </p>
+
+      <div class="arch-block">
+        <p class="arch-block__title">1. Fondations — --color-*, --radius-*</p>
+        <p class="arch-block__desc">
+          Seules les seeds sont des valeurs littérales : 3 couleurs de base
+          (background, surface, foreground) et 2 par teinte. Tout le reste est
+          calculé avec color-mix(). Redéfinir une seed recalcule toute sa
+          famille : un mode sombre complet tient en 3 lignes, un nouveau thème
+          en quelques seeds.
+        </p>
+        <div class="token-map">
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--a">seed · --color-accent: oklch(56% 0.1 78)</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--b">dérivé · --color-accent-hover: color-mix(in oklab, accent 85%, accent-foreground)</span>
+          </div>
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--a">seed · --color-accent + --color-surface</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--b">dérivé · --color-accent-soft: color-mix(in oklab, accent 14%, surface)</span>
+          </div>
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--a">theming · [data-mode="dark"] redéfinit 3 seeds</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--c">tous les tokens dérivés se recalculent, composants intacts</span>
+          </div>
         </div>
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--a">seed · --color-accent + --color-surface</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--b">derived · --color-accent-soft: color-mix(in oklab, accent 14%, surface)</span>
+      </div>
+
+      <div class="arch-block">
+        <p class="arch-block__title">2. Canal — --hue-*, posé par data-color</p>
+        <p class="arch-block__desc">
+          Poser data-color="danger" sur un élément publie toute la famille
+          danger dans des variables génériques --hue-*. Un composant qui opte
+          lit ces variables avec un fallback vers sa couleur par défaut. C'est
+          le seul moyen sanctionné de recolorer une instance précise.
+        </p>
+        <div class="token-map">
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--b">canal · [data-color="danger"] { --hue: var(--color-danger) }</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--c">composant · --_badge-bg: var(--hue, var(--color-neutral))</span>
+          </div>
         </div>
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--b">channel · [data-color="danger"] { --hue: var(--color-danger) }</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--b">resolve once · .badge { --_hue: var(--hue, var(--color-neutral)) }</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--c">component · --_badge-bg: var(--_hue)</span>
+        <div class="arch-block__limit">
+          <span class="arch-block__limit-label">Limitation</span>
+          Le canal recolore, il ne restyle pas. Chaque variante décide quelles
+          facettes écoutent le canal, et sur quel slot. Par exemple secondary,
+          outline par défaut, garde son fond transparent quoi qu'il arrive :
+          il n'écoute le canal que pour son texte (--hue-ink) et son survol
+          (--hue-soft). data-color ne transformera jamais un outline en bouton
+          plein — c'est un choix d'opinion du composant. Cas extrême : danger
+          n'écoute rien du tout, la sémantique destructive ne se détourne pas.
         </div>
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--a">theming · [data-mode="dark"] redefines 3 seeds</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--c">every derived token recomputes, components untouched</span>
+        <div class="token-map">
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--c">variante UX · .button[data-variant="danger"] { --_button-bg: var(--ui-button-danger-bg, var(--color-danger)) }</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--a">aucune lecture --hue-* : verrouillé, data-color ignoré</span>
+          </div>
         </div>
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --_button-bg: var(--ui-button-danger-bg, var(--color-danger)) }</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--a">no --hue-* read: locked, data-color ignored</span>
+      </div>
+
+      <div class="arch-block">
+        <p class="arch-block__title">3. Hooks — --ui-*, posés par un thème ou un scope</p>
+        <p class="arch-block__desc">
+          Des tokens publics qui n'existent pas par défaut : chaque composant
+          les lit avec un fallback vers sa valeur validée, ils ne coûtent donc
+          rien tant que personne ne les définit. Un thème — ou n'importe quel
+          conteneur, ces propriétés s'héritent — peut recibler une facette
+          précise d'une variante (couleur, survol, bordure, radius) sans
+          toucher au CSS du composant. La liste des hooks disponibles est
+          documentée en commentaire dans index.css.
+        </p>
+        <div class="token-map">
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--b">hook latent · [data-theme] { --ui-button-primary-bg: var(--color-evening) }</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--c">composant · var(--hue, var(--ui-button-primary-bg, var(--color-accent)))</span>
+          </div>
         </div>
-        <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--b">latent hook · [data-theme] { --ui-button-primary-bg: var(--color-evening) }</span>
-          <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--c">component · var(--hue, var(--ui-button-primary-bg, var(--color-accent)))</span>
+        <div class="arch-block__limit">
+          <span class="arch-block__limit-label">Limitation</span>
+          Un hook porte une valeur figée. Il ne peut pas exprimer « la version
+          hover de la couleur courante de l'instance » : si un thème épingle un
+          hook sur une famille et qu'une instance est recolorée par data-color,
+          les deux divergent. Démonstration dans la section « Limite connue »
+          plus bas.
+        </div>
+      </div>
+
+      <div class="arch-block">
+        <p class="arch-block__title">4. Tokens privés — --_*</p>
+        <p class="arch-block__desc">
+          La plomberie interne des composants (--_button-bg, --_hue…). Le
+          préfixe underscore signale : détail d'implémentation, pas contrat.
+          On ne les surcharge jamais de l'extérieur — pour changer une couleur,
+          on passe par le canal ou par un hook. C'est aussi là que vit la
+          résolution du canal, écrite une seule fois par composant.
+        </p>
+        <div class="token-map">
+          <div class="token-map__row">
+            <span class="token-map__layer token-map__layer--b">résolution unique · .badge { --_hue: var(--hue, var(--color-neutral)) }</span>
+            <span class="token-map__arrow">→</span>
+            <span class="token-map__layer token-map__layer--c">consommé · --_badge-bg: var(--_hue)</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Main comparison grid -->
+    <!-- Grille de comparaison principale -->
     <section>
-      <p class="demo-section__title">All Colors × All Variants</p>
+      <p class="demo-section__title">Toutes les couleurs × toutes les variantes</p>
 
       <div class="demo-grid">
 
-        <!-- Column headers -->
-        <div class="demo-grid__col-header">Color</div>
+        <!-- En-têtes de colonnes -->
+        <div class="demo-grid__col-header">Couleur</div>
         <div class="demo-grid__col-header">Highlight</div>
         <div class="demo-grid__col-header">Soft</div>
         <div class="demo-grid__col-header">Outline</div>
 
-        <!-- No data-color: the hue channel is unset, variants fall back to neutral -->
-        <div class="demo-grid__row-label">(none)</div>
+        <!-- Sans data-color : le canal hue est vide, les variantes retombent sur neutral -->
+        <div class="demo-grid__row-label">(aucune)</div>
         <div class="demo-grid__cell">
-          <button class="badge" data-variant="highlight">Default</button>
+          <button class="badge" data-variant="highlight">Défaut</button>
         </div>
         <div class="demo-grid__cell">
-          <button class="badge" data-variant="soft">Default</button>
+          <button class="badge" data-variant="soft">Défaut</button>
         </div>
         <div class="demo-grid__cell">
-          <button class="badge" data-variant="outline">Default</button>
+          <button class="badge" data-variant="outline">Défaut</button>
         </div>
 
         <!-- Accent -->
@@ -175,8 +257,8 @@
           <button class="badge" data-variant="outline" data-color="info">Info</button>
         </div>
 
-        <!-- Extension colors — added on top of the core set, same contract -->
-        <div class="demo-grid__group-label">Extension colors</div>
+        <!-- Couleurs d'extension — ajoutées au-dessus du socle, même contrat -->
+        <div class="demo-grid__group-label">Couleurs d'extension</div>
 
         <div class="demo-grid__row-label" data-color="morning">morning</div>
         <div class="demo-grid__cell">
@@ -211,8 +293,8 @@
           <button class="badge" data-variant="outline" data-color="evening">Evening</button>
         </div>
 
-        <!-- Brand colors — mandatory rule: each approach must surface these exact colors -->
-        <div class="demo-grid__group-label">Brand colors</div>
+        <!-- Couleurs de marque — règle obligatoire : chaque approche doit restituer ces couleurs exactes -->
+        <div class="demo-grid__group-label">Couleurs de marque</div>
 
         <div class="demo-grid__row-label" data-color="brand1">brand1</div>
         <div class="demo-grid__cell">
@@ -250,9 +332,9 @@
       </div>
     </section>
 
-    <!-- Disabled state showcase -->
+    <!-- Vitrine de l'état disabled -->
     <section>
-      <p class="demo-section__title">Disabled State — All Colors</p>
+      <p class="demo-section__title">État disabled — toutes les couleurs</p>
       <div class="disabled-grid">
 
         <div class="disabled-row">
@@ -306,153 +388,188 @@
       </div>
     </section>
 
-    <!-- Realistic usage examples -->
+    <!-- Exemples d'usage réalistes -->
     <section>
-      <p class="demo-section__title">In Context</p>
+      <p class="demo-section__title">En contexte</p>
       <div class="in-context-strip">
-        <button class="badge" data-variant="soft"      data-color="success">Confirmed</button>
-        <button class="badge" data-variant="soft"      data-color="danger">Cancelled</button>
+        <button class="badge" data-variant="soft"      data-color="success">Confirmé</button>
+        <button class="badge" data-variant="soft"      data-color="danger">Annulé</button>
         <button class="badge" data-variant="soft"      data-color="accent">Premium</button>
-        <button class="badge" data-variant="soft">Draft</button>
-        <button class="badge" data-variant="highlight" data-color="accent">New</button>
-        <button class="badge" data-variant="soft"      data-color="warning">Almost Full</button>
-        <button class="badge" data-variant="soft"      data-color="info">Updated</button>
-        <button class="badge" data-variant="soft"      data-color="morning">Morning Ritual</button>
-        <button class="badge" data-variant="soft"      data-color="afternoon">Afternoon Reset</button>
-        <button class="badge" data-variant="soft"      data-color="evening">Evening Wind-down</button>
-        <button class="badge" data-variant="outline">Archived</button>
-        <button class="badge" data-variant="outline"   data-color="success">Verified</button>
-        <button class="badge" data-variant="highlight" data-color="evening">Members Only</button>
+        <button class="badge" data-variant="soft">Brouillon</button>
+        <button class="badge" data-variant="highlight" data-color="accent">Nouveau</button>
+        <button class="badge" data-variant="soft"      data-color="warning">Presque complet</button>
+        <button class="badge" data-variant="soft"      data-color="info">Mis à jour</button>
+        <button class="badge" data-variant="soft"      data-color="morning">Rituel du matin</button>
+        <button class="badge" data-variant="soft"      data-color="afternoon">Pause de l'après-midi</button>
+        <button class="badge" data-variant="soft"      data-color="evening">Détente du soir</button>
+        <button class="badge" data-variant="outline">Archivé</button>
+        <button class="badge" data-variant="outline"   data-color="success">Vérifié</button>
+        <button class="badge" data-variant="highlight" data-color="evening">Réservé aux membres</button>
         <button class="badge" data-variant="highlight" data-color="brand1">Brand</button>
         <button class="badge" data-variant="highlight" data-color="brand2">Brand</button>
         <button class="badge" data-variant="highlight" data-color="brand3">Brand</button>
       </div>
     </section>
 
-    <!-- Button component demo -->
+    <!-- Démo du composant bouton -->
     <section>
-      <p class="demo-section__title">Button Component — UX-Oriented API</p>
+      <p class="demo-section__title">Composant bouton — API orientée UX</p>
       <p class="button-demo__note">
-        Deliberately more opinionated than the badge: only design-system-vetted
-        variants are exposed. primary, secondary and ghost still accept the
-        optional data-color override through the --hue-* channel; danger and
-        danger-soft are locked to the danger tokens. Every variant also exposes
-        latent --ui-* hooks: undeclared by default, a theme or scope can define
-        them to retarget a variant without touching component CSS (last strip).
+        Volontairement plus opinionated que le badge : seules les variantes
+        validées par le design system sont exposées. primary, secondary et ghost
+        acceptent l'override optionnel data-color via le canal --hue-* ; danger
+        et danger-soft sont verrouillées sur les tokens danger. Chaque variante
+        expose aussi des hooks latents --ui-* : non déclarés par défaut, un
+        thème ou un scope peut les définir pour recibler une variante sans
+        toucher au CSS du composant (dernier strip).
       </p>
 
       <div class="button-demo">
 
         <div class="button-strip">
-          <span class="button-strip__label">variants</span>
-          <button class="button" data-variant="primary">Book a Session</button>
-          <button class="button" data-variant="secondary">View Details</button>
-          <button class="button" data-variant="ghost">Dismiss</button>
-          <button class="button" data-variant="danger">Delete Account</button>
-          <button class="button" data-variant="danger-soft">Cancel Booking</button>
+          <span class="button-strip__label">variantes</span>
+          <button class="button" data-variant="primary">Réserver une séance</button>
+          <button class="button" data-variant="secondary">Voir les détails</button>
+          <button class="button" data-variant="ghost">Ignorer</button>
+          <button class="button" data-variant="danger">Supprimer le compte</button>
+          <button class="button" data-variant="danger-soft">Annuler la réservation</button>
         </div>
 
         <div class="button-strip">
           <span class="button-strip__label">disabled</span>
-          <button class="button" data-variant="primary" disabled>Book a Session</button>
-          <button class="button" data-variant="secondary" disabled>View Details</button>
-          <button class="button" data-variant="ghost" disabled>Dismiss</button>
-          <button class="button" data-variant="danger" disabled>Delete Account</button>
-          <button class="button" data-variant="danger-soft" disabled>Cancel Booking</button>
+          <button class="button" data-variant="primary" disabled>Réserver une séance</button>
+          <button class="button" data-variant="secondary" disabled>Voir les détails</button>
+          <button class="button" data-variant="ghost" disabled>Ignorer</button>
+          <button class="button" data-variant="danger" disabled>Supprimer le compte</button>
+          <button class="button" data-variant="danger-soft" disabled>Annuler la réservation</button>
         </div>
 
         <div class="button-strip">
-          <span class="button-strip__label">hue override</span>
-          <button class="button" data-variant="primary" data-color="success">Approve</button>
-          <button class="button" data-variant="primary" data-color="brand2">Brand Action</button>
-          <button class="button" data-variant="secondary" data-color="info">Learn More</button>
-          <button class="button" data-variant="ghost" data-color="evening">Wind Down</button>
-          <button class="button" data-variant="danger" data-color="success">Locked (stays danger)</button>
+          <span class="button-strip__label">override hue</span>
+          <button class="button" data-variant="primary" data-color="success">Approuver</button>
+          <button class="button" data-variant="primary" data-color="brand2">Action de marque</button>
+          <button class="button" data-variant="secondary" data-color="info">En savoir plus</button>
+          <button class="button" data-variant="ghost" data-color="evening">Se détendre</button>
+          <button class="button" data-variant="danger" data-color="success">Verrouillé (reste danger)</button>
         </div>
 
         <div class="button-strip hook-scope">
-          <span class="button-strip__label">--ui-* hooks</span>
-          <button class="button" data-variant="primary">Primary (hooked)</button>
-          <button class="button" data-variant="secondary">Secondary (untouched)</button>
-          <button class="button" data-variant="ghost">Ghost (untouched)</button>
-          <button class="button" data-variant="primary" data-color="success">data-color wins</button>
+          <span class="button-strip__label">hooks --ui-*</span>
+          <button class="button" data-variant="primary">Primary (hooké)</button>
+          <button class="button" data-variant="secondary">Secondary (intact)</button>
+          <button class="button" data-variant="ghost">Ghost (intact)</button>
+          <button class="button" data-variant="primary" data-color="success">data-color gagne</button>
         </div>
 
         <div class="button-strip hook-scope-outline">
-          <span class="button-strip__label">border hook</span>
-          <button class="button" data-variant="secondary">Secondary → outline</button>
-          <button class="button" data-variant="secondary" data-color="danger">+ data-color</button>
-          <button class="button" data-variant="primary">Primary (untouched)</button>
+          <span class="button-strip__label">hook border</span>
+          <button class="button" data-variant="primary">Primary → outline</button>
+          <button class="button" data-variant="secondary">Secondary (intact)</button>
         </div>
 
       </div>
     </section>
 
-    <!-- Card component demo -->
+    <!-- Limite connue : composition hooks de thème × data-color -->
     <section>
-      <p class="demo-section__title">Card Component</p>
+      <p class="demo-section__title">Limite connue — hooks de thème × data-color</p>
+      <p class="button-demo__note">
+        Deux mécanismes se combinent mal ici. D'un côté, le thème personnalise
+        la couleur de survol des boutons secondary (via un hook --ui-*, réglé
+        sur du neutral). De l'autre, le premier bouton est recoloré en danger
+        avec data-color. Résultat : au repos il est bien danger, mais au survol
+        il prend la couleur du thème et redevient neutral. Un hook de thème est
+        une valeur figée — il ne peut pas exprimer « la version hover de la
+        couleur courante du bouton ». Limite assumée, détails dans memory.md.
+      </p>
+      <div class="button-strip hook-scope-hover">
+        <span class="button-strip__label">survolez-moi</span>
+        <button class="button" data-variant="secondary" data-color="danger">Danger au repos, neutral au hover</button>
+        <button class="button" data-variant="secondary">Référence : sans data-color, hover cohérent</button>
+      </div>
+    </section>
+
+    <!-- Démo du composant lien -->
+    <section>
+      <p class="demo-section__title">Composant lien — tokens ink</p>
+      <p class="link-demo">
+        Notre <a class="link" href="#">guide des rituels du matin</a> associe des
+        exercices de respiration à des
+        <a class="link" href="#" data-color="success">pratiques vérifiées</a> par
+        nos thérapeutes résidents. Les membres peuvent consulter la
+        <a class="link" href="#" data-color="danger">politique d'annulation</a> à
+        tout moment, ou explorer le
+        <a class="link" href="#" data-color="evening">programme de détente du
+        soir</a> avant de réserver. Survolez un lien : le texte passe d'ink à
+        ink-hover, le soulignement suit — aucun background impliqué.
+      </p>
+    </section>
+
+    <!-- Démo du composant card -->
+    <section>
+      <p class="demo-section__title">Composant card</p>
 
       <div class="card-grid">
 
-        <!-- Card A — standard article card with image area -->
+        <!-- Card A — carte article standard avec zone image -->
         <article class="card">
           <div class="card__media">
             <span class="card__media-label">image · 16:9</span>
           </div>
           <div class="card__body">
             <div class="card__tags">
-              <button class="badge" data-variant="soft" data-color="morning">Morning</button>
-              <button class="badge" data-variant="soft" data-color="success">Confirmed</button>
+              <button class="badge" data-variant="soft" data-color="morning">Matin</button>
+              <button class="badge" data-variant="soft" data-color="success">Confirmé</button>
             </div>
-            <h3 class="card__title">Sunrise Meditation Ritual</h3>
-            <p class="card__desc">A gentle morning practice to ground your day with intention and clarity before the world takes over.</p>
+            <h3 class="card__title">Rituel de méditation au lever du soleil</h3>
+            <p class="card__desc">Une pratique matinale douce pour ancrer votre journée avec intention et clarté, avant que le monde ne prenne le dessus.</p>
             <div class="card__meta">
-              <span class="card__meta-item">3 min read</span>
+              <span class="card__meta-item">3 min de lecture</span>
               <span class="card__meta-sep">·</span>
-              <span class="card__meta-item">Apr 21, 2026</span>
+              <span class="card__meta-item">21 avr. 2026</span>
             </div>
           </div>
         </article>
 
-        <!-- Card B — nested related items (surface layering: page → card → nested item) -->
+        <!-- Card B — éléments imbriqués (superposition : page → card → élément imbriqué) -->
         <article class="card">
           <div class="card__body">
             <div class="card__tags">
-              <button class="badge" data-variant="highlight" data-color="accent">Featured</button>
+              <button class="badge" data-variant="highlight" data-color="accent">À la une</button>
             </div>
-            <h3 class="card__title">Related Articles</h3>
+            <h3 class="card__title">Articles liés</h3>
             <div class="card__nested-list">
               <div class="card__nested-item">
                 <div class="card__nested-thumb"></div>
                 <div class="card__nested-body">
-                  <span class="card__nested-title">Lineup confirmed for FIBA Women's Basketball 2026</span>
-                  <span class="card__nested-date">Apr 21, 2026</span>
+                  <span class="card__nested-title">La sélection confirmée pour le Mondial de basket féminin 2026</span>
+                  <span class="card__nested-date">21 avr. 2026</span>
                 </div>
               </div>
               <div class="card__nested-item">
                 <div class="card__nested-thumb"></div>
                 <div class="card__nested-body">
-                  <span class="card__nested-title">The must-watch group games of the World Cup</span>
-                  <span class="card__nested-date">Apr 21, 2026</span>
+                  <span class="card__nested-title">Les matchs de poule immanquables de la Coupe du monde</span>
+                  <span class="card__nested-date">21 avr. 2026</span>
                 </div>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Card C — minimal, no image, outline badge -->
+        <!-- Card C — minimale, sans image, badge outline -->
         <article class="card">
           <div class="card__body">
             <div class="card__tags">
-              <button class="badge" data-variant="outline">Short Read</button>
-              <button class="badge" data-variant="soft" data-color="evening">Members Only</button>
+              <button class="badge" data-variant="outline">Lecture courte</button>
+              <button class="badge" data-variant="soft" data-color="evening">Réservé aux membres</button>
             </div>
-            <h3 class="card__title">Evening Wind-down: Why Slowing Down Is a Skill</h3>
-            <p class="card__desc">Transition rituals for professionals who can't switch off.</p>
+            <h3 class="card__title">Détente du soir : pourquoi ralentir est une compétence</h3>
+            <p class="card__desc">Des rituels de transition pour les professionnels qui n'arrivent pas à décrocher.</p>
             <div class="card__meta">
-              <span class="card__meta-item">5 min read</span>
+              <span class="card__meta-item">5 min de lecture</span>
               <span class="card__meta-sep">·</span>
-              <span class="card__meta-item">May 20, 2026</span>
+              <span class="card__meta-item">20 mai 2026</span>
             </div>
           </div>
         </article>
