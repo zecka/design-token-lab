@@ -57,7 +57,9 @@
         <div class="token-map__row">
           <span class="token-map__layer token-map__layer--b">channel · [data-color="danger"] { --hue: var(--color-danger) }</span>
           <span class="token-map__arrow">→</span>
-          <span class="token-map__layer token-map__layer--c">component · --badge-bg: var(--hue, var(--color-neutral))</span>
+          <span class="token-map__layer token-map__layer--b">resolve once · .badge { --_hue: var(--hue, var(--color-neutral)) }</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">component · --_badge-bg: var(--_hue)</span>
         </div>
         <div class="token-map__row">
           <span class="token-map__layer token-map__layer--a">theming · [data-mode="dark"] redefines 3 seeds</span>
@@ -65,7 +67,7 @@
           <span class="token-map__layer token-map__layer--c">every derived token recomputes, components untouched</span>
         </div>
         <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --button-bg: var(--color-danger) }</span>
+          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --_button-bg: var(--color-danger) }</span>
           <span class="token-map__arrow">→</span>
           <span class="token-map__layer token-map__layer--a">no --hue-* read: locked, data-color ignored</span>
         </div>

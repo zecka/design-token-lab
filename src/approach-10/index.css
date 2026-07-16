@@ -15,6 +15,22 @@
       component variants read var(--hue-*, neutral-fallback).
       No "role" notion: any color works on any variant.
 
+   Naming — public contract vs private plumbing:
+   - --color-*, --radius-*, --pressed-transformation → global
+     foundation tokens. Themable, overridable, the exportable part.
+   - --hue-* → contextual channel. The one sanctioned way to
+     recolor a component instance (via data-color).
+   - --_component-* (underscore prefix) → private component
+     tokens. Implementation detail, not part of the contract:
+     never override them from outside the component's own CSS.
+     (Convention borrowed from the CSS community — popularized
+     by Lea Verou as "private custom properties", echoing the
+     _private naming habit of JS/Python; also seen in Open Props
+     and CUBE CSS codebases.)
+   Sections 1–3 (foundations) are self-contained and can ship
+   without sections 4+ (components), or with a different
+   component library built on the same contract.
+
    Conventions:
    - No dedicated active color: pressed = transform.
    - No dedicated focus color token per hue: focus = ring.
@@ -226,7 +242,15 @@
    3. HUE CHANNEL — data-color publishes generic --hue-* variables
    ------------------------------------------------------------
    Works on any element, for any component that opts in.
-   A component variant reads var(--hue-*, <its-default>). */
+   A component variant reads var(--hue-*, <its-default>).
+
+   WARNING — never register --hue-* with @property. A typed
+   syntax (e.g. "<color>") requires an initial-value, and on a
+   registered property the initial value wins over var()
+   fallbacks: the property is never "guaranteed-invalid", so
+   var(--hue, <default>) would never fall back again. The whole
+   default mechanism of the components relies on these
+   properties staying unregistered. */
 
 [data-color="accent"] {
   --hue: var(--color-accent);
@@ -354,10 +378,22 @@
    ------------------------------------------------------------ */
 
 .badge {
-  --badge-bg: transparent;
-  --badge-bg-hover: var(--badge-bg);
-  --badge-fg: var(--color-foreground);
-  --badge-border: transparent;
+  /* Channel resolution — the fallback is defined once, here
+     (Lea Verou's pseudo-private pattern). Variants read the
+     resolved --_hue-* slots; the neutral default lives in one
+     place instead of being repeated in every variant. */
+  --_hue: var(--hue, var(--color-neutral));
+  --_hue-hover: var(--hue-hover, var(--color-neutral-hover));
+  --_hue-foreground: var(--hue-foreground, var(--color-neutral-foreground));
+  --_hue-soft: var(--hue-soft, var(--color-neutral-soft));
+  --_hue-soft-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
+  --_hue-soft-foreground: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+  --_hue-ink: var(--hue-ink, var(--color-neutral-ink));
+
+  --_badge-bg: transparent;
+  --_badge-bg-hover: var(--_badge-bg);
+  --_badge-fg: var(--color-foreground);
+  --_badge-border: transparent;
 
   display: inline-flex;
   align-items: center;
@@ -371,9 +407,9 @@
   white-space: nowrap;
   cursor: pointer;
 
-  background-color: var(--badge-bg);
-  color: var(--badge-fg);
-  border: 1px solid var(--badge-border);
+  background-color: var(--_badge-bg);
+  color: var(--_badge-fg);
+  border: 1px solid var(--_badge-border);
 
   transition:
     background-color 0.15s ease,
@@ -383,28 +419,28 @@
 }
 
 .badge[data-variant="highlight"] {
-  --badge-bg: var(--hue, var(--color-neutral));
-  --badge-bg-hover: var(--hue-hover, var(--color-neutral-hover));
-  --badge-fg: var(--hue-foreground, var(--color-neutral-foreground));
+  --_badge-bg: var(--_hue);
+  --_badge-bg-hover: var(--_hue-hover);
+  --_badge-fg: var(--_hue-foreground);
 }
 
 .badge[data-variant="soft"] {
-  --badge-bg: var(--hue-soft, var(--color-neutral-soft));
-  --badge-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
-  --badge-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+  --_badge-bg: var(--_hue-soft);
+  --_badge-bg-hover: var(--_hue-soft-hover);
+  --_badge-fg: var(--_hue-soft-foreground);
 }
 
 .badge[data-variant="outline"] {
-  --badge-bg: transparent;
-  --badge-bg-hover: var(--hue-soft, var(--color-neutral-soft));
-  --badge-fg: var(--hue-ink, var(--color-neutral-ink));
-  --badge-border: currentColor;
+  --_badge-bg: transparent;
+  --_badge-bg-hover: var(--_hue-soft);
+  --_badge-fg: var(--_hue-ink);
+  --_badge-border: currentColor;
 }
 
 /* States: hover shifts background, pressed is a transform,
    focus is a ring. No per-state foreground tokens. */
 .badge:not(:disabled):hover {
-  background-color: var(--badge-bg-hover);
+  background-color: var(--_badge-bg-hover);
 }
 
 .badge:not(:disabled):active {
@@ -417,17 +453,17 @@
 }
 
 .badge:disabled {
-  --badge-bg: var(--color-disabled);
-  --badge-bg-hover: var(--color-disabled);
-  --badge-fg: var(--color-disabled-foreground);
-  --badge-border: transparent;
+  --_badge-bg: var(--color-disabled);
+  --_badge-bg-hover: var(--color-disabled);
+  --_badge-fg: var(--color-disabled-foreground);
+  --_badge-border: transparent;
   cursor: not-allowed;
 }
 
 .badge[data-variant="outline"]:disabled {
-  --badge-bg: transparent;
-  --badge-fg: var(--color-disabled-ink);
-  --badge-border: var(--color-separator);
+  --_badge-bg: transparent;
+  --_badge-fg: var(--color-disabled-ink);
+  --_badge-border: var(--color-separator);
 }
 
 /* ------------------------------------------------------------
@@ -450,10 +486,10 @@
    cannot be recolored. */
 
 .button {
-  --button-bg: transparent;
-  --button-bg-hover: var(--button-bg);
-  --button-fg: var(--color-foreground);
-  --button-border: transparent;
+  --_button-bg: transparent;
+  --_button-bg-hover: var(--_button-bg);
+  --_button-fg: var(--color-foreground);
+  --_button-border: transparent;
 
   display: inline-flex;
   align-items: center;
@@ -468,9 +504,9 @@
   white-space: nowrap;
   cursor: pointer;
 
-  background-color: var(--button-bg);
-  color: var(--button-fg);
-  border: 1px solid var(--button-border);
+  background-color: var(--_button-bg);
+  color: var(--_button-fg);
+  border: 1px solid var(--_button-border);
 
   transition:
     background-color 0.15s ease,
@@ -480,38 +516,38 @@
 }
 
 .button[data-variant="primary"] {
-  --button-bg: var(--hue, var(--color-accent));
-  --button-bg-hover: var(--hue-hover, var(--color-accent-hover));
-  --button-fg: var(--hue-foreground, var(--color-accent-foreground));
+  --_button-bg: var(--hue, var(--color-accent));
+  --_button-bg-hover: var(--hue-hover, var(--color-accent-hover));
+  --_button-fg: var(--hue-foreground, var(--color-accent-foreground));
 }
 
 .button[data-variant="secondary"] {
-  --button-bg: var(--hue-soft, var(--color-neutral-soft));
-  --button-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
-  --button-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+  --_button-bg: var(--hue-soft, var(--color-neutral-soft));
+  --_button-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
+  --_button-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
 }
 
 .button[data-variant="ghost"] {
-  --button-bg: transparent;
-  --button-bg-hover: var(--hue-soft, var(--color-neutral-soft));
-  --button-fg: var(--hue-ink, var(--color-foreground));
+  --_button-bg: transparent;
+  --_button-bg-hover: var(--hue-soft, var(--color-neutral-soft));
+  --_button-fg: var(--hue-ink, var(--color-foreground));
 }
 
 /* Locked variants: no --hue-* reads, data-color has no effect. */
 .button[data-variant="danger"] {
-  --button-bg: var(--color-danger);
-  --button-bg-hover: var(--color-danger-hover);
-  --button-fg: var(--color-danger-foreground);
+  --_button-bg: var(--color-danger);
+  --_button-bg-hover: var(--color-danger-hover);
+  --_button-fg: var(--color-danger-foreground);
 }
 
 .button[data-variant="danger-soft"] {
-  --button-bg: var(--color-danger-soft);
-  --button-bg-hover: var(--color-danger-soft-hover);
-  --button-fg: var(--color-danger-soft-foreground);
+  --_button-bg: var(--color-danger-soft);
+  --_button-bg-hover: var(--color-danger-soft-hover);
+  --_button-fg: var(--color-danger-soft-foreground);
 }
 
 .button:not(:disabled):hover {
-  background-color: var(--button-bg-hover);
+  background-color: var(--_button-bg-hover);
 }
 
 .button:not(:disabled):active {
@@ -524,16 +560,16 @@
 }
 
 .button:disabled {
-  --button-bg: var(--color-disabled);
-  --button-bg-hover: var(--color-disabled);
-  --button-fg: var(--color-disabled-foreground);
-  --button-border: transparent;
+  --_button-bg: var(--color-disabled);
+  --_button-bg-hover: var(--color-disabled);
+  --_button-fg: var(--color-disabled-foreground);
+  --_button-border: transparent;
   cursor: not-allowed;
 }
 
 .button[data-variant="ghost"]:disabled {
-  --button-bg: transparent;
-  --button-fg: var(--color-disabled-ink);
+  --_button-bg: transparent;
+  --_button-fg: var(--color-disabled-ink);
 }
 
 /* ------------------------------------------------------------
@@ -548,38 +584,38 @@
 }
 
 .card {
-  --card-surface: var(--color-surface);
-  --card-inset: var(--color-surface-secondary);
-  --card-media: var(--color-surface-tertiary);
-  --card-separator: var(--color-separator-secondary);
-  --card-separator-hover: color-mix(in oklab, var(--color-accent) 30%, var(--color-separator));
-  --card-title-fg: var(--color-foreground);
-  --card-body-fg: var(--color-foreground-secondary);
-  --card-meta-fg: var(--color-foreground-tertiary);
+  --_card-surface: var(--color-surface);
+  --_card-inset: var(--color-surface-secondary);
+  --_card-media: var(--color-surface-tertiary);
+  --_card-separator: var(--color-separator-secondary);
+  --_card-separator-hover: color-mix(in oklab, var(--color-accent) 30%, var(--color-separator));
+  --_card-title-fg: var(--color-foreground);
+  --_card-body-fg: var(--color-foreground-secondary);
+  --_card-meta-fg: var(--color-foreground-tertiary);
 
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: var(--card-surface);
-  border: 1px solid var(--card-separator);
+  background-color: var(--_card-surface);
+  border: 1px solid var(--_card-separator);
   border-radius: var(--radius-card);
   transition: border-color 0.15s ease;
 }
 
 .card:hover {
-  border-color: var(--card-separator-hover);
+  border-color: var(--_card-separator-hover);
 }
 
 .card__media {
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
-  background-color: var(--card-media);
+  background-color: var(--_card-media);
 }
 
 .card__media-label {
   font-size: 0.75rem;
-  color: var(--card-meta-fg);
+  color: var(--_card-meta-fg);
 }
 
 .card__body {
@@ -599,20 +635,20 @@
   font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--card-title-fg);
+  color: var(--_card-title-fg);
 }
 
 .card__desc {
   font-size: 0.85rem;
   line-height: 1.55;
-  color: var(--card-body-fg);
+  color: var(--_card-body-fg);
 }
 
 .card__meta {
   display: flex;
   gap: 0.4rem;
   font-size: 0.75rem;
-  color: var(--card-meta-fg);
+  color: var(--_card-meta-fg);
 }
 
 .card__nested-list {
@@ -625,7 +661,7 @@
   display: flex;
   gap: 0.6rem;
   padding: 0.5rem;
-  background-color: var(--card-inset);
+  background-color: var(--_card-inset);
   border-radius: var(--radius-field);
 }
 
@@ -633,7 +669,7 @@
   flex-shrink: 0;
   width: 56px;
   height: 42px;
-  background-color: var(--card-media);
+  background-color: var(--_card-media);
   border-radius: var(--radius-selector);
 }
 
@@ -648,10 +684,10 @@
   font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.35;
-  color: var(--card-title-fg);
+  color: var(--_card-title-fg);
 }
 
 .card__nested-date {
   font-size: 0.7rem;
-  color: var(--card-meta-fg);
+  color: var(--_card-meta-fg);
 }
