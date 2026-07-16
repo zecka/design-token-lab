@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Approche 10 — Dérivation par seeds + canal hue</title>
+  <title>Approche 10 | Dérivation par seeds + canal hue</title>
   <link rel="stylesheet" href="../shared/demo.css" />
   <link rel="stylesheet" href="demo.css" />
   <link rel="stylesheet" href="index.css" />
@@ -17,7 +17,7 @@
     <p class="page-header__desc">
       Seules les seeds sont des valeurs littérales : 3 couleurs de base plus 2 par
       teinte. Tout autre token (hover, soft, ink, separators, disabled, hiérarchie)
-      est dérivé par color-mix() en OKLab — un mode dark complet = 3 seeds
+      est dérivé par color-mix() en OKLab : un mode dark complet = 3 seeds
       redéfinies. Les composants lisent un canal générique --hue-* publié par
       data-color, avec fallback neutral : pas de notion de rôle, toute couleur
       fonctionne sur toute variante. Contrairement aux approches existantes (tables
@@ -53,7 +53,7 @@
       </p>
 
       <div class="arch-block">
-        <p class="arch-block__title">1. Fondations — --color-*, --radius-*</p>
+        <p class="arch-block__title">1. Fondations | --color-*, --radius-*, définissent toutes les valeurs du système</p>
         <p class="arch-block__desc">
           Seules les seeds sont des valeurs littérales : 3 couleurs de base
           (background, surface, foreground) et 2 par teinte. Tout le reste est
@@ -81,7 +81,7 @@
       </div>
 
       <div class="arch-block">
-        <p class="arch-block__title">2. Canal — --hue-*, posé par data-color</p>
+        <p class="arch-block__title">2. Canal | --hue-*, permet l'override des couleurs par instance</p>
         <p class="arch-block__desc">
           Poser data-color="danger" sur un élément publie toute la famille
           danger dans des variables génériques --hue-*. Un composant qui opte
@@ -102,7 +102,7 @@
           outline par défaut, garde son fond transparent quoi qu'il arrive :
           il n'écoute le canal que pour son texte (--hue-ink) et son survol
           (--hue-soft). data-color ne transformera jamais un outline en bouton
-          plein — c'est un choix d'opinion du composant. Cas extrême : danger
+          plein : c'est un choix d'opinion du composant. Cas extrême : danger
           n'écoute rien du tout, la sémantique destructive ne se détourne pas.
         </div>
         <div class="token-map">
@@ -115,12 +115,12 @@
       </div>
 
       <div class="arch-block">
-        <p class="arch-block__title">3. Hooks — --ui-*, posés par un thème ou un scope</p>
+        <p class="arch-block__title">3. Hooks | --ui-*, permettent le theming ciblé des composants</p>
         <p class="arch-block__desc">
           Des tokens publics qui n'existent pas par défaut : chaque composant
           les lit avec un fallback vers sa valeur validée, ils ne coûtent donc
-          rien tant que personne ne les définit. Un thème — ou n'importe quel
-          conteneur, ces propriétés s'héritent — peut recibler une facette
+          rien tant que personne ne les définit. Un thème (ou n'importe quel
+          conteneur, ces propriétés s'héritent) peut recibler une facette
           précise d'une variante (couleur, survol, bordure, radius) sans
           toucher au CSS du composant. La liste des hooks disponibles est
           documentée en commentaire dans index.css.
@@ -143,11 +143,11 @@
       </div>
 
       <div class="arch-block">
-        <p class="arch-block__title">4. Tokens privés — --_*</p>
+        <p class="arch-block__title">4. Tokens privés | --_*, portent l'implémentation interne des composants</p>
         <p class="arch-block__desc">
           La plomberie interne des composants (--_button-bg, --_hue…). Le
           préfixe underscore signale : détail d'implémentation, pas contrat.
-          On ne les surcharge jamais de l'extérieur — pour changer une couleur,
+          On ne les surcharge jamais de l'extérieur : pour changer une couleur,
           on passe par le canal ou par un hook. C'est aussi là que vit la
           résolution du canal, écrite une seule fois par composant.
         </p>
@@ -334,7 +334,7 @@
 
     <!-- Vitrine de l'état disabled -->
     <section>
-      <p class="demo-section__title">État disabled — toutes les couleurs</p>
+      <p class="demo-section__title">État disabled | toutes les couleurs</p>
       <div class="disabled-grid">
 
         <div class="disabled-row">
@@ -413,7 +413,7 @@
 
     <!-- Démo du composant bouton -->
     <section>
-      <p class="demo-section__title">Composant bouton — API orientée UX</p>
+      <p class="demo-section__title">Composant bouton | API orientée UX</p>
       <p class="button-demo__note">
         Volontairement plus opinionated que le badge : seules les variantes
         validées par le design system sont exposées. primary, secondary et ghost
@@ -472,14 +472,14 @@
 
     <!-- Limite connue : composition hooks de thème × data-color -->
     <section>
-      <p class="demo-section__title">Limite connue — hooks de thème × data-color</p>
+      <p class="demo-section__title">Limite connue | hooks de thème × data-color</p>
       <p class="button-demo__note">
         Deux mécanismes se combinent mal ici. D'un côté, le thème personnalise
         la couleur de survol des boutons secondary (via un hook --ui-*, réglé
         sur du neutral). De l'autre, le premier bouton est recoloré en danger
         avec data-color. Résultat : au repos il est bien danger, mais au survol
         il prend la couleur du thème et redevient neutral. Un hook de thème est
-        une valeur figée — il ne peut pas exprimer « la version hover de la
+        une valeur figée : il ne peut pas exprimer « la version hover de la
         couleur courante du bouton ». Limite assumée, détails dans memory.md.
       </p>
       <div class="button-strip hook-scope-hover">
@@ -491,7 +491,7 @@
 
     <!-- Démo du composant lien -->
     <section>
-      <p class="demo-section__title">Composant lien — tokens ink</p>
+      <p class="demo-section__title">Composant lien | tokens ink</p>
       <p class="link-demo">
         Notre <a class="link" href="#">guide des rituels du matin</a> associe des
         exercices de respiration à des
@@ -501,7 +501,7 @@
         tout moment, ou explorer le
         <a class="link" href="#" data-color="evening">programme de détente du
         soir</a> avant de réserver. Survolez un lien : le texte passe d'ink à
-        ink-hover, le soulignement suit — aucun background impliqué.
+        ink-hover, le soulignement suit, aucun background impliqué.
       </p>
     </section>
 
