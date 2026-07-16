@@ -67,9 +67,14 @@
           <span class="token-map__layer token-map__layer--c">every derived token recomputes, components untouched</span>
         </div>
         <div class="token-map__row">
-          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --_button-bg: var(--color-danger) }</span>
+          <span class="token-map__layer token-map__layer--c">UX variant · .button[data-variant="danger"] { --_button-bg: var(--ui-button-danger-bg, var(--color-danger)) }</span>
           <span class="token-map__arrow">→</span>
           <span class="token-map__layer token-map__layer--a">no --hue-* read: locked, data-color ignored</span>
+        </div>
+        <div class="token-map__row">
+          <span class="token-map__layer token-map__layer--b">latent hook · [data-theme] { --ui-button-primary-bg: var(--color-evening) }</span>
+          <span class="token-map__arrow">→</span>
+          <span class="token-map__layer token-map__layer--c">component · var(--hue, var(--ui-button-primary-bg, var(--color-accent)))</span>
         </div>
       </div>
     </section>
@@ -331,7 +336,9 @@
         Deliberately more opinionated than the badge: only design-system-vetted
         variants are exposed. primary, secondary and ghost still accept the
         optional data-color override through the --hue-* channel; danger and
-        danger-soft are locked to the danger tokens.
+        danger-soft are locked to the danger tokens. Every variant also exposes
+        latent --ui-* hooks: undeclared by default, a theme or scope can define
+        them to retarget a variant without touching component CSS (last strip).
       </p>
 
       <div class="button-demo">
@@ -361,6 +368,21 @@
           <button class="button" data-variant="secondary" data-color="info">Learn More</button>
           <button class="button" data-variant="ghost" data-color="evening">Wind Down</button>
           <button class="button" data-variant="danger" data-color="success">Locked (stays danger)</button>
+        </div>
+
+        <div class="button-strip hook-scope">
+          <span class="button-strip__label">--ui-* hooks</span>
+          <button class="button" data-variant="primary">Primary (hooked)</button>
+          <button class="button" data-variant="secondary">Secondary (untouched)</button>
+          <button class="button" data-variant="ghost">Ghost (untouched)</button>
+          <button class="button" data-variant="primary" data-color="success">data-color wins</button>
+        </div>
+
+        <div class="button-strip hook-scope-outline">
+          <span class="button-strip__label">border hook</span>
+          <button class="button" data-variant="secondary">Secondary → outline</button>
+          <button class="button" data-variant="secondary" data-color="danger">+ data-color</button>
+          <button class="button" data-variant="primary">Primary (untouched)</button>
         </div>
 
       </div>

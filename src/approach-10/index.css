@@ -27,6 +27,17 @@
      by Lea Verou as "private custom properties", echoing the
      _private naming habit of JS/Python; also seen in Open Props
      and CUBE CSS codebases.)
+   - --ui-<component>-* → the public component layer: latent
+     hooks. Undeclared by default, so they cost nothing and the
+     declared contract stays small; components read them with a
+     vetted fallback. A theme (or any scope — custom properties
+     inherit) defines one to retarget a component without
+     touching component CSS. The --ui- namespace also prevents
+     clashes between foundation names and component names
+     (--radius-field the semantic token vs --ui-field-* for a
+     future "field" component). Resolution priority everywhere:
+       channel (--hue-*, instance) > hook (--ui-*, theme/scope)
+       > vetted default (foundation token).
    Sections 1–3 (foundations) are self-contained and can ship
    without sections 4+ (components), or with a different
    component library built on the same contract.
@@ -49,15 +60,10 @@
   --pressed-transformation: scale(0.96);
 
   --radius: 3px;
-  --radius-full: calc(var(--radius) * 9999);
-  --radius-box: calc(var(--radius) * 3);
-  --radius-field: calc(var(--radius) * 2);
-  --radius-selector: var(--radius);
-
-  /* component-level radius (important components only) */
-  --radius-badge: var(--radius-selector);
-  --radius-button: var(--radius-field);
-  --radius-card: var(--radius-box);
+  --radius-full: calc(var(--radius) * 9999); /* avatar, toggle, radio */
+  --radius-box: calc(var(--radius) * 3);     /* card, modal, alert */
+  --radius-field: calc(var(--radius) * 2);   /* button, input, select, tab */
+  --radius-selector: var(--radius);          /* checkbox, badge */
 
   /* ---- Base seeds ---- */
   --color-background: oklch(97.5% 0.009 85);
@@ -399,7 +405,7 @@
   align-items: center;
   gap: 0.35em;
   padding: 0.3em 0.75em;
-  border-radius: var(--radius-badge);
+  border-radius: var(--ui-badge-radius, var(--radius-selector));
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -481,9 +487,30 @@
 
    primary, secondary and ghost still honor the optional
    data-color override through the --hue-* channel (fallbacks
-   carry the vetted default). danger and danger-soft are locked:
-   they read --color-danger-* directly, so destructive semantics
-   cannot be recolored. */
+   carry the vetted default). danger and danger-soft are locked
+   against the channel: they never read --hue-*, so destructive
+   semantics cannot be recolored per instance.
+
+   Every variant also exposes latent --ui-* hooks (undeclared by
+   default, settable by a theme or scope). Since latent tokens
+   are invisible in devtools, this is the reference list:
+     --ui-button-radius
+     --ui-button-primary-bg / -bg-hover / -fg / -border
+     --ui-button-secondary-bg / -bg-hover / -fg / -border
+     --ui-button-ghost-bg / -bg-hover / -fg / -border
+     --ui-button-danger-bg / -bg-hover / -fg / -border
+     --ui-button-danger-soft-bg / -bg-hover / -fg / -border
+   The danger hooks exist because the lock targets data-color
+   (an instance decision); a theme keeps authority over how
+   danger looks.
+
+   The four facets {bg, bg-hover, fg, border} span every style
+   (solid, soft, outline, ghost): a theme can retarget a
+   variant's whole style through hooks alone — e.g. secondary
+   as outline = transparent bg + ink fg + currentColor border.
+   The border facet reads no --hue-*: it is a style facet, not a
+   color facet. Set it to currentColor and its color follows the
+   fg, which already listens to the channel. */
 
 .button {
   --_button-bg: transparent;
@@ -496,7 +523,7 @@
   justify-content: center;
   gap: 0.45em;
   padding: 0.55em 1.1em;
-  border-radius: var(--radius-button);
+  border-radius: var(--ui-button-radius, var(--radius-field));
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -515,35 +542,42 @@
     transform 0.1s ease;
 }
 
+/* Each facet resolves: channel > hook > vetted default. */
 .button[data-variant="primary"] {
-  --_button-bg: var(--hue, var(--color-accent));
-  --_button-bg-hover: var(--hue-hover, var(--color-accent-hover));
-  --_button-fg: var(--hue-foreground, var(--color-accent-foreground));
+  --_button-bg: var(--hue, var(--ui-button-primary-bg, var(--color-accent)));
+  --_button-bg-hover: var(--hue-hover, var(--ui-button-primary-bg-hover, var(--color-accent-hover)));
+  --_button-fg: var(--hue-foreground, var(--ui-button-primary-fg, var(--color-accent-foreground)));
+  --_button-border: var(--ui-button-primary-border, transparent);
 }
 
 .button[data-variant="secondary"] {
-  --_button-bg: var(--hue-soft, var(--color-neutral-soft));
-  --_button-bg-hover: var(--hue-soft-hover, var(--color-neutral-soft-hover));
-  --_button-fg: var(--hue-soft-foreground, var(--color-neutral-soft-foreground));
+  --_button-bg: var(--hue-soft, var(--ui-button-secondary-bg, var(--color-neutral-soft)));
+  --_button-bg-hover: var(--hue-soft-hover, var(--ui-button-secondary-bg-hover, var(--color-neutral-soft-hover)));
+  --_button-fg: var(--hue-soft-foreground, var(--ui-button-secondary-fg, var(--color-neutral-soft-foreground)));
+  --_button-border: var(--ui-button-secondary-border, transparent);
 }
 
 .button[data-variant="ghost"] {
-  --_button-bg: transparent;
-  --_button-bg-hover: var(--hue-soft, var(--color-neutral-soft));
-  --_button-fg: var(--hue-ink, var(--color-foreground));
+  --_button-bg: var(--ui-button-ghost-bg, transparent);
+  --_button-bg-hover: var(--hue-soft, var(--ui-button-ghost-bg-hover, var(--color-neutral-soft)));
+  --_button-fg: var(--hue-ink, var(--ui-button-ghost-fg, var(--color-foreground)));
+  --_button-border: var(--ui-button-ghost-border, transparent);
 }
 
-/* Locked variants: no --hue-* reads, data-color has no effect. */
+/* Locked variants: no --hue-* reads, data-color has no effect.
+   The --ui-* hooks still apply (theme-level authority). */
 .button[data-variant="danger"] {
-  --_button-bg: var(--color-danger);
-  --_button-bg-hover: var(--color-danger-hover);
-  --_button-fg: var(--color-danger-foreground);
+  --_button-bg: var(--ui-button-danger-bg, var(--color-danger));
+  --_button-bg-hover: var(--ui-button-danger-bg-hover, var(--color-danger-hover));
+  --_button-fg: var(--ui-button-danger-fg, var(--color-danger-foreground));
+  --_button-border: var(--ui-button-danger-border, transparent);
 }
 
 .button[data-variant="danger-soft"] {
-  --_button-bg: var(--color-danger-soft);
-  --_button-bg-hover: var(--color-danger-soft-hover);
-  --_button-fg: var(--color-danger-soft-foreground);
+  --_button-bg: var(--ui-button-danger-soft-bg, var(--color-danger-soft));
+  --_button-bg-hover: var(--ui-button-danger-soft-bg-hover, var(--color-danger-soft-hover));
+  --_button-fg: var(--ui-button-danger-soft-fg, var(--color-danger-soft-foreground));
+  --_button-border: var(--ui-button-danger-soft-border, transparent);
 }
 
 .button:not(:disabled):hover {
@@ -598,7 +632,7 @@
   overflow: hidden;
   background-color: var(--_card-surface);
   border: 1px solid var(--_card-separator);
-  border-radius: var(--radius-card);
+  border-radius: var(--ui-card-radius, var(--radius-box));
   transition: border-color 0.15s ease;
 }
 

@@ -76,3 +76,22 @@ body {
   text-transform: uppercase;
   color: var(--page-muted);
 }
+
+/* Latent hook demo: this scope retargets the primary button via
+   public --ui-* tokens only — no component CSS involved. The
+   channel (data-color) still wins over the hooks. */
+.hook-scope {
+  --ui-button-primary-bg: var(--color-evening);
+  --ui-button-primary-bg-hover: var(--color-evening-hover);
+  --ui-button-primary-fg: var(--color-evening-foreground);
+}
+
+/* Style retargeting via the border facet: secondary becomes an
+   outline button, tokens only. currentColor makes the border
+   follow the fg — including when data-color recolors it. */
+.hook-scope-outline {
+  --ui-button-secondary-bg: transparent;
+  --ui-button-secondary-bg-hover: var(--color-neutral-soft);
+  --ui-button-secondary-fg: var(--color-neutral-ink);
+  --ui-button-secondary-border: currentColor;
+}
