@@ -126,13 +126,24 @@ body {
   color: var(--page-muted);
 }
 
-/* Latent hook demo: this scope retargets the primary button via
-   public --ui-* tokens only — no component CSS involved. The
-   channel (data-color) still wins over the hooks. */
-.hook-scope {
+/* Latent hook demos. Hooks are inherited custom properties: a
+   theme sets them on :root, but any scope works — here directly
+   on the hooked buttons, so hooked and untouched instances can
+   sit side by side in the same strip. The channel (data-color)
+   still wins over the hooks. */
+.hook-demo-primary {
   --ui-button-primary-bg: var(--color-evening);
   --ui-button-primary-bg-hover: var(--color-evening-hover);
   --ui-button-primary-fg: var(--color-evening-foreground);
+}
+
+/* A theme can also restyle secondary (outline by default) as a
+   soft accent button: hooks cover the whole facet set. */
+.hook-demo-secondary {
+  --ui-button-secondary-bg: var(--color-accent-soft);
+  --ui-button-secondary-bg-hover: var(--color-accent-soft-hover);
+  --ui-button-secondary-fg: var(--color-accent-soft-foreground);
+  --ui-button-secondary-border: transparent;
 }
 
 /* Style retargeting via the border facet: primary becomes an

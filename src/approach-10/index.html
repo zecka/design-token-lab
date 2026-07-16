@@ -15,15 +15,15 @@
     <p class="page-header__eyebrow">Approche 10</p>
     <h1 class="page-header__title">Dérivation par seeds + canal hue</h1>
     <p class="page-header__desc">
-      Seules les seeds sont des valeurs littérales : 3 couleurs de base plus 2 par
-      teinte. Tout autre token (hover, soft, ink, separators, disabled, hiérarchie)
-      est dérivé par color-mix() en OKLab : un mode dark complet = 3 seeds
-      redéfinies. Les composants lisent un canal générique --hue-* publié par
-      data-color, avec fallback neutral : pas de notion de rôle, toute couleur
-      fonctionne sur toute variante. Contrairement aux approches existantes (tables
-      hex statiques remappées par thème×mode), la palette est ici calculée :
-      ajouter un thème ou une teinte, c'est déclarer des seeds, pas repeindre
-      chaque token.
+      L'idée centrale : déclarer très peu de couleurs, calculer tout le reste.
+      On ne définit à la main que des « seeds » : trois couleurs de base pour
+      la page, et deux par teinte. Tous les autres tokens (survol, fond doux,
+      texte coloré, séparateurs, état désactivé) en sont dérivés
+      automatiquement avec color-mix(). Conséquence : un mode sombre complet
+      se résume à redéfinir 3 seeds, un nouveau thème à quelques lignes. Et
+      pour recolorer un composant ponctuellement, il suffit de poser
+      data-color="…" sur l'élément. Là où les autres approches repeignent
+      chaque token pour chaque thème, ici la palette se recalcule d'elle-même.
     </p>
   </header>
 
@@ -455,12 +455,13 @@
           <button class="button" data-variant="danger" data-color="success">Verrouillé (reste danger)</button>
         </div>
 
-        <div class="button-strip hook-scope">
+        <div class="button-strip">
           <span class="button-strip__label">hooks --ui-*</span>
-          <button class="button" data-variant="primary">Primary (hooké)</button>
+          <button class="button hook-demo-primary" data-variant="primary">Primary (hooké)</button>
           <button class="button" data-variant="secondary">Secondary (intact)</button>
+          <button class="button hook-demo-secondary" data-variant="secondary">Secondary (hooké : accent soft)</button>
           <button class="button" data-variant="ghost">Ghost (intact)</button>
-          <button class="button" data-variant="primary" data-color="success">data-color gagne</button>
+          <button class="button hook-demo-primary" data-variant="primary" data-color="success">data-color gagne</button>
         </div>
 
         <div class="button-strip hook-scope-outline">
